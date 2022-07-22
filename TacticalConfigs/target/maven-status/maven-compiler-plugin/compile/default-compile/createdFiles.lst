@@ -1,0 +1,12 @@
+net\crossager\tactical\api\config\TacticalConfigSerializer.class
+net\crossager\tactical\api\config\items\TacticalConfigListElement.class
+net\crossager\tactical\api\config\items\TacticalConfigParent.class
+net\crossager\tactical\api\ConfigAPIHolder.class
+net\crossager\tactical\api\config\TacticalConfigOptions.class
+net\crossager\tactical\api\config\items\TacticalConfigList.class
+net\crossager\tactical\api\config\TacticalConfigFactory.class
+net\crossager\tactical\api\TacticalConfigs.class
+net\crossager\tactical\api\config\TacticalFileConfig.class
+net\crossager\tactical\api\config\items\TacticalConfigObject.class
+net\crossager\tactical\api\config\items\TacticalConfigSection.class
+net\crossager\tactical\api\config\items\TacticalConfigValue.class

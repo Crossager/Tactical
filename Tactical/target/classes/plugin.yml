@@ -1,0 +1,5 @@
+name: Tactical
+version: '0.1'
+main: net.crossager.tactical.Tactical
+api-version: 1.19
+authors: [ Crossager ]
