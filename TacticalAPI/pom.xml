@@ -88,37 +88,31 @@
             <groupId>net.crossager</groupId>
             <artifactId>TacticalConfigs</artifactId>
             <version>1.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalCommands</artifactId>
             <version>1.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalProtocol</artifactId>
             <version>1.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalGUI</artifactId>
             <version>1.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalCommons</artifactId>
             <version>1.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalMusic</artifactId>
             <version>1.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

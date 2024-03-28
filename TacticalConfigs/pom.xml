@@ -108,7 +108,6 @@
             <groupId>net.crossager</groupId>
             <artifactId>TacticalCommons</artifactId>
             <version>1.0</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
