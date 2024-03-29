@@ -1,6 +1,7 @@
 package net.crossager.tactical.api.gui.inventory.components;
 
 import net.crossager.tactical.api.TacticalGUI;
+import net.crossager.tactical.api.gui.animations.TacticalAnimatable;
 import net.crossager.tactical.api.gui.animations.TacticalAnimation;
 import net.crossager.tactical.api.gui.animations.TacticalAnimator;
 import net.crossager.tactical.api.gui.inventory.TacticalGUIClickEvent;
@@ -13,7 +14,7 @@ import java.util.function.Consumer;
 /**
  * Represents a static GUI component that does not change over time.
  */
-public interface TacticalStaticGUIComponent extends TacticalGUIComponent {
+public interface TacticalStaticGUIComponent extends TacticalGUIComponent, TacticalAnimatable<ItemStack> {
 
     /**
      * Sets the ItemStack for this static GUI component.
