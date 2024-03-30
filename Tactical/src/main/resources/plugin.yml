@@ -1,0 +1,5 @@
+name: Tactical
+version: '${project.version}'
+main: net.crossager.tactical.TacticalPlugin
+api-version: 1.13
+authors: [ Crossager ]
