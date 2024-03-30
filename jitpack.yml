@@ -9,3 +9,10 @@ install:
   - java -version
   - ls
   - mvn install -f ./TacticalCommons/pom.xml
+  - mvn install -f ./TacticalConfigs/pom.xml
+  - mvn install -f ./TacticalCommands/pom.xml
+  - mvn install -f ./TacticalGUI/pom.xml
+  - mvn install -f ./TacticalProtocol/pom.xml
+  - mvn install -f ./TacticalMusic/pom.xml
+  - mvn install -f ./TacticalAPI/pom.xml
+  - mvn install -f ./Tactical/pom.xml
