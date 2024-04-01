@@ -3,6 +3,17 @@
 Welcome to the Tactical project! This repository contains several modules designed to facilitate various aspects of Minecraft plugin development. Each module serves a specific purpose and can be used independently or in combination with others.
 Below is a guide to every one of the different modules Tactical has to offer.
 
+# Repository
+[![](https://jitpack.io/v/Crossager/Tactical.svg)](https://jitpack.io/#Crossager/Tactical)\
+To add Tactical to your project, add the following repository to your pom.xml. Dependencies for each of the modules are provided along with the documentation below.
+Tactical uses Jitpack.io for repository management.
+
+```xml
+<repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+</repository>
+```
 # Navigation
 
 - [TacticalCommands](#tacticalcommands)
@@ -16,7 +27,7 @@ Below is a guide to every one of the different modules Tactical has to offer.
 # TacticalCommands
 
 The TacticalCommands module provides a framework for creating custom commands in Minecraft Bukkit/Spigot plugins. It offers utilities for defining commands, handling command execution, parsing command arguments, and more.
-It can register commands dynamically without them being defined in your plugin.yml. 
+It can register commands dynamically without them being defined in your plugin.yml.
 
 ## Get started with TacticalCommands
 
@@ -28,7 +39,7 @@ Ensure that you have TacticalCommands added as a dependency in your Bukkit/Spigo
 
 ```xml
 <dependency>
-    <groupId>net.crossager</groupId>
+    <groupId>com.github.Crossager.Tactical</groupId>
     <artifactId>TacticalCommands</artifactId>
     <version>1.0</version> <!-- Replace with the latest version -->
     <scope>provided</scope>
@@ -37,9 +48,9 @@ Ensure that you have TacticalCommands added as a dependency in your Bukkit/Spigo
 
 ### Step 2: Define Custom Commands
 
-Define custom commands using the `TacticalCommand.create` method. 
+Define custom commands using the `TacticalCommand.create` method.
 To register the command, you need a prefix, and an actual command. You can also choose to pass in your plugin instance instead of a prefix.
-Lastly, you might not like the dynamic registration, so you also have the option to pass in a plugin command like this: 
+Lastly, you might not like the dynamic registration, so you also have the option to pass in a plugin command like this:
 
 ```java
 TacticalCommand.create(plugin, "mycommand")
@@ -53,7 +64,7 @@ TacticalCommands.create(plugin.getCommand("mycommand"))
 
 ### Step 3: Command configuration
 
-Using the `TacticalCommand#options` method, you can specify some internal logic behind the command. 
+Using the `TacticalCommand#options` method, you can specify some internal logic behind the command.
 A few options include:\
 `#addAlias(String)` Adds an alias to this command\
 `#permission(String)` Sets the required permission to execute this command\
@@ -220,7 +231,7 @@ Implementing subcommands in TacticalCommands is straightforward. Here's a step-b
 
 4. **Add Subcommands to the Primary Command**: Use the `TacticalCommandArgument#subCommands` method to add the subcommands as an argument to the primary command
 ### Example
- 
+
 Here's an example demonstrating how to implement subcommands in TacticalCommands:
 
 ```java
@@ -266,7 +277,7 @@ Its main purpose is to reduce boilerplate in the other Tactical modules, hence w
 
 ```xml
 <dependency>
-    <groupId>net.crossager</groupId>
+    <groupId>com.github.Crossager.Tactical</groupId>
     <artifactId>TacticalCommons</artifactId>
     <version>1.0</version> <!-- Replace with the latest version -->
     <scope>provided</scope>
@@ -298,7 +309,7 @@ Ensure that you have TacticalConfigs added as a dependency in your Bukkit/Spigot
 
 ```xml
 <dependency>
-    <groupId>net.crossager</groupId>
+    <groupId>com.github.Crossager.Tactical</groupId>
     <artifactId>TacticalConfigs</artifactId>
     <version>1.0</version> <!-- Replace with the latest version -->
     <scope>provided</scope>
@@ -447,7 +458,7 @@ Ensure that you have TacticalGUI added as a dependency in your Bukkit/Spigot plu
 
 ```xml
 <dependency>
-    <groupId>net.crossager</groupId>
+    <groupId>com.github.Crossager.Tactical</groupId>
     <artifactId>TacticalGUI</artifactId>
     <version>1.0</version> <!-- Replace with the latest version -->
     <scope>provided</scope>
@@ -611,7 +622,7 @@ leatherHelmet.animate(context -> {
 
 Here we have an animation context, this provides us with useful information about the animation, mainly the progress.
 The progress is how far we are into the animation, and will define how the animated item should look. The second parameter is something called an animator.
-This is what defines how the animation should progress over time. 
+This is what defines how the animation should progress over time.
 
 The progress from the animation is a number between 0 and 1, depending on how far we are into the animation, to make the helmet change color accordingly,
 we can do as follows:
@@ -658,7 +669,7 @@ gui.addAnimationArea(3, 0, 0, 0, 0);
 ```
 
 The first parameter specifies the update interval, which in this case is set to 3 ticks.
-The next two parameters of the `addAnimationArea` method represent the x and y of the starting location for the animation area, following are the next two, which are the end 
+The next two parameters of the `addAnimationArea` method represent the x and y of the starting location for the animation area, following are the next two, which are the end
 location x and y. Then the gui will update all components in a rectangle between those points.\
 In our case, we only want our 1 item to be updated, which is why it says 0,0,0,0. This will draw a 1x1 rectangle at 0,0.
 
@@ -690,7 +701,7 @@ Ensure that TacticalMusic is added as a dependency in your Bukkit/Spigot plugin'
 
 ```xml
 <dependency>
-    <groupId>net.crossager</groupId>
+    <groupId>com.github.Crossager.Tactical</groupId>
     <artifactId>TacticalMusic</artifactId>
     <version>1.0</version> <!-- Replace with the latest version -->
     <scope>provided</scope>
@@ -757,9 +768,9 @@ By following these steps and utilizing the provided example, you can seamlessly 
 ## Limitations
 There are many limitations to what can be done using TacticalMusic. Here is a list of stuff to be aware of:
 1. **BPM**: TacticalMusic can only play music every tick, this is why it is limited to the following BPMs: 300, 150, 100, 75, 60, 50. It will automatically round it to one of these
-2. **High pitch**: Minecraft fundamentally only allows notes from the range C2-C4. TacticalMusic will automatically try to scale down your song to fit in this range. But just know that if the high notes seem to be cut out, this is why. 
+2. **High pitch**: Minecraft fundamentally only allows notes from the range C2-C4. TacticalMusic will automatically try to scale down your song to fit in this range. But just know that if the high notes seem to be cut out, this is why.
 3. **Lack of instruments**: I do not have the time to seek out every midi instrument out there, so if TacticalMusic lacks one, you are going to have to map it yourself. Do this using the `TacticalMidiParsingOptions`.
-Generally, you may need to adjust your midi files, I really enjoy using this website called [Online Sequencer](https://onlinesequencer.net/). 
+   Generally, you may need to adjust your midi files, I really enjoy using this website called [Online Sequencer](https://onlinesequencer.net/).
 
 ## Default mappings
 When you use `TacticalMidiParsingOptions.createDefault()`, here is what is being applied
@@ -847,14 +858,25 @@ drumKit.soundForKey(45, Sound.BLOCK_AZALEA_LEAVES_FALL);
 ```
 
 # TacticalProtocol
-TacticalProtocol is a very versatile framework that allows for very high customization, deep down into minecrafts internal protocol. It allows you to easily listen for packets, send packets, and even inject your own custom packets into the minecraft protocol.
+TacticalProtocol is a very versatile framework that allows for very high customization, deep down into Minecrafts internal protocol. It allows you to easily listen for packets, send packets, and even inject your own custom packets into the minecraft protocol.
 #### Pros
 Gives full access to the minecraft protocol
 #### Cons
 Can be a bit intimidating if you do not know what you are doing, but that's just the nature of packets and protocol
+Ensure that you have TacticalProtocol added as a dependency in your Bukkit/Spigot plugin's `pom.xml` file:
+
+```xml
+<dependency>
+    <groupId>com.github.Crossager.Tactical</groupId>
+    <artifactId>TacticalProtocol</artifactId>
+    <version>1.0</version> <!-- Replace with the latest version -->
+    <scope>provided</scope>
+</dependency>
+```
+
 ## PacketData
 Packet data is essentially just a series of bytes ready to be sent through network. TacticalProtocol provides two classes to help read/write to these bytes.
-These bytes are in a very specific order, and packaged in a certain way. 
+These bytes are in a very specific order, and packaged in a certain way.
 A quick way to learn how each of the packets are stored, is to either dig into the minecraft source code, or to visit https://wiki.vg/Protocol.
 The `PacketWriter` and `PacketReader` classes contain similar functions to read/write certain data from the packets.
 ## Listening to packets
@@ -865,7 +887,7 @@ PacketType.play().in().chat().addPacketListener(packetEvent -> {
         String message = reader.readString();
         long timeStamp = reader.readLong();
         if (message.contains("profanity")) packetEvent.setCancelled(true);
-    });
+        });
 ```
 In this case, we check if a chat message contains profanity, before the server even realises that the player sent a message.
 You are limited to inbound packets, you can even listen to clientbound packets.
@@ -875,7 +897,7 @@ Sending packets is just as simple, and follows almost the same steps
 ```java
 PacketType.play().out().openSignEditor().sendPacket(player, packetWriter -> {
         packetWriter.writeBlockLocation(BlockLocation.fromLocation(location));
-    });
+        });
 ```
 
 You are provided with a packetWriter to write all your data. Once you are done writing, the packet gets sent.
@@ -887,17 +909,17 @@ A custom packet should look something like this:
 ```java
 public class MyCustomPacket implements CustomPacket {
     private final String secretMessage;
-    
+
     // Create your packet from data
     public MyCustomPacket(String secretMessage) {
         this.secretMessage = secretMessage;
     }
-    
+
     // Load the data by reading from the PacketReader
     public MyCustomPacket(PacketReader reader) {
         this.secretMessage = reader.readString();
     }
-    
+
     // Write the data of your packet into the packetWriter
     @Override
     public void write(PacketWriter packetWriter) {
@@ -911,7 +933,7 @@ You still need to inject it, luckily that is quite easy
 ```java
 // Whatever protocol you want the packet injected into
 PacketType customPacketType = ProtocolManager.getProtocolManager(Protocol.PLAY, Sender.SERVER)
-                .registerCustomPacket(MyCustomPacket.class, MyCustomPacket::new);
+        .registerCustomPacket(MyCustomPacket.class, MyCustomPacket::new);
 ```
 
 Now you can treat your custom packet as if it was just any regular packet.
