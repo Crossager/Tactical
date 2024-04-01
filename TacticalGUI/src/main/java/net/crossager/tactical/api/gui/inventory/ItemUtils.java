@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -53,6 +54,16 @@ public class ItemUtils {
      */
     public static ItemStack setLore(ItemStack itemStack, List<String> lore) {
         return setMetaValue(itemStack, lore, ItemMeta::setLore);
+    }
+
+    /**
+     * Sets the lore of an ItemStack by splitting the description into lines
+     *
+     * @param description The description to set
+     * @return The modified ItemStack
+     */
+    public static ItemStack setDescription(ItemStack itemStack, String description) {
+        return setMetaValue(itemStack, Arrays.asList(description.split("\n")), ItemMeta::setLore);
     }
 
     /**
