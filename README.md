@@ -3,7 +3,10 @@
 Welcome to the Tactical project! This repository contains several modules designed to facilitate various aspects of Minecraft plugin development. Each module serves a specific purpose and can be used independently or in combination with others.
 Below is a guide to every one of the different modules Tactical has to offer.
 
-# Repository
+# Get started
+You need to add the Tactical plugin to your minecraft server to use it. Find the latest release under [Releases](https://github.com/Crossager/Tactical/releases).
+It is also possible to shade Tactical into your plugin: [Using Tactical without adding the plugin](#using-tactical-without-adding-the-plugin)
+## Repository
 [![](https://jitpack.io/v/Crossager/Tactical.svg)](https://jitpack.io/#Crossager/Tactical)\
 To add Tactical to your project, add the following repository to your pom.xml. Dependencies for each of the modules are provided along with the documentation below.
 Tactical uses Jitpack.io for repository management.
