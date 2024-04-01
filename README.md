@@ -60,7 +60,7 @@ TacticalCommand.create(plugin, "mycommand")
 TacticalCommand.create("mycommandprefix", "mycommand")
 ```
 ```java 
-TacticalCommands.create(plugin.getCommand("mycommand"))
+TacticalCommand.create(plugin.getCommand("mycommand"))
 ```
 
 ### Step 3: Command configuration
