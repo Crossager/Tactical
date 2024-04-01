@@ -22,6 +22,7 @@ Tactical uses Jitpack.io for repository management.
 - [TacticalGUI](#tacticalgui)
 - [TacticalMusic](#tacticalmusic)
 - [TacticalProtocol](#tacticalprotocol)
+- [Internal Tactical](#internal-tactical)
 - [Example Projects](#example-projects)
 
 # TacticalCommands
@@ -937,6 +938,26 @@ PacketType customPacketType = ProtocolManager.getProtocolManager(Protocol.PLAY, 
 ```
 
 Now you can treat your custom packet as if it was just any regular packet.
+
+# Internal Tactical
+To access the internal implementations and methods of Tactical, add this dependency:
+```xml
+<dependency>
+    <groupId>com.github.Crossager.Tactical</groupId>
+    <artifactId>Tactical</artifactId>
+    <version>1.0</version> <!-- Replace with the latest version -->
+    <scope>provided</scope>
+</dependency>
+```
+
+Beware, the methods, classes and fields are subject to change, and may do so without notice. None of it is documented.
+## Using Tactical without adding the plugin
+It is possible to use Tactical by shading it into your plugin. Tactical though needs a `JavaPlugin` instance to operate, you can initialize this by doing this:
+```java
+new Tactical(plugin).init();
+```
+
+This will also initialize static access to all the modules. You can then proceed to use Tactical as normal.
 
 # Example projects
 [SpotifyForSpigot](https://github.com/Crossager/SpotifyForSpigot): Combines TacticalMusic, TacticalGUI, TacticalCommands to create a user-friendly ui to play custom music.\
