@@ -3,6 +3,7 @@
 src/test
 TODO
 deprecated/
+utilscripts/
 
 *.iml
 *.ipr
