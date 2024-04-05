@@ -38,6 +38,10 @@ public class MinecraftClasses {
         return getClass("world.entity.Entity", "Entity");
     }
 
+    public static Class<?> getEntityTypesClass() {
+        return getClass("world.entity.EntityTypes", "world.entity.EntityType", "EntityTypes");
+    }
+
     public static Class<?> getPlayerConnectionClass() {
         return getClass("server.network.PlayerConnection", "server.network.ServerGamePacketListenerImpl", "PlayerConnection");
     }
