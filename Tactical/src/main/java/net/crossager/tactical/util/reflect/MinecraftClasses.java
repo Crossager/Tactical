@@ -61,4 +61,12 @@ public class MinecraftClasses {
     public static Class<?> getChatSerializerClass() {
         return getClass("network.chat.IChatBaseComponent$ChatSerializer", "network.chat.Component$Serializer", "IChatBaseComponent$ChatSerializer");
     }
+
+    public static Class<?> getBuiltInRegistriesClass() {
+        return getClass("core.registries.BuiltInRegistries");
+    }
+
+    public static Class<?> getIRegistryClass() {
+        return getClass("core.IRegistry", "core.Registry", "IRegistry");
+    }
 }
