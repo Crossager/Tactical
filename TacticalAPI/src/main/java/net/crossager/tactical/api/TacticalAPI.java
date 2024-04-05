@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 /**
  * The main interface for the Tactical API. Provides access to all other interfaces and utility methods.
  */
-public interface TacticalAPI extends TacticalConfigs, TacticalCommons, TacticalCommands, TacticalProtocol, TacticalGUI, TacticalMusic {
+public interface TacticalAPI extends TacticalConfigs, TacticalCommons, TacticalCommands, TacticalProtocol, TacticalGUI, TacticalMusic, TacticalNPC {
     /**
      * Returns the singleton instance of the {@link TacticalAPI} class.
      *
