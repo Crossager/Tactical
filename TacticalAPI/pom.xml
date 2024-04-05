@@ -136,6 +136,12 @@
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
+            <artifactId>TacticalNPC</artifactId>
+            <version>0.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.crossager</groupId>
             <artifactId>TacticalProtocol</artifactId>
             <version>1.0.1</version>
             <scope>provided</scope>
