@@ -14,7 +14,9 @@
     <module>TacticalConfigs</module>
     <module>TacticalGUI</module>
     <module>TacticalMusic</module>
+    <module>TacticalNPC</module>
     <module>TacticalProtocol</module>
+    <module>TacticalAPI</module>
     <module>Tactical</module>
   </modules>
 
