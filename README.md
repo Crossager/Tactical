@@ -19,8 +19,8 @@ Tactical uses Jitpack.io for repository management.
 ```
 # Navigation
 
-- [TacticalCommands](#tacticalcommands)
 - [TacticalCommons](#tacticalcommons)
+- [TacticalCommands](#tacticalcommands)
 - [TacticalConfigs](#tacticalconfigs)
 - [TacticalGUI](#tacticalgui)
 - [TacticalMusic](#tacticalmusic)
@@ -28,8 +28,24 @@ Tactical uses Jitpack.io for repository management.
 - [Internal Tactical](#internal-tactical)
 - [Example Projects](#example-projects)
 
+# TacticalCommons
+
+TacticalCommons is a shared library used by most of the Tactical modules. Other than reducing boilerplate, it contains several utility classes for reflection, nbt, and data management.
+
+Some modules may require you to add TacticalCommons to your project.
+
+```xml
+<dependency>
+    <groupId>com.github.Crossager.Tactical</groupId>
+    <artifactId>TacticalCommons</artifactId>
+    <version>1.0</version> <!-- Replace with the latest version -->
+    <scope>provided</scope>
+</dependency>
+```
+
 # TacticalCommands
 
+*Requires [TacticalCommons](#tacticalcommons)*\
 The TacticalCommands module provides a framework for creating custom commands in Minecraft Bukkit/Spigot plugins. It offers utilities for defining commands, handling command execution, parsing command arguments, and more.
 It can register commands dynamically without them being defined in your plugin.yml.
 
@@ -273,20 +289,6 @@ In this example:
 
 This setup allows users to execute different subcommands under the "mycommand" namespace, providing a clean and organized way to handle various functionalities within a single command.
 
-
-# TacticalCommons
-
-The TacticalCommons module contains common utility classes and helper methods that can be used across different parts of your Bukkit/Spigot plugin. It includes functionalities such as logging, configuration management, serialization, and more.
-Its main purpose is to reduce boilerplate in the other Tactical modules, hence why most of them depend on this.
-
-```xml
-<dependency>
-    <groupId>com.github.Crossager.Tactical</groupId>
-    <artifactId>TacticalCommons</artifactId>
-    <version>1.0</version> <!-- Replace with the latest version -->
-    <scope>provided</scope>
-</dependency>
-```
 # TacticalConfigs
 
 TacticalConfigs is a utility library designed to simplify the management of configuration files in Bukkit/Spigot plugins. It provides easy-to-use methods for reading, writing, and managing configuration files, allowing plugin developers to focus on building their features without worrying about the complexities of configuration handling.
@@ -862,6 +864,8 @@ drumKit.soundForKey(45, Sound.BLOCK_AZALEA_LEAVES_FALL);
 ```
 
 # TacticalProtocol
+
+*Requires [TacticalCommons](#tacticalcommons)*\
 TacticalProtocol is a very versatile framework that allows for very high customization, deep down into Minecrafts internal protocol. It allows you to easily listen for packets, send packets, and even inject your own custom packets into the minecraft protocol.
 #### Pros
 Gives full access to the minecraft protocol
