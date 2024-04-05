@@ -34,6 +34,10 @@ public class MinecraftClasses {
         return getClass("server.level.EntityPlayer", "server.level.ServerPlayer", "EntityPlayer");
     }
 
+    public static Class<?> getEntityClass() {
+        return getClass("world.entity.Entity", "Entity");
+    }
+
     public static Class<?> getPlayerConnectionClass() {
         return getClass("server.network.PlayerConnection", "server.network.ServerGamePacketListenerImpl", "PlayerConnection");
     }
