@@ -73,4 +73,8 @@ public class MinecraftClasses {
     public static Class<?> getIRegistryClass() {
         return getClass("core.IRegistry", "core.Registry", "IRegistry");
     }
+
+    public static Class<?> getMinecraftKeyClass() {
+        return getClass("resources.MinecraftKey", "resources.ResourceLocation", "MinecraftKey");
+    }
 }
