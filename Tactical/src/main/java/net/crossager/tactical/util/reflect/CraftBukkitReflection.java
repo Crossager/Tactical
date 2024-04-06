@@ -42,6 +42,10 @@ public class CraftBukkitReflection {
         return getClass("CraftRegionAccessor");
     }
 
+    public static Class<?> getCraftEntityClass() {
+        return getClass("entity.CraftEntity");
+    }
+
     public static Object getPlayerHandle(Player player) {
         return GET_PLAYER_HANDLE.invoke(player);
     }
