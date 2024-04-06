@@ -38,6 +38,10 @@ public class CraftBukkitReflection {
         return getClass("CraftServer");
     }
 
+    public static Class<?> getCraftRegionAccessorClass() {
+        return getClass("CraftRegionAccessor");
+    }
+
     public static Object getPlayerHandle(Player player) {
         return GET_PLAYER_HANDLE.invoke(player);
     }
