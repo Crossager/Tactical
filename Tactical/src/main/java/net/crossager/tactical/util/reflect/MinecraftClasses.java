@@ -81,4 +81,8 @@ public class MinecraftClasses {
     public static Class<?> getDataWatcherClass() {
         return getClass("network.syncher.DataWatcher", "network.syncher.SynchedEntityData", "DataWatcher");
     }
+
+    public static Class<?> getDataWatcherBClass() {
+        return getClass("network.syncher.DataWatcher$b", "network.syncher.SynchedEntityData$b", "DataWatcher$b");
+    }
 }
