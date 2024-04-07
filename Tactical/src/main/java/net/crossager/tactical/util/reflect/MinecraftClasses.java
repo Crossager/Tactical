@@ -77,4 +77,8 @@ public class MinecraftClasses {
     public static Class<?> getMinecraftKeyClass() {
         return getClass("resources.MinecraftKey", "resources.ResourceLocation", "MinecraftKey");
     }
+
+    public static Class<?> getDataWatcherClass() {
+        return getClass("network.syncher.DataWatcher", "network.syncher.SynchedEntityData", "DataWatcher");
+    }
 }
