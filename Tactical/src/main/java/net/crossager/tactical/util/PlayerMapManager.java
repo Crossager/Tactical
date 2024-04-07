@@ -12,6 +12,7 @@ import java.util.List;
 
 public class PlayerMapManager implements Listener {
     private final List<PlayerMap<?>> playerMaps = new ArrayList<>();
+    private final List<PlayerSet> playerSets = new ArrayList<>();
 
     public PlayerMapManager(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -24,6 +25,14 @@ public class PlayerMapManager implements Listener {
 
     public void unregister(PlayerMap<?> playerMap) {
         playerMaps.remove(playerMap);
+    }
+
+    public void register(PlayerSet playerSet) {
+        playerSets.add(playerSet);
+    }
+
+    public void unregister(PlayerSet playerSet) {
+        playerSets.remove(playerSet);
     }
 
     @EventHandler
