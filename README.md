@@ -898,7 +898,18 @@ PacketType.play().in().chat().addPacketListener(packetEvent -> {
         });
 ```
 In this case, we check if a chat message contains profanity, before the server even realises that the player sent a message.
-You are limited to inbound packets, you can even listen to clientbound packets.
+You are not limited to inbound packets, you can even listen to clientbound packets.
+
+Sometimes when you have multiple listeners in play, the reader will get confused. To avoid this, you can use the method `PacketReader#readSilent` to read without disrupting the other listeners.
+```java
+PacketType.play().in().chat().addPacketListener(packetEvent -> {
+        packetEvent.data().reader().readSilent(reader -> {
+           String message = reader.readString();
+           long timeStamp = reader.readLong();
+           if (message.contains("profanity")) packetEvent.setCancelled(true);
+        });
+        });
+```
 
 ## Sending packets
 Sending packets is just as simple, and follows almost the same steps
