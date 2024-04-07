@@ -1,5 +1,6 @@
 package net.crossager.tactical.api.protocol.packet;
 
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -45,4 +46,12 @@ public interface PacketData {
      */
     @NotNull
     Object createPacket();
+
+    /**
+     * Creates a new instance of the packet associated with this data, then sends it to a player
+     *
+     * @return The new packet instance.
+     */
+    @NotNull
+    Object send(@NotNull Player player);
 }

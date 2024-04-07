@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.crossager.tactical.api.protocol.packet.PacketData;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.protocol.ProtocolUtils;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class SimplePacketData implements PacketData {
@@ -46,5 +47,12 @@ public class SimplePacketData implements PacketData {
     @Override
     public @NotNull Object createPacket() {
         return reader.readSilentAndReturn(x -> packetType.packetConstructor().apply(byteBuf));
+    }
+
+    @Override
+    public @NotNull Object send(@NotNull Player player) {
+        Object packet = createPacket();
+        ProtocolUtils.sendPacket(player, packet);
+        return packet;
     }
 }
