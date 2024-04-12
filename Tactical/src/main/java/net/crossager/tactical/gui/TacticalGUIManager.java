@@ -16,6 +16,7 @@ import net.crossager.tactical.gui.animations.SimpleTacticalAnimator;
 import net.crossager.tactical.gui.input.SimpleTacticalAnvilInputGUI;
 import net.crossager.tactical.gui.input.SimpleTacticalSignGUI;
 import net.crossager.tactical.gui.inventory.*;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,6 +50,8 @@ public class TacticalGUIManager implements TacticalGUIFactory {
             event.setCancelled(true);
             signGUI.close(event.player(), event.data().reader().readSilentAndReturn(packetReader -> {
                 packetReader.readBlockLocation();
+                if (MinecraftVersion.hasVersion(MinecraftVersion.v1_20))
+                    packetReader.readBoolean(); // is front of sign
                 List<String> lines = new ArrayList<>(4);
                 for (int i = 0; i < 4; i++) {
                     lines.add(packetReader.readString());

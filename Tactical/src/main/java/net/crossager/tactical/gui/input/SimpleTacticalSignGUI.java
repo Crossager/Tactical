@@ -4,6 +4,7 @@ import net.crossager.tactical.api.gui.input.TacticalSignGUI;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.wrappers.BlockLocation;
 import net.crossager.tactical.gui.TacticalGUIManager;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,6 +33,8 @@ public class SimpleTacticalSignGUI extends SimpleTacticalInputGUI<TacticalSignGU
         player.sendSignChange(location, lines, color, glowing);
         PacketType.play().out().openSignEditor().sendPacket(player, packetWriter -> {
             packetWriter.writeBlockLocation(BlockLocation.fromLocation(location));
+            if (MinecraftVersion.hasVersion(MinecraftVersion.v1_20))
+                packetWriter.writeBoolean(true); // is front of sign. should not matter
         });
         guiManager.entryOf(player).gui(this);
         player.sendBlockChange(location, location.getBlock().getBlockData());
