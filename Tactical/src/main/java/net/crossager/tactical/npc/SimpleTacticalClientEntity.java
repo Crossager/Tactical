@@ -214,8 +214,9 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
         writer.writeDouble(entity.getLocation().getY());
         writer.writeDouble(entity.getLocation().getZ());
         writer.writeByte((int) (entity.getLocation().getPitch() * ANGLE_TO_BYTE));
-        writer.writeByte(0); // yaw does not matter
-        writer.writeByte((int) (entity.getLocation().getYaw() * ANGLE_TO_BYTE));
+        int yaw = (int) (entity.getLocation().getYaw() * ANGLE_TO_BYTE);
+        writer.writeByte(yaw);
+        writer.writeByte(yaw);
         writer.writeVarInt(0); // other data, might implement access
         writer.writeShort(0); // velocity x, y, z
         writer.writeShort(0);
@@ -272,7 +273,7 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
             writer.writeShort((int) (relLoc.getX() * 32 * 128));
             writer.writeShort((int) (relLoc.getY() * 32 * 128));
             writer.writeShort((int) (relLoc.getZ() * 32 * 128));
-            writer.writeByte(0); // yaw is set by other packet
+            writer.writeByte((int) (entity.getLocation().getYaw() * ANGLE_TO_BYTE));
             writer.writeByte((int) (relLoc.getPitch() * ANGLE_TO_BYTE));
             writer.writeBoolean(true); // is on ground
             return List.of(movePacket, yawPacket);
@@ -283,7 +284,7 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
             writer.writeDouble(entity.getLocation().getX());
             writer.writeDouble(entity.getLocation().getY());
             writer.writeDouble(entity.getLocation().getZ());
-            writer.writeByte(0); // yaw is set by other packet
+            writer.writeByte((int) (entity.getLocation().getYaw() * ANGLE_TO_BYTE));
             writer.writeByte((int) (entity.getLocation().getPitch() * ANGLE_TO_BYTE));
             writer.writeBoolean(true); // is on ground
             return List.of(teleportPacket, yawPacket);
