@@ -51,7 +51,7 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
     private double renderDistanceSquared = renderDistance * renderDistance;
     private Predicate<Player> showToPlayer = p -> true;
     private Consumer<TacticalClientEntityInteractEvent<E>> onInteract = e -> {};
-    private final Set<Player> isDisplayedForPlayer = new PlayerSet();
+    protected final Set<Player> isDisplayedForPlayer = new PlayerSet();
 
     // cache packets for performance
     private final PacketData spawnPacket;
