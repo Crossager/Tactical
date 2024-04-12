@@ -3,6 +3,7 @@ package net.crossager.tactical.protocol.protocols;
 import net.crossager.tactical.api.protocol.ProtocolManager;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.protocol.protocols.PlayOutContainer;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.jetbrains.annotations.NotNull;
 
 public class ProtocolPlayOutContainer extends ProtocolContainerBase implements PlayOutContainer {
@@ -117,6 +118,10 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     private final PacketType windowItems = get("WindowItems", "SPacketWindowItems");
     private final PacketType worldEvent = get("WorldEvent", "SPacketEffect");
     private final PacketType worldParticles = get("WorldParticles", "SPacketParticles");
+    private final PacketType bundleDelimiter = get(true, "Delimiter", "BundleDelimiterPacket");
+    private final PacketType chunksBiomes = get(true, "ChunksBiomes", "ClientboundChunksBiomesPacket");
+    private final PacketType damageEvent = get(true, "DamageEvent", "ClientboundDamageEventPacket");
+    private final PacketType hurtAnimation = get(true, "HurtAnimation", "ClientboundHurtAnimationPacket");
 
     @NotNull
     @Override
@@ -758,5 +763,29 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     @Override
     public PacketType worldParticles() {
         return worldParticles;
+    }
+
+    @Override
+    public @NotNull PacketType bundleDelimiter() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
+        return bundleDelimiter;
+    }
+
+    @Override
+    public @NotNull PacketType chunksBiomes() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
+        return chunksBiomes;
+    }
+
+    @Override
+    public @NotNull PacketType damageEvent() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
+        return damageEvent;
+    }
+
+    @Override
+    public @NotNull PacketType hurtAnimation() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
+        return hurtAnimation;
     }
 }

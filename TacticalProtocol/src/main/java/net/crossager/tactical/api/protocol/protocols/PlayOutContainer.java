@@ -1,7 +1,8 @@
 package net.crossager.tactical.api.protocol.protocols;
 
-import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.protocol.ProtocolContainer;
+import net.crossager.tactical.api.protocol.packet.PacketType;
+import net.crossager.tactical.api.util.AvailableAfter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -127,6 +128,7 @@ public interface PlayOutContainer extends ProtocolContainer {
     PacketType playerInfoUpdate();
     @NotNull
     PacketType playerListHeaderFooter();
+    /** Synchronize player position */
     @NotNull
     PacketType position();
     @NotNull
@@ -223,4 +225,17 @@ public interface PlayOutContainer extends ProtocolContainer {
     PacketType worldEvent();
     @NotNull
     PacketType worldParticles();
+
+    @AvailableAfter("1.19.4")
+    @NotNull
+    PacketType bundleDelimiter();
+    @AvailableAfter("1.19.4")
+    @NotNull
+    PacketType chunksBiomes();
+    @AvailableAfter("1.19.4")
+    @NotNull
+    PacketType damageEvent();
+    @AvailableAfter("1.19.4")
+    @NotNull
+    PacketType hurtAnimation();
 }
