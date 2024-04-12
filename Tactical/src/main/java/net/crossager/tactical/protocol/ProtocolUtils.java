@@ -62,6 +62,7 @@ public class ProtocolUtils {
             }
             names.add("network.protocol." + protocol.packageName() + "." + sender.bounding() + baseName + "Packet");
             names.add("network.protocol." + protocol.packageName() + ".Packet" + protocol.className() + sender.direction() + baseName);
+            names.add("network.protocol." + protocol.packageName() + "." + baseName);
         }
 
         return names;
