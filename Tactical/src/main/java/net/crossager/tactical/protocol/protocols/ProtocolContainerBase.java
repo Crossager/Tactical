@@ -12,12 +12,19 @@ public abstract class ProtocolContainerBase extends DirectionalProtocolBase {
     }
 
     protected PacketType get(String... names) {
-        return protocolManager.getPacketType(
-                MinecraftClasses.getClass(
-                        ProtocolUtils.formatPossiblePacketNames(
-                                protocolManager.protocol(),
-                                protocolManager.sender(),
-                                names
-                        )));
+        return get(false, names);
+    }
+
+    protected PacketType get(boolean canReturnNull, String... names) {
+
+        Class<?> packetClass = MinecraftClasses.getClass(
+                canReturnNull,
+                ProtocolUtils.formatPossiblePacketNames(
+                        protocolManager.protocol(),
+                        protocolManager.sender(),
+                        names
+                ));
+        if (packetClass == null) return null;
+        return protocolManager.getPacketType(packetClass);
     }
 }

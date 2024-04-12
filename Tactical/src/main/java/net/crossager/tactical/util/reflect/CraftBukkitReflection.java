@@ -19,11 +19,11 @@ public class CraftBukkitReflection {
 
 
     public static Class<?> getClass(String... paths) {
-        return CRAFTBUKKIT_CLASSES.getPackageClass(paths);
+        return CRAFTBUKKIT_CLASSES.getPackageClass(false, paths);
     }
 
     public static Class<?> getClass(List<String> paths) {
-        return CRAFTBUKKIT_CLASSES.getPackageClass(paths);
+        return CRAFTBUKKIT_CLASSES.getPackageClass(false, paths);
     }
 
     public static Class<?> getCraftPlayerClass() {

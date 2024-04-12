@@ -7,11 +7,11 @@ public class MinecraftClasses {
     private static final CachedPackage MINECRAFT_CLASSES = new CachedPackage(MINECRAFT_PACKAGE);
 
     public static Class<?> getClass(String... paths) {
-        return MINECRAFT_CLASSES.getPackageClass(paths);
+        return MINECRAFT_CLASSES.getPackageClass(false, paths);
     }
 
-    public static Class<?> getClass(List<String> paths) {
-        return MINECRAFT_CLASSES.getPackageClass(paths);
+    public static Class<?> getClass(boolean canReturnNull, List<String> paths) {
+        return MINECRAFT_CLASSES.getPackageClass(canReturnNull, paths);
     }
 
     public static Class<?> getEnumProtocolClass() {

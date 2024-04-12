@@ -13,7 +13,7 @@ public class CachedPackage {
         this.root = root;
     }
 
-    public Class<?> getPackageClass(String... names) {
+    public Class<?> getPackageClass(boolean canReturnNull, String... names) {
         for (String name : names) {
             try {
                 return getPackageClass(name);
@@ -21,10 +21,11 @@ public class CachedPackage {
 
             }
         }
+        if (canReturnNull) return null;
         throw new NoSuchElementException("Class not found: " + Arrays.toString(names));
     }
 
-    public Class<?> getPackageClass(Iterable<String> names) {
+    public Class<?> getPackageClass(boolean canReturnNull, Iterable<String> names) {
         for (String name : names) {
             try {
                 return getPackageClass(name);
@@ -32,6 +33,7 @@ public class CachedPackage {
 
             }
         }
+        if (canReturnNull) return null;
         throw new NoSuchElementException("Class not found: " + names);
     }
 
