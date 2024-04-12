@@ -14,6 +14,7 @@ import net.crossager.tactical.util.reflect.CraftBukkitReflection;
 import net.crossager.tactical.util.reflect.DynamicReflection;
 import net.crossager.tactical.util.reflect.InternalRegistry;
 import net.crossager.tactical.util.reflect.MinecraftClasses;
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -145,6 +146,20 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
         metaDataPacket = generateMetaDataPacket();
         equipmentPacket = generateEquipmentPacket();
         isDisplayedForPlayer.forEach(this::sendMeta);
+    }
+
+    @Override
+    public void playEntityStatus(int status) {
+        PacketData data = PacketType.play().out().entityStatus().createEmptyPacketData();
+        PacketWriter writer = data.writer();
+        writer.writeInt(entity.getEntityId());
+        writer.writeByte(status);
+        isDisplayedForPlayer.forEach(data::send);
+    }
+
+    @Override
+    public void playEntityStatus(@NotNull EntityEffect status) {
+        playEntityStatus(status.getData());
     }
 
     @Override
