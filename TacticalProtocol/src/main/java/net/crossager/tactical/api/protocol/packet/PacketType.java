@@ -3,10 +3,7 @@ package net.crossager.tactical.api.protocol.packet;
 import net.crossager.tactical.api.TacticalProtocol;
 import net.crossager.tactical.api.protocol.DirectionalProtocol;
 import net.crossager.tactical.api.protocol.Protocol;
-import net.crossager.tactical.api.protocol.protocols.HandshakingSection;
-import net.crossager.tactical.api.protocol.protocols.LoginSection;
-import net.crossager.tactical.api.protocol.protocols.PlaySection;
-import net.crossager.tactical.api.protocol.protocols.StatusSection;
+import net.crossager.tactical.api.protocol.protocols.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -151,5 +148,14 @@ public interface PacketType extends DirectionalProtocol {
      */
     static LoginSection login() {
         return (LoginSection) TacticalProtocol.getInstance().getProtocolSection(Protocol.LOGIN);
+    }
+
+    /**
+     * Retrieves the configuration section of the tactical protocol.
+     *
+     * @return The configuration section.
+     */
+    static ConfigurationSection configuration() {
+        return (ConfigurationSection) TacticalProtocol.getInstance().getProtocolSection(Protocol.CONFIGURATION);
     }
 }

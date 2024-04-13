@@ -42,6 +42,7 @@ public class ProtocolUtils {
             case PLAY -> GET_NMS_PROTOCOL.get("b");
             case STATUS -> GET_NMS_PROTOCOL.get("c");
             case LOGIN -> GET_NMS_PROTOCOL.get("d");
+            case CONFIGURATION -> GET_NMS_PROTOCOL.get("e");
         };
     }
 
@@ -56,13 +57,16 @@ public class ProtocolUtils {
         List<String> names = new ArrayList<>();
 
         for (String baseName : baseNames) {
-            if (isMcpPacketName(baseName)) {
-                names.add(formatMcpClassName(protocol, sender, baseName));
-                continue;
+            for (String packageName : List.of(protocol.packageName(), "common")) {
+                String fullPackageName = "network.protocol." + packageName;
+                if (isMcpPacketName(baseName)) {
+                    names.add(formatMcpClassName(fullPackageName, sender, baseName));
+                    continue;
+                }
+                names.add(fullPackageName + "." + sender.bounding() + baseName + "Packet");
+                names.add(fullPackageName + ".Packet" + protocol.className() + sender.direction() + baseName);
+                names.add(fullPackageName + "." + baseName);
             }
-            names.add("network.protocol." + protocol.packageName() + "." + sender.bounding() + baseName + "Packet");
-            names.add("network.protocol." + protocol.packageName() + ".Packet" + protocol.className() + sender.direction() + baseName);
-            names.add("network.protocol." + protocol.packageName() + "." + baseName);
         }
 
         return names;
@@ -72,8 +76,8 @@ public class ProtocolUtils {
         return packetName.startsWith("C00") || packetName.startsWith("CPacket") || packetName.startsWith("SPacket");
     }
 
-    private static String formatMcpClassName(Protocol protocol, Sender sender, String name) {
-        return "net.minecraft.network." + protocol.name().toLowerCase() + "." + sender.mcpName() + "." + name;
+    private static String formatMcpClassName(String packageName, Sender sender, String name) {
+        return packageName + "." + sender.mcpName() + "." + name;
     }
 
     public static ByteBuf newPacketDataSerializer(ByteBuf byteBuf) {
