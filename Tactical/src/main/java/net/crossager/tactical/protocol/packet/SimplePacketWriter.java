@@ -12,6 +12,7 @@ import net.crossager.tactical.api.wrappers.nbt.TacticalNBTTag;
 import net.crossager.tactical.util.reflect.CraftBukkitReflection;
 import net.crossager.tactical.util.reflect.DynamicReflection;
 import net.crossager.tactical.util.reflect.MinecraftClasses;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -172,7 +173,8 @@ public class SimplePacketWriter implements PacketWriter {
             try (ByteBufOutputStream outputStream = new ByteBufOutputStream(byteBuf)) {
                 outputStream.writeByte(nbtTag.type().id());
                 if (nbtTag.type().id() != 0) {
-                    outputStream.writeUTF("");
+                    if (!MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2))
+                        outputStream.writeUTF("");
                     nbtTag.serialize(outputStream);
                 }
             } catch (IOException e) {

@@ -3,6 +3,7 @@ package net.crossager.tactical.nbt;
 import net.crossager.tactical.api.wrappers.nbt.*;
 import net.crossager.tactical.api.wrappers.nbt.type.*;
 import net.crossager.tactical.nbt.type.*;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInput;
@@ -61,7 +62,8 @@ public class SimpleTacticalNBTManager implements TacticalNBTManager {
         byte id = dataInput.readByte();
         if (id == 0)
             return endTag();
-        dataInput.skipBytes(dataInput.readUnsignedShort());
+        if (!MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2))
+            dataInput.skipBytes(dataInput.readUnsignedShort());
         return getType(id).read(dataInput, maxBytes);
     }
 
