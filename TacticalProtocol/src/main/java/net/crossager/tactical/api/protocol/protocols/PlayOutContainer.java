@@ -2,7 +2,8 @@ package net.crossager.tactical.api.protocol.protocols;
 
 import net.crossager.tactical.api.protocol.ProtocolContainer;
 import net.crossager.tactical.api.protocol.packet.PacketType;
-import net.crossager.tactical.api.util.AvailableAfter;
+import net.crossager.tactical.api.util.AddedIn;
+import net.crossager.tactical.api.util.RemovedIn;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -96,8 +97,6 @@ public interface PlayOutContainer extends ProtocolContainer {
     PacketType mount();
     @NotNull
     PacketType multiBlockChange();
-    @NotNull
-    PacketType namedEntitySpawn();
     @NotNull
     PacketType namedSoundEffect();
     @NotNull
@@ -206,8 +205,6 @@ public interface PlayOutContainer extends ProtocolContainer {
     @NotNull
     PacketType updateAttributes();
     @NotNull
-    PacketType updateEnabledFeatures();
-    @NotNull
     PacketType updateHealth();
     @NotNull
     PacketType updateTime();
@@ -226,16 +223,35 @@ public interface PlayOutContainer extends ProtocolContainer {
     @NotNull
     PacketType worldParticles();
 
-    @AvailableAfter("1.19.4")
+    @AddedIn("1.19.4")
     @NotNull
     PacketType bundleDelimiter();
-    @AvailableAfter("1.19.4")
+    @AddedIn("1.19.4")
     @NotNull
     PacketType chunksBiomes();
-    @AvailableAfter("1.19.4")
+    @AddedIn("1.19.4")
     @NotNull
     PacketType damageEvent();
-    @AvailableAfter("1.19.4")
+    @AddedIn("1.19.4")
     @NotNull
     PacketType hurtAnimation();
+    @AddedIn("1.20.2")
+    @NotNull
+    PacketType chunkBatchFinished();
+    @AddedIn("1.20.2")
+    @NotNull
+    PacketType chunkBatchStart();
+    @AddedIn("1.20.2")
+    @NotNull
+    PacketType pong();
+    @AddedIn("1.20.2")
+    @NotNull
+    PacketType startConfiguration();
+
+    @RemovedIn("1.20.2")
+    @NotNull
+    PacketType namedEntitySpawn();
+    @RemovedIn("1.20.2")
+    @NotNull
+    PacketType updateEnabledFeatures();
 }

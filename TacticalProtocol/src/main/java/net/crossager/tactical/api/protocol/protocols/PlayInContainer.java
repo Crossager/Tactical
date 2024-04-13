@@ -2,6 +2,7 @@ package net.crossager.tactical.api.protocol.protocols;
 
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.protocol.ProtocolContainer;
+import net.crossager.tactical.api.util.AddedIn;
 import org.jetbrains.annotations.NotNull;
 /**
  * Represents the incoming packet container for the play section of the tactical protocol.
@@ -110,4 +111,14 @@ public interface PlayInContainer extends ProtocolContainer {
     PacketType vehicleMove();
     @NotNull
     PacketType windowClick();
+
+    @AddedIn("1.20.2")
+    @NotNull
+    PacketType chunkBatchReceived();
+    @AddedIn("1.20.2")
+    @NotNull
+    PacketType configurationAcknowledged();
+    @AddedIn("1.20.2")
+    @NotNull
+    PacketType pingRequest();
 }
