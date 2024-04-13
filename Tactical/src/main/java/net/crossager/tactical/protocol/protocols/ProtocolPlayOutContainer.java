@@ -54,7 +54,6 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     private final PacketType map = get("Map", "SPacketMaps");
     private final PacketType mount = get("Mount", "SPacketSetPassengers");
     private final PacketType multiBlockChange = get("MultiBlockChange", "SPacketMultiBlockChange");
-    private final PacketType namedEntitySpawn = get("NamedEntitySpawn", "SPacketSpawnPlayer");
     private final PacketType namedSoundEffect = get("NamedSoundEffect");
     private final PacketType nBTQuery = get("NBTQuery");
     private final PacketType openBook = get("OpenBook");
@@ -108,7 +107,6 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     private final PacketType tileEntityData = get("TileEntityData", "SPacketUpdateTileEntity");
     private final PacketType unloadChunk = get("UnloadChunk", "SPacketUnloadChunk");
     private final PacketType updateAttributes = get("UpdateAttributes", "SPacketEntityProperties");
-    private final PacketType updateEnabledFeatures = get("UpdateEnabledFeatures");
     private final PacketType updateHealth = get("UpdateHealth", "SPacketUpdateHealth");
     private final PacketType updateTime = get("UpdateTime", "SPacketTimeUpdate");
     private final PacketType vehicleMove = get("VehicleMove", "SPacketMoveVehicle");
@@ -122,6 +120,12 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     private final PacketType chunksBiomes = get(true, "ChunksBiomes", "ClientboundChunksBiomesPacket");
     private final PacketType damageEvent = get(true, "DamageEvent", "ClientboundDamageEventPacket");
     private final PacketType hurtAnimation = get(true, "HurtAnimation", "ClientboundHurtAnimationPacket");
+    private final PacketType chunkBatchFinished = get(true, "ChunkBatchFinished");
+    private final PacketType chunkBatchStart = get(true, "ChunkBatchStart");
+    private final PacketType pong = get(true, "PongResponse", "Pong");
+    private final PacketType startConfiguration = get(true, "StartConfiguration");
+    private final PacketType namedEntitySpawn = get(true, "NamedEntitySpawn", "SPacketSpawnPlayer");
+    private final PacketType updateEnabledFeatures = get(true, "UpdateEnabledFeatures");
 
     @NotNull
     @Override
@@ -379,12 +383,6 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     @Override
     public PacketType multiBlockChange() {
         return multiBlockChange;
-    }
-
-    @NotNull
-    @Override
-    public PacketType namedEntitySpawn() {
-        return namedEntitySpawn;
     }
 
     @NotNull
@@ -707,12 +705,6 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
 
     @NotNull
     @Override
-    public PacketType updateEnabledFeatures() {
-        return updateEnabledFeatures;
-    }
-
-    @NotNull
-    @Override
     public PacketType updateHealth() {
         return updateHealth;
     }
@@ -787,5 +779,43 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     public @NotNull PacketType hurtAnimation() {
         MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
         return hurtAnimation;
+    }
+
+    @Override
+    public @NotNull PacketType chunkBatchFinished() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        return chunkBatchFinished;
+    }
+
+    @Override
+    public @NotNull PacketType chunkBatchStart() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        return chunkBatchStart;
+    }
+
+    @Override
+    public @NotNull PacketType pong() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        return pong;
+    }
+
+    @Override
+    public @NotNull PacketType startConfiguration() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        return startConfiguration;
+    }
+
+    @NotNull
+    @Override
+    public PacketType namedEntitySpawn() {
+        MinecraftVersion.ensureIsBelowVersion(MinecraftVersion.v1_20_2);
+        return namedEntitySpawn;
+    }
+
+    @NotNull
+    @Override
+    public PacketType updateEnabledFeatures() {
+        MinecraftVersion.ensureIsBelowVersion(MinecraftVersion.v1_20_2);
+        return updateEnabledFeatures;
     }
 }

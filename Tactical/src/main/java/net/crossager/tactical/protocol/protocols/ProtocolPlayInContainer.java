@@ -3,6 +3,7 @@ package net.crossager.tactical.protocol.protocols;
 import net.crossager.tactical.api.protocol.ProtocolManager;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.protocol.protocols.PlayInContainer;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.jetbrains.annotations.NotNull;
 
 public class ProtocolPlayInContainer extends ProtocolContainerBase implements PlayInContainer {
@@ -61,6 +62,10 @@ public class ProtocolPlayInContainer extends ProtocolContainerBase implements Pl
     private final PacketType useItem = get("UseItem", "CPacketPlayerTryUseItemOnBlock");
     private final PacketType vehicleMove = get("VehicleMove", "CPacketVehicleMove");
     private final PacketType windowClick = get("WindowClick", "CPacketClickWindow");
+
+    private final PacketType chunkBatchReceived = get("ChunkBatchReceived");
+    private final PacketType configurationAcknowledged = get("ConfigurationAcknowledged");
+    private final PacketType pingRequest = get("PingRequest");
 
     @NotNull
     @Override
@@ -366,5 +371,23 @@ public class ProtocolPlayInContainer extends ProtocolContainerBase implements Pl
     @Override
     public PacketType windowClick() {
         return windowClick;
+    }
+
+    @Override
+    public @NotNull PacketType chunkBatchReceived() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        return chunkBatchReceived;
+    }
+
+    @Override
+    public @NotNull PacketType configurationAcknowledged() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        return configurationAcknowledged;
+    }
+
+    @Override
+    public @NotNull PacketType pingRequest() {
+        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        return pingRequest;
     }
 }
