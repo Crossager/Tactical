@@ -8,6 +8,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -177,6 +178,14 @@ public interface PacketWriter {
      * Writes an empty collection to the packet.
      */
     void writeEmptyCollection();
+
+    /**
+     * Writes an EnumSet
+     * @param enumType the class of the enum
+     * @param enumSet the EnumSet to write
+     * @param <E> the type of enum
+     */
+    <E extends Enum<E>> void writeEnumSet(Class<E> enumType, EnumSet<E> enumSet);
 
     /**
      * Writes a nullable value to the packet using the provided write function.

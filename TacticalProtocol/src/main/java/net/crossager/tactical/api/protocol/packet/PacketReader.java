@@ -201,6 +201,13 @@ public interface PacketReader {
     <T> List<T> readEmptyCollection();
 
     /**
+     * Reads an EnumSet
+     * @param enumType the class of the enum
+     * @param <E> the type of enum
+     */
+    <E extends Enum<E>> void readEnumSet(Class<E> enumType);
+
+    /**
      * Reads an optional value from the packet using the provided read function.
      *
      * @param readFunction The function to read the optional value.
