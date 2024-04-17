@@ -141,8 +141,6 @@ public interface PlayOutContainer extends ProtocolContainer {
     @NotNull
     PacketType removeEntityEffect();
     @NotNull
-    PacketType resourcePackSend();
-    @NotNull
     PacketType respawn();
     @NotNull
     PacketType scoreboardDisplayObjective();
@@ -247,6 +245,21 @@ public interface PlayOutContainer extends ProtocolContainer {
     @AddedIn("1.20.2")
     @NotNull
     PacketType startConfiguration();
+    @AddedIn("1.20.3")
+    @NotNull
+    PacketType setTickingState();
+    @AddedIn("1.20.3")
+    @NotNull
+    PacketType stepTick();
+    @AddedIn("1.20.3")
+    @NotNull
+    PacketType resetScore();
+    @AddedIn("1.20.3")
+    @NotNull
+    PacketType removeResourcePack();
+    @AddedIn("1.20.3")
+    @NotNull
+    PacketType addResourcePack();
 
     @RemovedIn("1.20.2")
     @NotNull
@@ -254,4 +267,7 @@ public interface PlayOutContainer extends ProtocolContainer {
     @RemovedIn("1.20.2")
     @NotNull
     PacketType updateEnabledFeatures();
+    @RemovedIn("1.20.3")
+    @NotNull
+    PacketType resourcePackSend();
 }

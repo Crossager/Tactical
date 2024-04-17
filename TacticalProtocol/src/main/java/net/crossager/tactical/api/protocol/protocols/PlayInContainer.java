@@ -121,4 +121,7 @@ public interface PlayInContainer extends ProtocolContainer {
     @AddedIn("1.20.2")
     @NotNull
     PacketType pingRequest();
+    @AddedIn("1.20.3")
+    @NotNull
+    PacketType changeContainerSlotState();
 }

@@ -75,7 +75,6 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     private final PacketType relEntityMove = get("Entity$RelEntityMove", "Entity$PacketPlayOutRelEntityMove");
     private final PacketType relEntityMoveLook = get("Entity$RelEntityMoveLook", "Entity$PacketPlayOutRelEntityMoveLook");
     private final PacketType removeEntityEffect = get("RemoveEntityEffect", "SPacketRemoveEntityEffect");
-    private final PacketType resourcePackSend = get("ResourcePackSend", "SPacketResourcePackSend");
     private final PacketType respawn = get("Respawn", "SPacketRespawn");
     private final PacketType scoreboardDisplayObjective = get("ScoreboardDisplayObjective", "SPacketDisplayObjective");
     private final PacketType scoreboardObjective = get("ScoreboardObjective", "SPacketScoreboardObjective");
@@ -124,8 +123,15 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     private final PacketType chunkBatchStart = get(true, "ChunkBatchStart");
     private final PacketType pong = get(true, "PongResponse", "Pong");
     private final PacketType startConfiguration = get(true, "StartConfiguration");
+    private final PacketType setTickingState = get(true, "TickingStatePacket");
+    private final PacketType stepTick = get(true, "TickingStepPacket");
+    private final PacketType resetScore = get(true, "ResetScorePacket");
+    private final PacketType removeResourcePack = get(true, "ResourcePackPopPacket");
+    private final PacketType addResourcePack = get(true, "ResourcePackPushPacket");
+
     private final PacketType namedEntitySpawn = get(true, "NamedEntitySpawn", "SPacketSpawnPlayer");
     private final PacketType updateEnabledFeatures = get(true, "UpdateEnabledFeatures");
+    private final PacketType resourcePackSend = get(true, "ResourcePackSend", "SPacketResourcePackSend");
 
     @NotNull
     @Override
@@ -513,12 +519,6 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
 
     @NotNull
     @Override
-    public PacketType resourcePackSend() {
-        return resourcePackSend;
-    }
-
-    @NotNull
-    @Override
     public PacketType respawn() {
         return respawn;
     }
@@ -805,6 +805,36 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
         return startConfiguration;
     }
 
+    @Override
+    public @NotNull PacketType setTickingState() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_3);
+        return setTickingState;
+    }
+
+    @Override
+    public @NotNull PacketType stepTick() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_3);
+        return stepTick;
+    }
+
+    @Override
+    public @NotNull PacketType resetScore() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_3);
+        return resetScore;
+    }
+
+    @Override
+    public @NotNull PacketType removeResourcePack() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_3);
+        return removeResourcePack;
+    }
+
+    @Override
+    public @NotNull PacketType addResourcePack() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_3);
+        return addResourcePack;
+    }
+
     @NotNull
     @Override
     public PacketType namedEntitySpawn() {
@@ -817,5 +847,12 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     public PacketType updateEnabledFeatures() {
         MinecraftVersion.ensureBelowVersion(MinecraftVersion.v1_20_2);
         return updateEnabledFeatures;
+    }
+
+    @NotNull
+    @Override
+    public PacketType resourcePackSend() {
+        MinecraftVersion.ensureBelowVersion(MinecraftVersion.v1_20_3);
+        return resourcePackSend;
     }
 }

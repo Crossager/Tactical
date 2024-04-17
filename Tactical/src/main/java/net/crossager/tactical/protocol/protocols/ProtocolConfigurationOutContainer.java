@@ -17,9 +17,13 @@ public class ProtocolConfigurationOutContainer extends ProtocolContainerBase imp
     private final PacketType keepAlive = get(true, "KeepAlive");
     private final PacketType ping = get(true, "Ping");
     private final PacketType registryData = get(true, "RegistryData");
-    private final PacketType resourcePack = get(true, "ResourcePack");
     private final PacketType updateEnabledFeatures = get(true, "UpdateEnabledFeatures");
     private final PacketType updateTags = get(true, "UpdateTags");
+
+    private final PacketType removeResourcePack = get(true, "ResourcePackPopPacket");
+    private final PacketType addResourcePack = get(true, "ResourcePackPushPacket");
+
+    private final PacketType resourcePack = get(true, "ResourcePack");
 
     @Override
     public @NotNull PacketType customPayload() {
@@ -58,12 +62,6 @@ public class ProtocolConfigurationOutContainer extends ProtocolContainerBase imp
     }
 
     @Override
-    public @NotNull PacketType resourcePack() {
-        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
-        return resourcePack;
-    }
-
-    @Override
     public @NotNull PacketType updateEnabledFeatures() {
         MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return updateEnabledFeatures;
@@ -73,5 +71,24 @@ public class ProtocolConfigurationOutContainer extends ProtocolContainerBase imp
     public @NotNull PacketType updateTags() {
         MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return updateTags;
+    }
+
+    @Override
+    public @NotNull PacketType removeResourcePack() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_3);
+        return removeResourcePack;
+    }
+
+    @Override
+    public @NotNull PacketType addResourcePack() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_3);
+        return addResourcePack;
+    }
+
+    @Override
+    public @NotNull PacketType resourcePack() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureBelowVersion(MinecraftVersion.v1_20_3);
+        return resourcePack;
     }
 }

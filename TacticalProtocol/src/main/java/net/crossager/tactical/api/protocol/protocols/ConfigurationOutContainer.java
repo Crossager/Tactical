@@ -3,6 +3,7 @@ package net.crossager.tactical.api.protocol.protocols;
 import net.crossager.tactical.api.protocol.ProtocolContainer;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.util.AddedIn;
+import net.crossager.tactical.api.util.RemovedIn;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,9 +27,18 @@ public interface ConfigurationOutContainer extends ProtocolContainer {
     @NotNull
     PacketType registryData();
     @NotNull
-    PacketType resourcePack();
-    @NotNull
     PacketType updateEnabledFeatures();
     @NotNull
     PacketType updateTags();
+
+    @AddedIn("1.20.3")
+    @NotNull
+    PacketType removeResourcePack();
+    @AddedIn("1.20.3")
+    @NotNull
+    PacketType addResourcePack();
+
+    @RemovedIn("1.20.3")
+    @NotNull
+    PacketType resourcePack();
 }

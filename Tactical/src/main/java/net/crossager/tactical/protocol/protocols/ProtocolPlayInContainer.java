@@ -66,6 +66,7 @@ public class ProtocolPlayInContainer extends ProtocolContainerBase implements Pl
     private final PacketType chunkBatchReceived = get("ChunkBatchReceived");
     private final PacketType configurationAcknowledged = get("ConfigurationAcknowledged");
     private final PacketType pingRequest = get("PingRequest");
+    private final PacketType changeContainerSlotState = get("ContainerSlotStateChangedPacket");
 
     @NotNull
     @Override
@@ -389,5 +390,11 @@ public class ProtocolPlayInContainer extends ProtocolContainerBase implements Pl
     public @NotNull PacketType pingRequest() {
         MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return pingRequest;
+    }
+
+    @Override
+    public @NotNull PacketType changeContainerSlotState() {
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_3);
+        return changeContainerSlotState;
     }
 }
