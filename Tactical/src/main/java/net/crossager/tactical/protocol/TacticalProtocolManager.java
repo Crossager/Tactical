@@ -10,10 +10,7 @@ import net.crossager.tactical.api.protocol.packet.PacketListener;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.protocol.packet.UnknownPacketListener;
 import net.crossager.tactical.protocol.inject.PlayerInjectorHandler;
-import net.crossager.tactical.protocol.protocols.ProtocolHandshakingSection;
-import net.crossager.tactical.protocol.protocols.ProtocolLoginSection;
-import net.crossager.tactical.protocol.protocols.ProtocolPlaySection;
-import net.crossager.tactical.protocol.protocols.ProtocolStatusSection;
+import net.crossager.tactical.protocol.protocols.*;
 import net.crossager.tactical.util.Exceptions;
 
 import java.util.ArrayList;
@@ -27,6 +24,7 @@ public class TacticalProtocolManager {
         case PLAY -> new ProtocolPlaySection();
         case STATUS -> new ProtocolStatusSection();
         case LOGIN -> new ProtocolLoginSection();
+        case CONFIGURATION -> new ProtocolConfigurationSection();
     });
     private final List<ProtocolManager> protocolManagers = new ArrayList<>();
     private boolean isInitialized = false;
