@@ -10,7 +10,7 @@ public class ProtocolStatusOutContainer extends ProtocolContainerBase implements
         super(protocolManager);
     }
 
-    private final PacketType pong = get("Pong", "SPacketPong");
+    private final PacketType pong = get("Pong", "SPacketPong", "PongResponse");
     private final PacketType serverInfo = get("ServerInfo", "SPacketServerInfo");
 
     @NotNull
