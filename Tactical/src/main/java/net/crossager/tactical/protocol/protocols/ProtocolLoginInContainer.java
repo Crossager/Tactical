@@ -36,7 +36,7 @@ public class ProtocolLoginInContainer extends ProtocolContainerBase implements L
 
     @Override
     public @NotNull PacketType acknowledged() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return acknowledged;
     }
 }

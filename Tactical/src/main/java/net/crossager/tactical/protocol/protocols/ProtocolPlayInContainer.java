@@ -375,19 +375,19 @@ public class ProtocolPlayInContainer extends ProtocolContainerBase implements Pl
 
     @Override
     public @NotNull PacketType chunkBatchReceived() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return chunkBatchReceived;
     }
 
     @Override
     public @NotNull PacketType configurationAcknowledged() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return configurationAcknowledged;
     }
 
     @Override
     public @NotNull PacketType pingRequest() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return pingRequest;
     }
 }

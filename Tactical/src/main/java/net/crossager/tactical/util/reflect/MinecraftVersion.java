@@ -19,15 +19,15 @@ public final class MinecraftVersion {
     private static final Pattern BUKKIT_VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)\\.?(\\d*)-(.)(\\d+\\.\\d+)");
 
     public static boolean hasVersion(MinecraftVersion neededVersion) {
-        return CURRENT.equalsOrLater(neededVersion);
+        return CURRENT.equalsOrNewerThan(neededVersion);
     }
 
-    public static void ensureHasVersion(MinecraftVersion neededVersion) {
-        if (!CURRENT.equalsOrLater(neededVersion)) throw new IllegalStateException("Unsupported version, need at least %s, found %s".formatted(neededVersion, CURRENT));
+    public static void ensureAboveVersion(MinecraftVersion neededVersion) {
+        if (CURRENT.isOlderThan(neededVersion)) throw new IllegalStateException("Unsupported version, need at least %s, found %s".formatted(neededVersion, CURRENT));
     }
 
-    public static void ensureIsBelowVersion(MinecraftVersion neededVersion) {
-        if (CURRENT.equalsOrEarlier(neededVersion)) throw new IllegalStateException("Unsupported version, highest version supported: %s, found %s".formatted(neededVersion, CURRENT));
+    public static void ensureBelowVersion(MinecraftVersion neededVersion) {
+        if (!CURRENT.isOlderThan(neededVersion)) throw new IllegalStateException("Unsupported version, highest version supported: %s, found %s".formatted(neededVersion, CURRENT));
     }
 
     public static MinecraftVersion fromBukkitVersion(String bukkitVersion) {
@@ -75,14 +75,14 @@ public final class MinecraftVersion {
     }
 
     public boolean hasTacticalSupport() {
-        return equalsOrLater(v1_19_3);
+        return equalsOrNewerThan(v1_19_3);
     }
 
-    public boolean equalsOrLater(MinecraftVersion version) {
+    public boolean equalsOrNewerThan(MinecraftVersion version) {
         return intRepresentation >= version.intRepresentation;
     }
 
-    public boolean equalsOrEarlier(MinecraftVersion version) {
+    public boolean equalsOrOlderThan(MinecraftVersion version) {
         return intRepresentation <= version.intRepresentation;
     }
 

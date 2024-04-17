@@ -759,63 +759,63 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
 
     @Override
     public @NotNull PacketType bundleDelimiter() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_19_4);
         return bundleDelimiter;
     }
 
     @Override
     public @NotNull PacketType chunksBiomes() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_19_4);
         return chunksBiomes;
     }
 
     @Override
     public @NotNull PacketType damageEvent() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_19_4);
         return damageEvent;
     }
 
     @Override
     public @NotNull PacketType hurtAnimation() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_19_4);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_19_4);
         return hurtAnimation;
     }
 
     @Override
     public @NotNull PacketType chunkBatchFinished() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return chunkBatchFinished;
     }
 
     @Override
     public @NotNull PacketType chunkBatchStart() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return chunkBatchStart;
     }
 
     @Override
     public @NotNull PacketType pong() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return pong;
     }
 
     @Override
     public @NotNull PacketType startConfiguration() {
-        MinecraftVersion.ensureHasVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return startConfiguration;
     }
 
     @NotNull
     @Override
     public PacketType namedEntitySpawn() {
-        MinecraftVersion.ensureIsBelowVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureBelowVersion(MinecraftVersion.v1_20_2);
         return namedEntitySpawn;
     }
 
     @NotNull
     @Override
     public PacketType updateEnabledFeatures() {
-        MinecraftVersion.ensureIsBelowVersion(MinecraftVersion.v1_20_2);
+        MinecraftVersion.ensureBelowVersion(MinecraftVersion.v1_20_2);
         return updateEnabledFeatures;
     }
 }
