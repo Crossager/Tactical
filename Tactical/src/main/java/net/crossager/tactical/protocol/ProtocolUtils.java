@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class ProtocolUtils {
@@ -35,6 +36,7 @@ public class ProtocolUtils {
     public static final MethodInvoker<?> READ_PACKET = DynamicReflection.getMethodByArgs(MinecraftClasses.getNetworkManagerClass(), ChannelHandlerContext.class, MinecraftClasses.getPacketClass());
     public static final Supplier<ByteBuf> BYTEBUF_ALLOCATOR = ByteBufAllocator.DEFAULT::buffer;
     public static final MethodInvoker<?> WRITE_PACKET_DATA = DynamicReflection.getMethodByArgs(MinecraftClasses.getPacketClass(), MinecraftClasses.getPacketDataSerializerClass());
+    public static final Supplier<Integer> GENERATE_ENTITY_ID = DynamicReflection.getField(MinecraftClasses.getEntityClass(), AtomicInteger.class, true).read(null)::incrementAndGet;
 
     public static Enum<?> getNMSProtocol(Protocol protocol) {
         return switch (protocol) {
