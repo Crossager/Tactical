@@ -33,7 +33,7 @@ import java.util.function.Predicate;
 
 public class SimpleTacticalClientEntity<E extends Entity> implements TacticalClientEntity<E> {
     private static final byte HAS_MORE_ITEMS_MASK = (byte) (1 << 7);
-    private static final float ANGLE_TO_BYTE = 256F / 360F;
+    public static final float ANGLE_TO_BYTE = 256F / 360F;
 
     public static final MethodInvoker<?> CREATE_ENTITY = DynamicReflection.getMethodByReturnTypeAndArgs(CraftBukkitReflection.getCraftRegionAccessorClass(), MinecraftClasses.getEntityClass(), Location.class, Class.class, Boolean.TYPE);
     public static final MethodInvoker<?> GET_BUKKIT_ENTITY = DynamicReflection.getMethodByReturnTypeAndArgs(MinecraftClasses.getEntityClass(), CraftBukkitReflection.getCraftEntityClass());
