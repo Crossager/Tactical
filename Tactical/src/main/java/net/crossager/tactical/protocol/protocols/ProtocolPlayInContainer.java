@@ -63,10 +63,10 @@ public class ProtocolPlayInContainer extends ProtocolContainerBase implements Pl
     private final PacketType vehicleMove = get("VehicleMove", "CPacketVehicleMove");
     private final PacketType windowClick = get("WindowClick", "CPacketClickWindow");
 
-    private final PacketType chunkBatchReceived = get("ChunkBatchReceived");
-    private final PacketType configurationAcknowledged = get("ConfigurationAcknowledged");
-    private final PacketType pingRequest = get("PingRequest");
-    private final PacketType changeContainerSlotState = get("ContainerSlotStateChangedPacket");
+    private final PacketType chunkBatchReceived = get(true, "ChunkBatchReceived");
+    private final PacketType configurationAcknowledged = get(true, "ConfigurationAcknowledged");
+    private final PacketType pingRequest = get(true, "PingRequest");
+    private final PacketType changeContainerSlotState = get(true, "ContainerSlotStateChangedPacket");
 
     @NotNull
     @Override
