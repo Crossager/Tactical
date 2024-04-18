@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -202,10 +203,12 @@ public interface PacketReader {
 
     /**
      * Reads an EnumSet
+     *
      * @param enumType the class of the enum
-     * @param <E> the type of enum
+     * @param <E>      the type of enum
+     * @return
      */
-    <E extends Enum<E>> void readEnumSet(Class<E> enumType);
+    <E extends Enum<E>> EnumSet<E> readEnumSet(Class<E> enumType);
 
     /**
      * Reads an optional value from the packet using the provided read function.

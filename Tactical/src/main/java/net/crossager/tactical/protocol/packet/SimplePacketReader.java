@@ -21,10 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -219,6 +216,27 @@ public class SimplePacketReader implements PacketReader {
     public <T> List<T> readEmptyCollection() {
         readVarInt();
         return List.of();
+    }
+
+    @Override
+    public <E extends Enum<E>> EnumSet<E> readEnumSet(Class<E> enumType) {
+        Enum<E>[] constants = enumType.getEnumConstants();
+        BitSet bitset = readBitSet(constants.length);
+        EnumSet<E> enumSet = EnumSet.noneOf(enumType);
+
+        for(int i = 0; i < constants.length; ++i) {
+            if (bitset.get(i)) {
+                enumSet.add((E) constants[i]);
+            }
+        }
+
+        return enumSet;
+    }
+
+    public BitSet readBitSet(int length) {
+        byte[] byteArray = new byte[-Math.floorDiv(-length, 8)];
+        readBytes(byteArray);
+        return BitSet.valueOf(byteArray);
     }
 
     @Override

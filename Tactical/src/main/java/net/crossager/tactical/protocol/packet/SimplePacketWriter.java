@@ -20,8 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class SimplePacketWriter implements PacketWriter {
@@ -192,6 +191,27 @@ public class SimplePacketWriter implements PacketWriter {
     @Override
     public void writeEmptyCollection() {
         writeVarInt(0);
+    }
+
+    @Override
+    public <E extends Enum<E>> void writeEnumSet(Class<E> enumType, Set<E> enumSet) {
+        Enum<E>[] constants = enumType.getEnumConstants();
+        BitSet bitset = new BitSet(constants.length);
+
+        for (int i = 0; i < constants.length; ++i) {
+            bitset.set(i, enumSet.contains(constants[i]));
+        }
+
+        writeBitSet(bitset, constants.length);
+    }
+
+    public void writeBitSet(BitSet bitset, int maxLength) {
+        if (bitset.length() > maxLength) {
+            throw new EncoderException("BitSet is larger than expected size (" + bitset.length() + ">" + maxLength + ")");
+        } else {
+            byte[] byteArray = bitset.toByteArray();
+            writeBytes(Arrays.copyOf(byteArray, -Math.floorDiv(-maxLength, 8)));
+        }
     }
 
     @Override
