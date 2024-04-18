@@ -258,16 +258,26 @@ public class SimplePacketReader implements PacketReader {
     @Override
     public <T> T readSilentAndReturn(Function<PacketReader, T> reader) {
         int previousReaderIndex = readerIndex();
-        T result = reader.apply(this);
-        readerIndex(previousReaderIndex);
-        return result;
+        try {
+            T result = reader.apply(this);
+            readerIndex(previousReaderIndex);
+            return result;
+        } catch (RuntimeException e) {
+            readerIndex(previousReaderIndex);
+            throw e;
+        }
     }
 
     @Override
     public void readSilent(Consumer<PacketReader> reader) {
         int previousReaderIndex = readerIndex();
-        reader.accept(this);
-        readerIndex(previousReaderIndex);
+        try {
+            reader.accept(this);
+            readerIndex(previousReaderIndex);
+        } catch (RuntimeException e) {
+            readerIndex(previousReaderIndex);
+            throw e;
+        }
     }
 
     @Override
