@@ -12,8 +12,10 @@ import net.crossager.tactical.api.protocol.packet.UnknownPacketListener;
 import net.crossager.tactical.protocol.inject.PlayerInjectorHandler;
 import net.crossager.tactical.protocol.protocols.*;
 import net.crossager.tactical.util.Exceptions;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -31,10 +33,15 @@ public class TacticalProtocolManager {
     private PlayerInjectorHandler playerInjectorHandler;
     private final List<UnknownPacketListener> unknownPacketListeners = new ArrayList<>();
     private final List<PacketListener> packetListeners = new ArrayList<>();
+    private Protocol[] protocolValuesCache;
 
     public void initialize() {
         if (isInitialized) return;
         this.playerInjectorHandler = new PlayerInjectorHandler(this);
+        if (MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2))
+            protocolValuesCache = Protocol.values();
+        else
+            protocolValuesCache = Arrays.copyOfRange(Protocol.values(), 0, 4);
         isInitialized = true;
         TacticalAPI.getInstance().getLogger().info("TacticalProtocol initialized");
     }
@@ -49,11 +56,13 @@ public class TacticalProtocolManager {
 
     public ProtocolSection<?, ?> getProtocolSection(Protocol protocol) {
         initialize();
+        if (protocol == Protocol.CONFIGURATION) MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         return protocolSections.get(protocol);
     }
 
     public ProtocolManager getProtocolManager(Protocol protocol, Sender sender) {
         initialize();
+        if (protocol == Protocol.CONFIGURATION) MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
         if (protocol == Protocol.HANDSHAKING && sender == Sender.SERVER)
             return Exceptions.nse(protocol + " and " + sender + " does not share a protocol manager");
         return protocolManagers.stream().filter(protocolManager -> protocolManager.protocol().equals(protocol) && protocolManager.sender().equals(sender)).findAny().orElseGet(() -> {
@@ -72,7 +81,7 @@ public class TacticalProtocolManager {
     }
 
     public PacketType getPacketType(Sender sender, Class<?> packetClass) {
-        for (Protocol protocol : Protocol.values()) {
+        for (Protocol protocol : protocolValuesCache) {
             try {
                 return getProtocolManager(protocol, sender).getPacketType(packetClass);
             } catch (NoSuchElementException ignored) {
