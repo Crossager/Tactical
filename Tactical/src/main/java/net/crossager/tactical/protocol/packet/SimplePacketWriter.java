@@ -205,6 +205,12 @@ public class SimplePacketWriter implements PacketWriter {
         writeBitSet(bitset, constants.length);
     }
 
+    @Override
+    public void writeEntityDataEntry(int index, int type) {
+        byteBuf.writeByte(index);
+        writeVarInt(type);
+    }
+
     public void writeBitSet(BitSet bitset, int maxLength) {
         if (bitset.length() > maxLength) {
             throw new EncoderException("BitSet is larger than expected size (" + bitset.length() + ">" + maxLength + ")");

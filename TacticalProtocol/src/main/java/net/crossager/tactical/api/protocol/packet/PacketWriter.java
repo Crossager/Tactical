@@ -188,6 +188,13 @@ public interface PacketWriter {
     <E extends Enum<E>> void writeEnumSet(Class<E> enumType, Set<E> enumSet);
 
     /**
+     * Writes the beginning of an entity metadata entry
+     * @param index the index to write
+     * @param type the type to write
+     */
+    void writeEntityDataEntry(int index, int type);
+
+    /**
      * Writes a nullable value to the packet using the provided write function.
      *
      * @param nullable      The nullable value to write.
