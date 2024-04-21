@@ -11,6 +11,7 @@ import net.crossager.tactical.api.music.MidiParsingException;
 import net.crossager.tactical.api.music.TacticalMidiDrumKit;
 import net.crossager.tactical.api.music.TacticalMidiParsingOptions;
 import net.crossager.tactical.api.music.TacticalNoteSequence;
+import net.crossager.tactical.api.npc.TacticalPlayerSkin;
 import net.crossager.tactical.api.protocol.Protocol;
 import net.crossager.tactical.api.protocol.ProtocolManager;
 import net.crossager.tactical.api.protocol.ProtocolSection;
@@ -32,6 +33,7 @@ import net.crossager.tactical.music.SimpleTacticalMidiDrumKit;
 import net.crossager.tactical.music.SimpleTacticalMidiParsingOptions;
 import net.crossager.tactical.music.TacticalMusicManager;
 import net.crossager.tactical.nbt.SimpleTacticalNBTManager;
+import net.crossager.tactical.npc.SimpleTacticalPlayerSkin;
 import net.crossager.tactical.protocol.ProtocolUtils;
 import net.crossager.tactical.protocol.TacticalProtocolManager;
 import net.crossager.tactical.util.PlayerMapManager;
@@ -47,6 +49,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,8 +69,10 @@ public class Tactical implements TacticalAPI {
     private final Logger logger;
     private final PlayerMapManager playerMapManager;
     private final TacticalMusicManager musicManager;
+    private final JavaPlugin plugin;
 
     public Tactical(JavaPlugin plugin) {
+        this.plugin = plugin;
         this.logger = plugin.getLogger();
         this.protocolManager = new TacticalProtocolManager();
         this.guiManager = new TacticalGUIManager(plugin);
@@ -75,6 +81,7 @@ public class Tactical implements TacticalAPI {
     }
 
     public Tactical(Logger logger) {
+        this.plugin = null;
         this.logger = logger;
         this.protocolManager = null;
         this.guiManager = null;
@@ -270,6 +277,40 @@ public class Tactical implements TacticalAPI {
     @Override
     public @NotNull TacticalMidiDrumKit createDefaultDrumKit() {
         return SimpleTacticalMidiDrumKit.createDefault();
+    }
+
+    @Override
+    public @NotNull TacticalPlayerSkin createPlayerSkin(@NotNull String texture, @NotNull String signature) {
+        return new SimpleTacticalPlayerSkin(texture, signature);
+    }
+
+    @Override
+    public void fetchSkinByUsername(@NotNull String username, @NotNull Consumer<TacticalPlayerSkin> callback) {
+        fetchSkinByUsername(username, callback, t -> {
+            Tactical.getInstance().getLogger().severe("Exception whilst trying to fetch UUID from username '%s'".formatted(username));
+            t.printStackTrace();
+        });
+
+    }
+
+    @Override
+    public void fetchSkinByUUID(@NotNull UUID uuid, @NotNull Consumer<TacticalPlayerSkin> callback) {
+        fetchSkinByUUID(uuid, callback, t -> {
+            Tactical.getInstance().getLogger().severe("Exception whilst trying to fetch skin from uuid '%s'".formatted(uuid));
+            t.printStackTrace();
+        });
+    }
+
+    @Override
+    public void fetchSkinByUsername(@NotNull String username, @NotNull Consumer<TacticalPlayerSkin> callback, @NotNull Consumer<Throwable> onError) {
+        if (plugin == null) throw new IllegalStateException("TacticalNPC is not available without a plugin");
+        SimpleTacticalPlayerSkin.fetchSkinByUsername(plugin, username, callback, onError);
+    }
+
+    @Override
+    public void fetchSkinByUUID(@NotNull UUID uuid, @NotNull Consumer<TacticalPlayerSkin> callback, @NotNull Consumer<Throwable> onError) {
+        if (plugin == null) throw new IllegalStateException("TacticalNPC is not available without a plugin");
+        SimpleTacticalPlayerSkin.fetchSkinByUUID(plugin, uuid, callback, onError);
     }
 
     public static Tactical getInstance() {
