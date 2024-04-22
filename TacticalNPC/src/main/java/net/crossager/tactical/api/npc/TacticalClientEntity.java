@@ -25,6 +25,13 @@ public interface TacticalClientEntity<E extends Entity> {
     double renderDistance();
 
     /**
+     * Returns the extra distance in which the entity won't despawn
+     *
+     * @return The buffer render distance of the entity
+     */
+    double bufferRenderDistance();
+
+    /**
      * Returns the underlying entity object represented by this client entity.
      *
      * @return The underlying entity object
@@ -66,6 +73,15 @@ public interface TacticalClientEntity<E extends Entity> {
      */
     @NotNull
     TacticalClientEntity<E> renderDistance(double renderDistance);
+
+    /**
+     * Sets the buffer render distance of the entity.
+     *
+     * @param bufferRenderDistance The buffer render distance to set
+     * @return The modified TacticalClientEntity object
+     */
+    @NotNull
+    TacticalClientEntity<E> bufferRenderDistance(double bufferRenderDistance);
 
     /**
      * Sets the location of the entity.

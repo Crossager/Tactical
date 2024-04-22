@@ -9,6 +9,7 @@ import net.crossager.tactical.api.protocol.packet.PacketWriter;
 import net.crossager.tactical.api.reflect.FieldAccessor;
 import net.crossager.tactical.api.reflect.MethodInvoker;
 import net.crossager.tactical.api.util.TacticalUtils;
+import net.crossager.tactical.util.CachedEnumValues;
 import net.crossager.tactical.util.PlayerSet;
 import net.crossager.tactical.util.reflect.CraftBukkitReflection;
 import net.crossager.tactical.util.reflect.DynamicReflection;
@@ -32,7 +33,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class SimpleTacticalClientEntity<E extends Entity> implements TacticalClientEntity<E> {
-    private static final byte HAS_MORE_ITEMS_MASK = (byte) (1 << 7);
+    public static final byte HAS_MORE_ITEMS_MASK = (byte) (1 << 7);
     public static final float ANGLE_TO_BYTE = 256F / 360F;
 
     public static final MethodInvoker<?> CREATE_ENTITY = DynamicReflection.getMethodByReturnTypeAndArgs(CraftBukkitReflection.getCraftRegionAccessorClass(), MinecraftClasses.getEntityClass(), Location.class, Class.class, Boolean.TYPE);
@@ -41,14 +42,14 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
     public static final MethodInvoker<List<?>> DATAWATCHER_SERIALIZE = DynamicReflection.getMethodByArgs(MinecraftClasses.getDataWatcherBClass(), MinecraftClasses.getPacketDataSerializerClass());
     public static final FieldAccessor<?> ENTITY_DATAWATCHER = DynamicReflection.getField(MinecraftClasses.getEntityClass(), MinecraftClasses.getDataWatcherClass());
 
-    private static final EquipmentSlot[] CACHED_SLOTS = EquipmentSlot.values();
-
     private final E entity;
     private final Object nmsEntity;
     private final Object dataWatcher;
     private Location lastLocation;
-    private double renderDistance = 64;
+    private double renderDistance = 48;
     private double renderDistanceSquared = renderDistance * renderDistance;
+    private double bufferRenderDistance = 4;
+    private double bufferRenderDistanceSquared = bufferRenderDistance * bufferRenderDistance;
     private Predicate<Player> showToPlayer = p -> true;
     private Consumer<TacticalClientEntityInteractEvent<E>> onInteract = e -> {};
     protected final Set<Player> isDisplayedForPlayer = new PlayerSet();
@@ -82,14 +83,15 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
                     }
                     return;
                 }
-                if (player.getLocation().distanceSquared(entity.getLocation()) < renderDistanceSquared + 1) { // use squared location for performance
+                double distanceSquared = player.getLocation().distanceSquared(entity.getLocation());
+                if (distanceSquared < renderDistanceSquared) {
                     if (!isDisplayedForPlayer.contains(player)) {
                         spawnPacket.send(player);
                         isDisplayedForPlayer.add(player);
                     }
                     movementPackets.forEach(data -> data.send(player));
                     sendMeta(player);
-                } else {
+                } else if (distanceSquared > renderDistanceSquared + bufferRenderDistanceSquared) {
                     if (isDisplayedForPlayer.contains(player)) {
                         destroyPacket.send(player);
                         isDisplayedForPlayer.remove(player);
@@ -137,6 +139,11 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
     }
 
     @Override
+    public double bufferRenderDistance() {
+        return bufferRenderDistance;
+    }
+
+    @Override
     public @NotNull E entity() {
         return entity;
     }
@@ -171,6 +178,13 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
     public @NotNull TacticalClientEntity<E> renderDistance(double renderDistance) {
         this.renderDistance = renderDistance;
         this.renderDistanceSquared = renderDistance * renderDistance;
+        return this;
+    }
+
+    @Override
+    public @NotNull TacticalClientEntity<E> bufferRenderDistance(double bufferRenderDistance) {
+        this.bufferRenderDistance = bufferRenderDistance;
+        this.bufferRenderDistanceSquared = bufferRenderDistance * bufferRenderDistance;
         return this;
     }
 
@@ -252,9 +266,9 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
         PacketData data = PacketType.play().out().entityEquipment().createEmptyPacketData();
         PacketWriter writer = data.writer();
         writer.writeVarInt(entity.getEntityId());
-        for (int i = 0; i < CACHED_SLOTS.length; i++) {
-            ItemStack item = livingEntity.getEquipment().getItem(CACHED_SLOTS[i]);
-            boolean isLast = i == CACHED_SLOTS.length - 1;
+        for (int i = 0; i < CachedEnumValues.EQUIPMENT_SLOT.length; i++) {
+            ItemStack item = livingEntity.getEquipment().getItem(CachedEnumValues.EQUIPMENT_SLOT[i]);
+            boolean isLast = i == CachedEnumValues.EQUIPMENT_SLOT.length - 1;
             writer.writeByte(isLast ? i : i | HAS_MORE_ITEMS_MASK);
             writer.writeItemStack(item);
         }
