@@ -103,4 +103,18 @@ public class TacticalUtils {
     public static <T> Class<T> castClassGenerics(Class<?> cl)  {
         return (Class<T>) cl;
     }
+
+    private static String addHyphenToUUID(String uuid) {
+        return new StringBuilder(uuid)
+                .insert(8, '-')
+                .insert(13, '-')
+                .insert(18, '-')
+                .insert(23, '-')
+                .toString();
+    }
+
+    public static UUID lenientUUIDFromString(String inputUUID) {
+        if (inputUUID.charAt(8) == '-') return UUID.fromString(inputUUID);
+        return UUID.fromString(addHyphenToUUID(inputUUID));
+    }
 }
