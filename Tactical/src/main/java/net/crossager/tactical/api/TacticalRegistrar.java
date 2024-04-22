@@ -9,6 +9,7 @@ public class TacticalRegistrar {
         GUIAPIHolder.setInstance(instance);
         CommonsAPIHolder.setInstance(instance);
         MusicAPIHolder.setInstance(instance);
+        NPCAPIHolder.setInstance(instance);
     }
 
     public static void removeInstance() {
