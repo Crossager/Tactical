@@ -6,8 +6,8 @@ package net.crossager.tactical.api.protocol;
  * This enum specifies whether the packet is sent from the server to the client or from the client to the server.
  */
 public enum Sender {
-    SERVER("Clientbound", "Out", "server"),
-    CLIENT("Serverbound", "In", "client");
+    CLIENT("Serverbound", "In", "client"),
+    SERVER("Clientbound", "Out", "server");
 
     private final String bounding;
     private final String direction;

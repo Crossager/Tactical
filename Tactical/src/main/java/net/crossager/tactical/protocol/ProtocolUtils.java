@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import net.crossager.tactical.api.data.LazyInitializedHashMap;
 import net.crossager.tactical.api.protocol.Protocol;
 import net.crossager.tactical.api.protocol.Sender;
 import net.crossager.tactical.api.reflect.ConstructorInvoker;
@@ -22,10 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class ProtocolUtils {
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static final LazyInitializedHashMap<String, Enum<?>> GET_NMS_PROTOCOL = new LazyInitializedHashMap<>(string -> (Enum<?>) ReflectionUtils.getField(MinecraftClasses.getEnumProtocolClass(), string).read(null));
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static final LazyInitializedHashMap<String, Enum<?>> GET_NMS_SENDER = new LazyInitializedHashMap<>(string -> (Enum<?>) ReflectionUtils.getField(MinecraftClasses.getEnumProtocolDirectionClass(), string).read(null));
+    private static final Enum<?>[] NMS_PROTOCOL = (Enum<?>[]) MinecraftClasses.getEnumProtocolClass().getEnumConstants();
+    private static final Enum<?>[] NMS_SENDER = (Enum<?>[]) MinecraftClasses.getEnumProtocolDirectionClass().getEnumConstants();
     private static final ConstructorInvoker<?> CREATE_PACKETDATASERIALIZER = ReflectionUtils.getConstructor(MinecraftClasses.getPacketDataSerializerClass(), ByteBuf.class);
     private static final MethodInvoker<?> GET_PLAYER_HANDLE = ReflectionUtils.getMethod(CraftBukkitReflection.getCraftPlayerClass(), "getHandle");
     private static final FieldAccessor<?> PLAYER_CONNECTION = DynamicReflection.getField(MinecraftClasses.getEntityPlayerClass(), MinecraftClasses.getPlayerConnectionClass());
@@ -39,20 +36,11 @@ public class ProtocolUtils {
     public static final Supplier<Integer> GENERATE_ENTITY_ID = DynamicReflection.getField(MinecraftClasses.getEntityClass(), AtomicInteger.class, true).read(null)::incrementAndGet;
 
     public static Enum<?> getNMSProtocol(Protocol protocol) {
-        return switch (protocol) {
-            case HANDSHAKING -> GET_NMS_PROTOCOL.get("a");
-            case PLAY -> GET_NMS_PROTOCOL.get("b");
-            case STATUS -> GET_NMS_PROTOCOL.get("c");
-            case LOGIN -> GET_NMS_PROTOCOL.get("d");
-            case CONFIGURATION -> GET_NMS_PROTOCOL.get("e");
-        };
+        return NMS_PROTOCOL[protocol.ordinal()];
     }
 
     public static Enum<?> getNMSSender(Sender sender) {
-        return switch (sender) {
-            case CLIENT -> GET_NMS_SENDER.get("a");
-            case SERVER -> GET_NMS_SENDER.get("b");
-        };
+        return NMS_SENDER[sender.ordinal()];
     }
 
     public static List<String> formatPossiblePacketNames(Protocol protocol, Sender sender, String... baseNames) {
