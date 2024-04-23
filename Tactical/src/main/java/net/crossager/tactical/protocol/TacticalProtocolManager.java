@@ -1,7 +1,6 @@
 package net.crossager.tactical.protocol;
 
 import net.crossager.tactical.api.TacticalAPI;
-import net.crossager.tactical.api.data.LazyInitializedHashMap;
 import net.crossager.tactical.api.protocol.Protocol;
 import net.crossager.tactical.api.protocol.ProtocolManager;
 import net.crossager.tactical.api.protocol.ProtocolSection;
@@ -14,20 +13,10 @@ import net.crossager.tactical.protocol.protocols.*;
 import net.crossager.tactical.util.Exceptions;
 import net.crossager.tactical.util.reflect.MinecraftVersion;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class TacticalProtocolManager {
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private final LazyInitializedHashMap<Protocol, ProtocolSection<?, ?>> protocolSections = new LazyInitializedHashMap<>(protocol -> switch (protocol) {
-        case HANDSHAKING -> new ProtocolHandshakingSection();
-        case PLAY -> new ProtocolPlaySection();
-        case STATUS -> new ProtocolStatusSection();
-        case LOGIN -> new ProtocolLoginSection();
-        case CONFIGURATION -> new ProtocolConfigurationSection();
-    });
+    private final Map<Protocol, ProtocolSection<?, ?>> protocolSections = new HashMap<>();
     private final List<ProtocolManager> protocolManagers = new ArrayList<>();
     private boolean isInitialized = false;
     private PlayerInjectorHandler playerInjectorHandler;
@@ -57,6 +46,18 @@ public class TacticalProtocolManager {
     public ProtocolSection<?, ?> getProtocolSection(Protocol protocol) {
         initialize();
         if (protocol == Protocol.CONFIGURATION) MinecraftVersion.ensureAboveVersion(MinecraftVersion.v1_20_2);
+        if (!protocolSections.containsKey(protocol)) {
+            ProtocolSection<?, ?> section = switch (protocol) {
+                case HANDSHAKING -> new ProtocolHandshakingSection();
+                case PLAY -> new ProtocolPlaySection();
+                case STATUS -> new ProtocolStatusSection();
+                case LOGIN -> new ProtocolLoginSection();
+                case CONFIGURATION -> new ProtocolConfigurationSection();
+            };
+
+            protocolSections.put(protocol, section);
+            return section;
+        }
         return protocolSections.get(protocol);
     }
 
