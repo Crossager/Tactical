@@ -2,6 +2,7 @@ package net.crossager.tactical.api.protocol.packet;
 
 import net.crossager.tactical.api.wrappers.BlockLocation;
 import net.crossager.tactical.api.wrappers.nbt.TacticalNBTTag;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -164,6 +165,13 @@ public interface PacketWriter {
      * @param nbtTag The TacticalNBTTag to write.
      */
     void writeNBTTag(TacticalNBTTag<?> nbtTag);
+
+    /**
+     * Writes an array of BaseComponent to the packet
+     *
+     * @param chatComponents the components to write
+     */
+    void writeJsonTextComponent(@NotNull BaseComponent... chatComponents);
 
     /**
      * Writes a collection to the packet using the provided write function.

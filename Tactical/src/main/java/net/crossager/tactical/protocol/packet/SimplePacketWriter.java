@@ -13,6 +13,8 @@ import net.crossager.tactical.util.reflect.CraftBukkitReflection;
 import net.crossager.tactical.util.reflect.DynamicReflection;
 import net.crossager.tactical.util.reflect.MinecraftClasses;
 import net.crossager.tactical.util.reflect.MinecraftVersion;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -180,6 +182,11 @@ public class SimplePacketWriter implements PacketWriter {
                 throw new EncoderException(e);
             }
         }
+    }
+
+    @Override
+    public void writeJsonTextComponent(@NotNull BaseComponent... chatComponents) {
+        writeString(ComponentSerializer.toString(chatComponents), 262144);
     }
 
     @Override
