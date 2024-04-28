@@ -27,6 +27,10 @@ public record SimpleTacticalPlayerSkin(String texture, String signature) impleme
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    onError.accept(new IOException("Http error: " + response.code()));
+                    return;
+                }
                 JsonObject responseJson = JsonParser.parseString(response.body().string()).getAsJsonObject();
                 if (responseJson.has("errorMessage")) {
                     Bukkit.getScheduler().runTask(plugin, () -> onError.accept(new IllegalArgumentException(responseJson.get("errorMessage").getAsString())));
@@ -58,6 +62,10 @@ public record SimpleTacticalPlayerSkin(String texture, String signature) impleme
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    onError.accept(new IOException("Http error: " + response.code()));
+                    return;
+                }
                 JsonObject responseJson = JsonParser.parseString(response.body().string()).getAsJsonObject();
                 if (responseJson.has("errorMessage")) {
                     Bukkit.getScheduler().runTask(plugin, () -> onError.accept(new IllegalArgumentException(responseJson.get("errorMessage").getAsString())));
