@@ -6,8 +6,8 @@ import net.crossager.tactical.protocol.ProtocolUtils;
 import org.bukkit.entity.Player;
 
 public class PlayerInjector {
-    private static final String DECODING_NAME = "ClientPacketListener";
-    private static final String ENCODING_NAME = "ServerPacketListener";
+    private static final String DECODING_NAME = "tactical_client_listener";
+    private static final String ENCODING_NAME = "tactical_server_listener";
     private boolean isInjected = false;
     private final Channel channel;
     private final Player player;
