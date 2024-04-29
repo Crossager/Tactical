@@ -19,7 +19,7 @@ public class MinecraftClasses {
     }
 
     public static Class<?> getEnumProtocolHandleClass() {
-        return getEnumProtocolClass().getDeclaredClasses()[1];
+        return getEnumProtocolClass().getDeclaredClasses()[MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2) ? 2 : 1];
     }
 
     public static Class<?> getEnumProtocolDirectionClass() {
