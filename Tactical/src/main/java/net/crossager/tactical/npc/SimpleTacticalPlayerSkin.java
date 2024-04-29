@@ -28,6 +28,7 @@ public record SimpleTacticalPlayerSkin(String texture, String signature) impleme
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
+                    response.close();
                     onError.accept(new IOException("Http error: " + response.code()));
                     return;
                 }
@@ -63,6 +64,7 @@ public record SimpleTacticalPlayerSkin(String texture, String signature) impleme
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
+                    response.close();
                     onError.accept(new IOException("Http error: " + response.code()));
                     return;
                 }
