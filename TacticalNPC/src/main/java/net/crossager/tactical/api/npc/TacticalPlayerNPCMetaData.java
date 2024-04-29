@@ -56,9 +56,9 @@ public interface TacticalPlayerNPCMetaData {
 
     TacticalPlayerNPCMetaData flyingWithElytra(boolean isFlyingWithElytra);
 
-    boolean listed();
+    boolean showInTab();
 
-    TacticalPlayerNPCMetaData listed(boolean isListed);
+    TacticalPlayerNPCMetaData showInTab(boolean showInTab);
 
     String customTabListName();
 
