@@ -1,7 +1,6 @@
 package net.crossager.tactical.npc;
 
 import net.crossager.tactical.api.npc.TacticalClientEntity;
-import net.crossager.tactical.api.npc.TacticalClientEntityInteractType;
 import net.crossager.tactical.api.protocol.packet.PacketData;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.protocol.packet.PacketWriter;
@@ -14,15 +13,14 @@ import net.crossager.tactical.util.reflect.CraftBukkitReflection;
 import net.crossager.tactical.util.reflect.DynamicReflection;
 import net.crossager.tactical.util.reflect.InternalRegistry;
 import net.crossager.tactical.util.reflect.MinecraftClasses;
+import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -90,37 +88,9 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
             });
         }, 0, updateInterval);
 
-        PacketType.play().in().useEntity().addPacketListener(event -> {
-            event.data().reader().readSilent(reader -> {
-                int entityId = reader.readVarInt();
-                if (entityId != entity.getEntityId()) return;
-                TacticalClientEntityInteractType action = TacticalClientEntityInteractType.fromId(reader.readVarInt());
-                Vector target = null;
-                EquipmentSlot hand = EquipmentSlot.HAND;
-
-                if (action == TacticalClientEntityInteractType.INTERACT_AT) {
-                    float x = reader.readFloat();
-                    float y = reader.readFloat();
-                    float z = reader.readFloat();
-                    target = new Vector(x, y, z);
-                }
-
-                if (action == TacticalClientEntityInteractType.INTERACT || action == TacticalClientEntityInteractType.INTERACT_AT) {
-                    hand = reader.readVarInt() == 0 ? EquipmentSlot.HAND : EquipmentSlot.OFF_HAND;
-                }
-
-                boolean isSneaking = reader.readBoolean();
-                onInteract.accept(new SimpleTacticalClientEntityInteractEvent<>(
-                        this,
-                        event.player(),
-                        target,
-                        entityId,
-                        hand,
-                        action,
-                        isSneaking
-                ));
-            });
-        });
+        PacketType.play().in().useEntity().addPacketListener(new TacticalClientEntityListener<>(entity().getEntityId(), this, event -> {
+            Bukkit.getScheduler().runTask(plugin, () -> onInteract.accept(event));
+        }));
     }
 
     @Override
