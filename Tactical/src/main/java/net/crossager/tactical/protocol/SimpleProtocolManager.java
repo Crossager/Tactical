@@ -14,6 +14,7 @@ import net.crossager.tactical.protocol.packet.SimplePacketType;
 import net.crossager.tactical.protocol.packet.custom.PacketWrapper;
 import net.crossager.tactical.util.reflect.DynamicReflection;
 import net.crossager.tactical.util.reflect.MinecraftClasses;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ import java.util.function.Function;
 public class SimpleProtocolManager implements ProtocolManager {
     @SuppressWarnings("rawtypes")
     private static final FieldAccessor<Map> GET_HANDLE_MAP = DynamicReflection.getField(MinecraftClasses.getEnumProtocolClass(), Map.class, false);
+    private static final FieldAccessor<?> UNWRAP_HANDLE =
+            MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2) ?
+            DynamicReflection.getField(MinecraftClasses.getEnumProtocolHandleWrapperClass(), MinecraftClasses.getEnumProtocolHandleClass()) : null;
     @SuppressWarnings("rawtypes")
     private static final FieldAccessor<Map> GET_PACKET_MAP = DynamicReflection.getField(MinecraftClasses.getEnumProtocolHandleClass(), Map.class);
     @SuppressWarnings("rawtypes")
@@ -32,6 +36,7 @@ public class SimpleProtocolManager implements ProtocolManager {
     private static final MethodInvoker<?> REGISTER_PACKET = DynamicReflection.getMethodByArgs(MinecraftClasses.getEnumProtocolHandleClass(), Class.class, Function.class);
     @SuppressWarnings("unchecked")
     private static final Map<Class<?>, Enum<?>> PACKET_PROTOCOL_MAP =
+            MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2) ? null :
             DynamicReflection.getField(MinecraftClasses.getEnumProtocolClass(), Map.class, true).read(null);
 
     private final Protocol protocol;
@@ -46,12 +51,20 @@ public class SimpleProtocolManager implements ProtocolManager {
     public SimpleProtocolManager(Protocol protocol, Sender sender) {
         this.protocol = protocol;
         this.sender = sender;
-        this.handle = GET_HANDLE_MAP.read(ProtocolUtils.getNMSProtocol(protocol)).get(ProtocolUtils.getNMSSender(sender));
+        this.handle = getHandle();
         this.packetMap = GET_PACKET_MAP.read(handle);
         this.packetConstructors = GET_PACKET_CONSTRUCTOR_LIST.read(handle);
         this.packetTypes = new ArrayList<>(packetMap.size());
 
         packetMap.forEach((packetClass, id) -> packetTypes.add(new SimplePacketType(this, packetClass, id, PacketConstructor.fromFunction(packetConstructors.get(id)))));
+    }
+
+    private Object getHandle() {
+        Object handle = GET_HANDLE_MAP.read(ProtocolUtils.getNMSProtocol(protocol)).get(ProtocolUtils.getNMSSender(sender));
+        if (MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2)) {
+            return UNWRAP_HANDLE.read(handle);
+        }
+        return handle;
     }
 
     @Override
@@ -97,7 +110,8 @@ public class SimpleProtocolManager implements ProtocolManager {
         REGISTER_PACKET.invoke(handle, packetClass, constructor);
         PacketType packetType = new SimplePacketType(this, packetClass, packetMap.get(packetClass), constructor);
         packetTypes.add(packetType);
-        PACKET_PROTOCOL_MAP.put(packetClass, ProtocolUtils.getNMSProtocol(protocol));
+        if (PACKET_PROTOCOL_MAP != null)
+            PACKET_PROTOCOL_MAP.put(packetClass, ProtocolUtils.getNMSProtocol(protocol));
         return packetType;
     }
 
@@ -107,7 +121,8 @@ public class SimpleProtocolManager implements ProtocolManager {
         packetTypes.add(packetType);
         packetMap.put(packetClass, specificId);
         packetConstructors.add(constructor);
-        PACKET_PROTOCOL_MAP.put(packetClass, ProtocolUtils.getNMSProtocol(protocol));
+        if (PACKET_PROTOCOL_MAP != null)
+            PACKET_PROTOCOL_MAP.put(packetClass, ProtocolUtils.getNMSProtocol(protocol));
         return packetType;
     }
 

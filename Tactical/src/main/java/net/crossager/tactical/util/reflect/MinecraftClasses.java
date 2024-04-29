@@ -1,5 +1,7 @@
 package net.crossager.tactical.util.reflect;
 
+import net.crossager.tactical.api.util.AddedIn;
+
 import java.util.List;
 
 public class MinecraftClasses {
@@ -20,6 +22,11 @@ public class MinecraftClasses {
 
     public static Class<?> getEnumProtocolHandleClass() {
         return getEnumProtocolClass().getDeclaredClasses()[MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2) ? 2 : 1];
+    }
+
+    @AddedIn("1.20.2")
+    public static Class<?> getEnumProtocolHandleWrapperClass() {
+        return getEnumProtocolClass().getDeclaredClasses()[1];
     }
 
     public static Class<?> getEnumProtocolDirectionClass() {

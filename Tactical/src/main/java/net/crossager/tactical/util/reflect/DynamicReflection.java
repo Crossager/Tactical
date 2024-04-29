@@ -27,6 +27,7 @@ public class DynamicReflection {
                 index--;
                 continue;
             }
+            field.setAccessible(true);
             return ReflectionUtils.fromField(field);
         }
         if (source.getSuperclass() == null) return Exceptions.notFound("Field");
@@ -36,7 +37,10 @@ public class DynamicReflection {
     public static <T> MethodInvoker<T> getMethodByArgs(Class<?> source, Class<?>... args) {
         for (Method method : source.getDeclaredMethods()) {
             Class<?>[] params = method.getParameterTypes();
-            if (Arrays.equals(params, args)) return ReflectionUtils.fromMethod(method);
+            if (Arrays.equals(params, args)) {
+                method.setAccessible(true);
+                return ReflectionUtils.fromMethod(method);
+            }
         }
         if (source.getSuperclass() == null) return Exceptions.notFound("Method");
         return getMethodByArgs(source.getSuperclass(), args);
@@ -44,7 +48,10 @@ public class DynamicReflection {
 
     public static <T> MethodInvoker<T> getMethodByReturnType(Class<?> source, Class<T> returnType) {
         for (Method method : source.getDeclaredMethods()) {
-            if (method.getReturnType().isAssignableFrom(returnType)) return ReflectionUtils.fromMethod(method);
+            if (method.getReturnType().isAssignableFrom(returnType)) {
+                method.setAccessible(true);
+                return ReflectionUtils.fromMethod(method);
+            }
         }
         if (source.getSuperclass() == null) return Exceptions.notFound("Method");
         return getMethodByReturnType(source.getSuperclass(), returnType);
@@ -58,10 +65,12 @@ public class DynamicReflection {
         for (Method method : source.getDeclaredMethods()) {
             Class<?>[] params = method.getParameterTypes();
             if (method.getReturnType().isAssignableFrom(returnType) && Arrays.equals(params, args)) {
-                if (index == 0)
+                if (index == 0) {
+                    method.setAccessible(true);
                     return ReflectionUtils.fromMethod(method);
-                else
+                } else {
                     index--;
+                }
             }
         }
         if (source.getSuperclass() == null) return Exceptions.notFound("Method");

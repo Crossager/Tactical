@@ -13,6 +13,7 @@ import net.crossager.tactical.api.reflect.ReflectionUtils;
 import net.crossager.tactical.util.reflect.CraftBukkitReflection;
 import net.crossager.tactical.util.reflect.DynamicReflection;
 import net.crossager.tactical.util.reflect.MinecraftClasses;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class ProtocolUtils {
     private static final FieldAccessor<Channel> CHANNEL = DynamicReflection.getField(MinecraftClasses.getNetworkManagerClass(), Channel.class);
 
     public static final MethodInvoker<?> SEND_PACKET = DynamicReflection.getMethodByArgs(MinecraftClasses.getPlayerConnectionClass(), MinecraftClasses.getPacketClass());
+    public static final MethodInvoker<?> SEND_PACKET_NETWORK_MANAGER = DynamicReflection.getMethodByArgs(MinecraftClasses.getNetworkManagerClass(), MinecraftClasses.getPacketClass());
     public static final MethodInvoker<?> READ_PACKET = DynamicReflection.getMethodByArgs(MinecraftClasses.getNetworkManagerClass(), ChannelHandlerContext.class, MinecraftClasses.getPacketClass());
     public static final Supplier<ByteBuf> BYTEBUF_ALLOCATOR = ByteBufAllocator.DEFAULT::buffer;
     public static final MethodInvoker<?> WRITE_PACKET_DATA = DynamicReflection.getMethodByArgs(MinecraftClasses.getPacketClass(), MinecraftClasses.getPacketDataSerializerClass());
@@ -96,7 +98,10 @@ public class ProtocolUtils {
     }
 
     public static void sendPacket(Player player, Object packet) {
-        SEND_PACKET.invoke(PLAYER_CONNECTION.read(GET_PLAYER_HANDLE.invoke(player)), packet);
+        if (MinecraftVersion.hasVersion(MinecraftVersion.v1_20_2))
+            SEND_PACKET_NETWORK_MANAGER.invoke(NETWORK_MANAGER.read(PLAYER_CONNECTION.read(GET_PLAYER_HANDLE.invoke(player))), packet);
+        else
+            SEND_PACKET.invoke(PLAYER_CONNECTION.read(GET_PLAYER_HANDLE.invoke(player)), packet);
     }
 
     public static void receivePacket(Player player, Object packet) {
