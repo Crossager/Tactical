@@ -46,7 +46,7 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     private final PacketType heldItemSlot = get("HeldItemSlot", "SPacketHeldItemChange");
     private final PacketType initializeBorder = get("InitializeBorder");
     private final PacketType keepAlive = get("KeepAlive", "SPacketKeepAlive");
-    private final PacketType kickDisconnect = get("KickDisconnect", "SPacketDisconnect");
+    private final PacketType kickDisconnect = get("KickDisconnect", "SPacketDisconnect", "Disconnect");
     private final PacketType levelChunkWithLight = get("LevelChunkWithLight", "MapChunk", "SPacketChunkData");
     private final PacketType lightUpdate = get("LightUpdate");
     private final PacketType login = get("Login", "SPacketJoinGame");
@@ -102,7 +102,7 @@ public class ProtocolPlayOutContainer extends ProtocolContainerBase implements P
     private final PacketType stopSound = get("StopSound");
     private final PacketType systemChat = get("SystemChat");
     private final PacketType tabComplete = get("TabComplete", "SPacketTabComplete");
-    private final PacketType tags = get("Tags");
+    private final PacketType tags = get("Tags", "UpdateTags");
     private final PacketType tileEntityData = get("TileEntityData", "SPacketUpdateTileEntity");
     private final PacketType unloadChunk = get("UnloadChunk", "SPacketUnloadChunk");
     private final PacketType updateAttributes = get("UpdateAttributes", "SPacketEntityProperties");

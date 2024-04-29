@@ -44,12 +44,12 @@ public class ProtocolPlayInContainer extends ProtocolContainerBase implements Pl
     private final PacketType positionLook = get("Flying$PacketPlayInPositionLook", "Flying$PositionLook", "CPacketPlayer$PositionRotation");
     private final PacketType recipeDisplayed = get("RecipeDisplayed", "CPacketRecipeInfo");
     private final PacketType recipeSettings = get("RecipeSettings");
-    private final PacketType resourcePackStatus = get("ResourcePackStatus", "CPacketResourcePackStatus");
+    private final PacketType resourcePackStatus = get("ResourcePackStatus", "CPacketResourcePackStatus", "ResourcePack");
     private final PacketType setCommandBlock = get("SetCommandBlock");
     private final PacketType setCommandMinecart = get("SetCommandMinecart");
     private final PacketType setCreativeSlot = get("SetCreativeSlot", "CPacketCreativeInventoryAction");
     private final PacketType setJigsaw = get("SetJigsaw");
-    private final PacketType settings = get("Settings", "CPacketClientSettings");
+    private final PacketType settings = get("Settings", "CPacketClientSettings", "ClientInformation");
     private final PacketType spectate = get("Spectate", "CPacketSpectate");
     private final PacketType steerVehicle = get("SteerVehicle", "CPacketInput");
     private final PacketType struct = get("Struct");
