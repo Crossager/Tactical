@@ -1,7 +1,6 @@
 package net.crossager.tactical.npc;
 
 import net.crossager.tactical.api.npc.TacticalClientEntity;
-import net.crossager.tactical.api.npc.TacticalClientEntityInteractEvent;
 import net.crossager.tactical.api.npc.TacticalClientEntityInteractType;
 import net.crossager.tactical.api.protocol.packet.PacketData;
 import net.crossager.tactical.api.protocol.packet.PacketType;
@@ -26,13 +25,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
-public class SimpleTacticalClientEntity<E extends Entity> implements TacticalClientEntity<E> {
+public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTacticalClientObject<TacticalClientEntity<E>> implements TacticalClientEntity<E> {
     public static final byte HAS_MORE_ITEMS_MASK = (byte) (1 << 7);
     public static final float ANGLE_TO_BYTE = 256F / 360F;
 
@@ -43,26 +40,19 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
     public static final FieldAccessor<?> ENTITY_DATAWATCHER = DynamicReflection.getField(MinecraftClasses.getEntityClass(), MinecraftClasses.getDataWatcherClass());
 
     private final E entity;
-    private final Object nmsEntity;
     private final Object dataWatcher;
     private Location lastLocation;
-    private double renderDistance = 48;
-    private double renderDistanceSquared = renderDistance * renderDistance;
-    private double bufferRenderDistance = 4;
-    private double bufferRenderDistanceSquared = bufferRenderDistance * bufferRenderDistance;
-    private Predicate<Player> showToPlayer = p -> true;
-    private Consumer<TacticalClientEntityInteractEvent<E>> onInteract = e -> {};
     protected final Set<Player> isDisplayedForPlayer = new PlayerSet();
 
     // cache packets for performance
-    private final PacketData spawnPacket;
     private final PacketData destroyPacket;
+    private PacketData spawnPacket;
     private PacketData metaDataPacket;
     private PacketData equipmentPacket;
 
     @SuppressWarnings("unchecked")
     public SimpleTacticalClientEntity(JavaPlugin plugin, Location location, Class<E> entityClass, Consumer<E> applyEntityData, long updateInterval) {
-        this.nmsEntity = CREATE_ENTITY.invoke(location.getWorld(), location, entityClass, false);
+        Object nmsEntity = CREATE_ENTITY.invoke(location.getWorld(), location, entityClass, false);
         this.entity = (E) GET_BUKKIT_ENTITY.invoke(nmsEntity);
         this.dataWatcher = ENTITY_DATAWATCHER.read(nmsEntity);
         this.lastLocation = location.clone();
@@ -134,22 +124,13 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
     }
 
     @Override
-    public double renderDistance() {
-        return renderDistance;
-    }
-
-    @Override
-    public double bufferRenderDistance() {
-        return bufferRenderDistance;
-    }
-
-    @Override
     public @NotNull E entity() {
         return entity;
     }
 
     @Override
     public void updateMetaData() {
+        spawnPacket = generateSpawnEntityPacket();
         metaDataPacket = generateMetaDataPacket();
         equipmentPacket = generateEquipmentPacket();
         isDisplayedForPlayer.forEach(this::sendMeta);
@@ -170,45 +151,13 @@ public class SimpleTacticalClientEntity<E extends Entity> implements TacticalCli
     }
 
     @Override
-    public boolean showToPlayer(@NotNull Player player) {
-        return showToPlayer.test(player);
-    }
-
-    @Override
-    public @NotNull TacticalClientEntity<E> renderDistance(double renderDistance) {
-        this.renderDistance = renderDistance;
-        this.renderDistanceSquared = renderDistance * renderDistance;
-        return this;
-    }
-
-    @Override
-    public @NotNull TacticalClientEntity<E> bufferRenderDistance(double bufferRenderDistance) {
-        this.bufferRenderDistance = bufferRenderDistance;
-        this.bufferRenderDistanceSquared = bufferRenderDistance * bufferRenderDistance;
-        return this;
-    }
-
-    @Override
     public @NotNull TacticalClientEntity<E> location(Location location) {
         entity.teleport(location);
         return this;
     }
 
     @Override
-    public @NotNull TacticalClientEntity<E> showToPlayers(@NotNull Collection<Player> players) {
-        showToPlayer = players::contains;
-        return this;
-    }
-
-    @Override
-    public @NotNull TacticalClientEntity<E> showToPlayers(@NotNull Predicate<Player> showToPlayer) {
-        this.showToPlayer = showToPlayer;
-        return this;
-    }
-
-    @Override
-    public @NotNull TacticalClientEntity<E> onInteract(@NotNull Consumer<TacticalClientEntityInteractEvent<E>> onInteract) {
-        this.onInteract = onInteract;
+    protected TacticalClientEntity<E> returnThis() {
         return this;
     }
 

@@ -1,6 +1,5 @@
 package net.crossager.tactical.api.npc;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.Vector;
@@ -9,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Represents an interaction event with a client-side entity.
  *
- * @param <E> The type of the underlying entity
+ * @param <E> The type of the client entity
  */
-public interface TacticalClientEntityInteractEvent<E extends Entity> {
+public interface TacticalClientEntityInteractEvent<E> {
 
     /**
      * Returns the client entity associated with this interaction event.
@@ -19,7 +18,7 @@ public interface TacticalClientEntityInteractEvent<E extends Entity> {
      * @return The client entity associated with this interaction event
      */
     @NotNull
-    TacticalClientEntity<E> clientEntity();
+    E clientEntity();
 
     /**
      * Returns the player who interacted with the client entity.
