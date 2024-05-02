@@ -14,6 +14,7 @@ install:
   - mvn install -f ./TacticalGUI/pom.xml
   - mvn install -f ./TacticalProtocol/pom.xml
   - mvn install -f ./TacticalMusic/pom.xml
+  - mvn install -f ./TacticalNPC/pom.xml
   - mvn install -f ./TacticalAPI/pom.xml
   - mvn install -f ./Tactical/pom.xml
   - mvn install -f ./pom.xml
