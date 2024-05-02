@@ -1,8 +1,11 @@
 package net.crossager.tactical.api.npc;
 
+import net.crossager.tactical.api.TacticalNPC;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 /**
  * Represents an entity on the client side in a Minecraft environment.
@@ -31,4 +34,19 @@ public interface TacticalClientEntity<E extends Entity> extends TacticalClientOb
      */
     @NotNull
     TacticalClientEntity<E> location(Location location);
+
+    @NotNull
+    static <E extends Entity> TacticalClientEntity<E> create(@NotNull Location location, @NotNull Class<E> entityClass) {
+        return TacticalNPC.getInstance().getNPCFactory().createClientEntity(location, entityClass);
+    }
+
+    @NotNull
+    static <E extends Entity> TacticalClientEntity<E> create(@NotNull Location location, @NotNull Class<E> entityClass, @NotNull Consumer<E> applyInitialData) {
+        return TacticalNPC.getInstance().getNPCFactory().createClientEntity(location, entityClass, applyInitialData);
+    }
+
+    @NotNull
+    static <E extends Entity> TacticalClientEntity<E> create(@NotNull Location location, @NotNull Class<E> entityClass, @NotNull Consumer<E> applyInitialData, long updateInterval) {
+        return TacticalNPC.getInstance().getNPCFactory().createClientEntity(location, entityClass, applyInitialData, updateInterval);
+    }
 }
