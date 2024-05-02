@@ -1,5 +1,7 @@
 package net.crossager.tactical.api.npc;
 
+import net.crossager.tactical.api.TacticalNPC;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,4 +25,14 @@ public interface TacticalHologram extends TacticalClientEntity<ArmorStand> {
      */
     @NotNull
     TacticalHologram text(@NotNull String text);
+
+    @NotNull
+    static TacticalHologram of(@NotNull Location location, @NotNull String text) {
+        return TacticalNPC.getInstance().getNPCFactory().createHologram(location, text);
+    }
+
+    @NotNull
+    static TacticalHologram of(@NotNull Location location, @NotNull String text, long updateInterval) {
+        return TacticalNPC.getInstance().getNPCFactory().createHologram(location, text, updateInterval);
+    }
 }

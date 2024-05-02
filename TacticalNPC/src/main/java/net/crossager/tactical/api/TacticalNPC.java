@@ -1,5 +1,6 @@
 package net.crossager.tactical.api;
 
+import net.crossager.tactical.api.npc.TacticalNPCFactory;
 import net.crossager.tactical.api.npc.TacticalPlayerSkin;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,6 +12,9 @@ public interface TacticalNPC {
     static TacticalNPC getInstance() {
         return NPCAPIHolder.getInstance();
     }
+
+    @NotNull
+    TacticalNPCFactory getNPCFactory();
 
     @NotNull
     TacticalPlayerSkin createPlayerSkin(@NotNull String texture, @NotNull String signature);

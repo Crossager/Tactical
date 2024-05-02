@@ -11,6 +11,7 @@ import net.crossager.tactical.api.music.MidiParsingException;
 import net.crossager.tactical.api.music.TacticalMidiDrumKit;
 import net.crossager.tactical.api.music.TacticalMidiParsingOptions;
 import net.crossager.tactical.api.music.TacticalNoteSequence;
+import net.crossager.tactical.api.npc.TacticalNPCFactory;
 import net.crossager.tactical.api.npc.TacticalPlayerSkin;
 import net.crossager.tactical.api.protocol.Protocol;
 import net.crossager.tactical.api.protocol.ProtocolManager;
@@ -33,6 +34,7 @@ import net.crossager.tactical.music.SimpleTacticalMidiDrumKit;
 import net.crossager.tactical.music.SimpleTacticalMidiParsingOptions;
 import net.crossager.tactical.music.TacticalMusicManager;
 import net.crossager.tactical.nbt.SimpleTacticalNBTManager;
+import net.crossager.tactical.npc.SimpleTacticalNPCFactory;
 import net.crossager.tactical.npc.SimpleTacticalPlayerSkin;
 import net.crossager.tactical.protocol.ProtocolUtils;
 import net.crossager.tactical.protocol.TacticalProtocolManager;
@@ -69,6 +71,7 @@ public class Tactical implements TacticalAPI {
     private final Logger logger;
     private final PlayerMapManager playerMapManager;
     private final TacticalMusicManager musicManager;
+    private final SimpleTacticalNPCFactory npcFactory;
     private final JavaPlugin plugin;
 
     public Tactical(JavaPlugin plugin) {
@@ -78,6 +81,7 @@ public class Tactical implements TacticalAPI {
         this.guiManager = new TacticalGUIManager(plugin);
         this.playerMapManager = new PlayerMapManager(plugin);
         this.musicManager = new TacticalMusicManager(plugin);
+        this.npcFactory = new SimpleTacticalNPCFactory(plugin);
     }
 
     public Tactical(Logger logger) {
@@ -87,6 +91,7 @@ public class Tactical implements TacticalAPI {
         this.guiManager = null;
         this.playerMapManager = null;
         this.musicManager = null;
+        this.npcFactory = null;
     }
 
     public Tactical() {
@@ -311,6 +316,12 @@ public class Tactical implements TacticalAPI {
     public void fetchSkinByUUID(@NotNull UUID uuid, @NotNull Consumer<TacticalPlayerSkin> callback, @NotNull Consumer<Throwable> onError) {
         if (plugin == null) throw new IllegalStateException("TacticalNPC is not available without a plugin");
         SimpleTacticalPlayerSkin.fetchSkinByUUID(plugin, uuid, callback, onError);
+    }
+
+    @Override
+    public @NotNull TacticalNPCFactory getNPCFactory() {
+        if (plugin == null) throw new IllegalStateException("A plugin must be provided in order to use TacticalNPC");
+        return npcFactory;
     }
 
     public static Tactical getInstance() {
