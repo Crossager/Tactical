@@ -1,7 +1,11 @@
 package net.crossager.tactical.api.npc;
 
+import net.crossager.tactical.api.TacticalNPC;
 import org.bukkit.EntityEffect;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 /**
  * A client-side player which is not physically present on the server. It allows for creating 'fake' players.
@@ -49,4 +53,24 @@ public interface TacticalPlayerNPC extends TacticalClientObject<TacticalPlayerNP
      */
     @NotNull
     TacticalPlayerNPC removeOnUnload(boolean removeOnUnload);
+
+    @NotNull
+    static TacticalPlayerNPC create(@NotNull Location location, @NotNull String profileName) {
+        return TacticalNPC.getInstance().getNPCFactory().createPlayerNPC(location, profileName);
+    }
+
+    @NotNull
+    static TacticalPlayerNPC create(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin) {
+        return TacticalNPC.getInstance().getNPCFactory().createPlayerNPC(location, profileName, skin);
+    }
+
+    @NotNull
+    static TacticalPlayerNPC create(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData) {
+        return TacticalNPC.getInstance().getNPCFactory().createPlayerNPC(location, profileName, skin, applyInitialMetaData);
+    }
+
+    @NotNull
+    static TacticalPlayerNPC create(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval) {
+        return TacticalNPC.getInstance().getNPCFactory().createPlayerNPC(location, profileName, skin, applyInitialMetaData, updateInterval);
+    }
 }

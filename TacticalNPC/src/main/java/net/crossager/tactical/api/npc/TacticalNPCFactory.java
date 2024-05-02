@@ -18,4 +18,13 @@ public interface TacticalNPCFactory {
     <E extends Entity> TacticalClientEntity<E> createClientEntity(@NotNull Location location, @NotNull Class<E> entityClass, @NotNull Consumer<E> applyInitialData);
     @NotNull
     <E extends Entity> TacticalClientEntity<E> createClientEntity(@NotNull Location location, @NotNull Class<E> entityClass, @NotNull Consumer<E> applyInitialData, long updateInterval);
+
+    @NotNull
+    TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName);
+    @NotNull
+    TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin);
+    @NotNull
+    TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData);
+    @NotNull
+    TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval);
 }

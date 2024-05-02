@@ -1,8 +1,6 @@
 package net.crossager.tactical.npc;
 
-import net.crossager.tactical.api.npc.TacticalClientEntity;
-import net.crossager.tactical.api.npc.TacticalHologram;
-import net.crossager.tactical.api.npc.TacticalNPCFactory;
+import net.crossager.tactical.api.npc.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,5 +39,25 @@ public class SimpleTacticalNPCFactory implements TacticalNPCFactory {
     @Override
     public @NotNull <E extends Entity> TacticalClientEntity<E> createClientEntity(@NotNull Location location, @NotNull Class<E> entityClass, @NotNull Consumer<E> applyInitialData, long updateInterval) {
         return new SimpleTacticalClientEntity<>(plugin, location, entityClass, applyInitialData, updateInterval);
+    }
+
+    @Override
+    public @NotNull TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName) {
+        return createPlayerNPC(location, profileName, TacticalPlayerSkin.NO_SKIN);
+    }
+
+    @Override
+    public @NotNull TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin) {
+        return createPlayerNPC(location, profileName, skin, metaData -> {});
+    }
+
+    @Override
+    public @NotNull TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData) {
+        return createPlayerNPC(location, profileName, skin, applyInitialMetaData, DEFAULT_UPDATE_INTERVAL);
+    }
+
+    @Override
+    public @NotNull TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval) {
+        return new SimpleTacticalPlayerNPC(plugin, profileName, location, applyInitialMetaData, skin, updateInterval);
     }
 }
