@@ -2,6 +2,7 @@ package net.crossager.tactical.npc;
 
 import net.crossager.tactical.api.npc.TacticalClientEntity;
 import net.crossager.tactical.api.protocol.packet.PacketData;
+import net.crossager.tactical.api.protocol.packet.PacketListener;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.protocol.packet.PacketWriter;
 import net.crossager.tactical.api.reflect.FieldAccessor;
@@ -20,6 +21,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -39,6 +41,8 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
 
     private final E entity;
     private final Object dataWatcher;
+    private final JavaPlugin plugin;
+    private final long updateInterval;
     private Location lastLocation;
     protected final Set<Player> isDisplayedForPlayer = new PlayerSet();
 
@@ -48,8 +52,13 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
     private PacketData metaDataPacket;
     private PacketData equipmentPacket;
 
+    private BukkitTask bukkitTask;
+    private final PacketListener packetListener;
+
     @SuppressWarnings("unchecked")
     public SimpleTacticalClientEntity(JavaPlugin plugin, Location location, Class<E> entityClass, Consumer<E> applyEntityData, long updateInterval) {
+        this.plugin = plugin;
+        this.updateInterval = updateInterval;
         Object nmsEntity = CREATE_ENTITY.invoke(location.getWorld(), location, entityClass, false);
         this.entity = (E) GET_BUKKIT_ENTITY.invoke(nmsEntity);
         this.dataWatcher = ENTITY_DATAWATCHER.read(nmsEntity);
@@ -60,37 +69,11 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
         metaDataPacket = generateMetaDataPacket();
         equipmentPacket = generateEquipmentPacket();
 
-        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-            List<PacketData> movementPackets = !lastLocation.equals(entity.getLocation()) ? generateMovementPackets() : List.of();
-            if (!lastLocation.equals(entity.getLocation())) lastLocation = entity.getLocation().clone();
-            entity.getLocation().getWorld().getPlayers().forEach(player -> {
-                if (!showToPlayer(player)) {
-                    if (isDisplayedForPlayer.contains(player)) {
-                        destroyPacket.send(player);
-                        isDisplayedForPlayer.remove(player);
-                    }
-                    return;
-                }
-                double distanceSquared = player.getLocation().distanceSquared(entity.getLocation());
-                if (distanceSquared < renderDistanceSquared) {
-                    if (!isDisplayedForPlayer.contains(player)) {
-                        spawnPacket.send(player);
-                        isDisplayedForPlayer.add(player);
-                    }
-                    movementPackets.forEach(data -> data.send(player));
-                    sendMeta(player);
-                } else if (distanceSquared > renderDistanceSquared + bufferRenderDistanceSquared) {
-                    if (isDisplayedForPlayer.contains(player)) {
-                        destroyPacket.send(player);
-                        isDisplayedForPlayer.remove(player);
-                    }
-                }
-            });
-        }, 0, updateInterval);
-
-        PacketType.play().in().useEntity().addPacketListener(new TacticalClientEntityListener<>(entity().getEntityId(), this, event -> {
+        packetListener = new TacticalClientEntityListener<>(entity().getEntityId(), this, event -> {
             Bukkit.getScheduler().runTask(plugin, () -> onInteract.accept(event));
-        }));
+        });
+
+        enable();
     }
 
     @Override
@@ -120,6 +103,45 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
     @Override
     protected int entityId() {
         return entity.getEntityId();
+    }
+
+    @Override
+    protected void enable() {
+        bukkitTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            List<PacketData> movementPackets = !lastLocation.equals(entity.getLocation()) ? generateMovementPackets() : List.of();
+            if (!lastLocation.equals(entity.getLocation())) lastLocation = entity.getLocation().clone();
+            entity.getLocation().getWorld().getPlayers().forEach(player -> {
+                if (!showToPlayer(player)) {
+                    if (isDisplayedForPlayer.contains(player)) {
+                        destroyPacket.send(player);
+                        isDisplayedForPlayer.remove(player);
+                    }
+                    return;
+                }
+                double distanceSquared = player.getLocation().distanceSquared(entity.getLocation());
+                if (distanceSquared < renderDistanceSquared) {
+                    if (!isDisplayedForPlayer.contains(player)) {
+                        spawnPacket.send(player);
+                        isDisplayedForPlayer.add(player);
+                    }
+                    movementPackets.forEach(data -> data.send(player));
+                    sendMeta(player);
+                } else if (distanceSquared > renderDistanceSquared + bufferRenderDistanceSquared) {
+                    if (isDisplayedForPlayer.contains(player)) {
+                        destroyPacket.send(player);
+                        isDisplayedForPlayer.remove(player);
+                    }
+                }
+            });
+        }, 0, updateInterval);
+
+        PacketType.play().in().useEntity().addPacketListener(packetListener);
+    }
+
+    @Override
+    protected void disable() {
+        bukkitTask.cancel();
+        PacketType.play().in().useEntity().removePacketListener(packetListener);
     }
 
     @Override

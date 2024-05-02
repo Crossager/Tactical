@@ -97,4 +97,13 @@ public interface TacticalClientObject<T extends TacticalClientObject<T>> {
      * Makes this entity flash red as if they were damaged.
      */
     void playHurtAnimation();
+    /**
+     * Enables/disables the entity from being rendered
+     */
+    void setEnabled(boolean enabled);
+
+    /**
+     * @return true if the entity is being rendered
+     */
+    boolean isEnabled();
 }

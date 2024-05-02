@@ -22,6 +22,9 @@ public abstract class SimpleTacticalClientObject<T extends TacticalClientObject<
     protected double bufferRenderDistanceSquared = bufferRenderDistance * bufferRenderDistance;
     protected Predicate<Player> showToPlayer = p -> true;
     protected Consumer<TacticalClientEntityInteractEvent<T>> onInteract = e -> {};
+    protected boolean enabled = true;
+
+
     @Override
     public double renderDistance() {
         return renderDistance;
@@ -105,9 +108,28 @@ public abstract class SimpleTacticalClientObject<T extends TacticalClientObject<
         playersToSendPackets().forEach(data::send);
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        if (this.enabled == enabled) return;
+        this.enabled = enabled;
+        if (enabled)
+            enable();
+        else
+            disable();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     protected abstract T returnThis();
 
     protected abstract int entityId();
+
+    protected abstract void enable();
+
+    protected abstract void disable();
 
     protected abstract Collection<Player> playersToSendPackets();
 }

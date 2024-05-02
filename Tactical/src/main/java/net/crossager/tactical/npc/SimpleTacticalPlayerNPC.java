@@ -3,6 +3,7 @@ package net.crossager.tactical.npc;
 import net.crossager.tactical.api.npc.TacticalPlayerNPC;
 import net.crossager.tactical.api.npc.TacticalPlayerNPCMetaData;
 import net.crossager.tactical.api.npc.TacticalPlayerSkin;
+import net.crossager.tactical.api.protocol.packet.PacketListener;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.protocol.ProtocolUtils;
 import net.crossager.tactical.util.PlayerSet;
@@ -10,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -22,9 +24,16 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
     private final SimpleTacticalPlayerNPCMetaData metaData;
     private final TacticalPlayerNPCPacketManager packetManager;
     private final EnumSet<SimpleTacticalPlayerNPCMetaData.ChangedMetaData> changedMetaData = EnumSet.noneOf(SimpleTacticalPlayerNPCMetaData.ChangedMetaData.class);
+    private final JavaPlugin plugin;
+    private final long updateInterval;
     private boolean removeOnUnload = false;
 
+    private BukkitTask bukkitTask;
+    private final PacketListener packetListener;
+
     public SimpleTacticalPlayerNPC(JavaPlugin plugin, String profileName, Location location, Consumer<TacticalPlayerNPCMetaData> applyPlayerData, TacticalPlayerSkin skin, long updateInterval) {
+        this.plugin = plugin;
+        this.updateInterval = updateInterval;
         metaData = new SimpleTacticalPlayerNPCMetaData(
                 changedMetaData,
                 location,
@@ -34,11 +43,10 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
         applyPlayerData.accept(metaData);
         this.packetManager = new TacticalPlayerNPCPacketManager(metaData);
 
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::onTick, 0, updateInterval);
-
-        PacketType.play().in().useEntity().addPacketListener(new TacticalClientEntityListener<>(metaData.entityId(), this, event -> {
+        this.packetListener = new TacticalClientEntityListener<>(metaData.entityId(), this, event -> {
             Bukkit.getScheduler().runTask(plugin, () -> onInteract.accept(event));
-        }));
+        });
+
     }
 
     @Override
@@ -49,6 +57,18 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
     @Override
     protected int entityId() {
         return metaData.entityId();
+    }
+
+    @Override
+    protected void enable() {
+        bukkitTask = plugin.getServer().getScheduler().runTaskTimer(plugin, this::onTick, 0, updateInterval);
+        PacketType.play().in().useEntity().addPacketListener(packetListener);
+    }
+
+    @Override
+    protected void disable() {
+        bukkitTask.cancel();
+        PacketType.play().in().useEntity().removePacketListener(packetListener);
     }
 
     @Override
