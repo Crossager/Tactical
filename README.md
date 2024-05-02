@@ -1,6 +1,7 @@
 # Tactical
 
 Welcome to the Tactical project! This repository contains several modules designed to facilitate various aspects of Minecraft plugin development. Each module serves a specific purpose and can be used independently or in combination with others.
+Currently supports from version 1.19.3 up to 1.20.4! Note that these are just the officically supported version, other version may still work.
 Below is a guide to every one of the different modules Tactical has to offer.
 
 # Get started
