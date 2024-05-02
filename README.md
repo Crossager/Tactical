@@ -24,6 +24,7 @@ Tactical uses Jitpack.io for repository management.
 - [TacticalConfigs](#tacticalconfigs)
 - [TacticalGUI](#tacticalgui)
 - [TacticalMusic](#tacticalmusic)
+- [TacticalNPC](#tacticalnpc)
 - [TacticalProtocol](#tacticalprotocol)
 - [Internal Tactical](#internal-tactical)
 - [Example Projects](#example-projects)
@@ -861,6 +862,68 @@ drumKit.soundForKey(28, Sound.ENTITY_ENDER_EYE_DEATH);
 drumKit.soundForKey(31, Sound.BLOCK_NOTE_BLOCK_COW_BELL);
 drumKit.soundForKey(44, Sound.BLOCK_AZALEA_LEAVES_FALL);
 drumKit.soundForKey(45, Sound.BLOCK_AZALEA_LEAVES_FALL);
+```
+
+# TacticalNPC
+TacticalNPC is a powerful framework for managing client-side entities. This means entities that are not physically present on the server, but are still displayed to the clients. 
+It provides a range of features to create and control NPCs, including setting attributes, animations, behaviors, and interactions.
+
+```xml
+<dependency>
+    <groupId>com.github.Crossager.Tactical</groupId>
+    <artifactId>TacticalNPC</artifactId>
+    <version>1.0</version> <!-- Replace with the latest version -->
+    <scope>provided</scope>
+</dependency>
+```
+
+## Creating client entities
+
+```java
+TacticalClientEntity<Zombie> clientZombie = TacticalClientEntity.create(location, EntityType.ZOMBIE);
+
+Zombie zombie = clientZombie.entity();
+
+// Modify the zombie however you want to
+zombie.setCustomName("Crazy zombie");
+zombie.setCustomNameVisible(true);
+zombie.getEquipment().setHelmet(ItemBuilder.of(Material.NETHERITE_HELMET).setName("§4Zombie Helmet"));
+
+// Call the update metadata to apply the changes
+clientZombie.updateMetaData();
+
+// Add a listener
+clientZombie.onInteract(event -> {
+     if (event.hand() == EquipmentSlot.OFF_HAND) return;
+     switch (event.type()) {
+        case ATTACK-> event.player().sendMessage("§cDo NOT attack me again!");
+        case INTERACT-> event.player().sendMessage("§eInteract again and you'll regret it");
+        case INTERACT_AT-> {
+            event.clientEntity().entity().getLocation().getWorld().spawnParticle(Particle.FLAME,event.clientEntity().entity().getLocation().add(event.target()),15);
+        }
+     }
+});
+
+// The main difference between INTERACT and INTERACT_AT, 
+// is that the INTERACT_AT also provides a location to where the entity was clicked.
+// Usually these are fired at exactly the same time
+// Beware that both interact events are fired for both the main, and the offhand.
+```
+
+## Creating a player npc
+
+Player NPCs are a lot more delicate than the other client entities. Though, TacticalNPC provides an easy-to-use interface for creating them.
+With the player NPCs you do not need to worry about an `updateMetaData` method, this is handled automatically.
+
+```java
+// Fetch a player skin from the web, create the npc in the callback
+TacticalPlayerSkin.fetchByUsername("md_5", skin -> {
+     TacticalPlayerNPC npc = TacticalPlayerNPC.create(location, "NPC_Name", skin, meta -> {
+        // Set initial metadata, make it burn
+        meta.equipment().helmet(Material.DIAMOND_HELMET);
+        meta.onFire(true);
+     }); // Update interval of 20 ticks (1 second)
+});
 ```
 
 # TacticalProtocol
