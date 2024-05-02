@@ -2,6 +2,12 @@ package net.crossager.tactical.npc;
 
 import net.crossager.tactical.api.npc.TacticalClientEntityInteractEvent;
 import net.crossager.tactical.api.npc.TacticalClientObject;
+import net.crossager.tactical.api.npc.TacticalMobAnimation;
+import net.crossager.tactical.api.protocol.packet.PacketData;
+import net.crossager.tactical.api.protocol.packet.PacketType;
+import net.crossager.tactical.api.protocol.packet.PacketWriter;
+import net.crossager.tactical.util.reflect.MinecraftVersion;
+import org.bukkit.EntityEffect;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,5 +69,45 @@ public abstract class SimpleTacticalClientObject<T extends TacticalClientObject<
         return returnThis();
     }
 
+    @Override
+    public void playEntityStatus(int status) {
+        PacketData data = PacketType.play().out().entityStatus().createEmptyPacketData();
+        PacketWriter writer = data.writer();
+        writer.writeInt(entityId());
+        writer.writeByte(status);
+        playersToSendPackets().forEach(data::send);
+    }
+
+    @Override
+    public void playEntityStatus(@NotNull EntityEffect status) {
+        playEntityStatus(status.getData());
+    }
+
+    @Override
+    public void playAnimation(@NotNull TacticalMobAnimation animation) {
+        PacketData data = PacketType.play().out().animation().createEmptyPacketData();
+        PacketWriter writer = data.writer();
+        writer.writeVarInt(entityId());
+        writer.writeByte(animation.id());
+        playersToSendPackets().forEach(data::send);
+    }
+
+    @Override
+    public void playHurtAnimation() {
+        if (!MinecraftVersion.hasVersion(MinecraftVersion.v1_19_4)) {
+            playEntityStatus(EntityEffect.HURT);
+            return;
+        }
+        PacketData data = PacketType.play().out().hurtAnimation().createEmptyPacketData();
+        PacketWriter writer = data.writer();
+        writer.writeVarInt(entityId());
+        writer.writeFloat(0); // we do not need to provide an angle since it's not a player
+        playersToSendPackets().forEach(data::send);
+    }
+
     protected abstract T returnThis();
+
+    protected abstract int entityId();
+
+    protected abstract Collection<Player> playersToSendPackets();
 }

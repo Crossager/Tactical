@@ -1,22 +1,18 @@
 package net.crossager.tactical.npc;
 
-import net.crossager.tactical.api.npc.TacticalMobAnimation;
 import net.crossager.tactical.api.npc.TacticalPlayerNPC;
 import net.crossager.tactical.api.npc.TacticalPlayerNPCMetaData;
 import net.crossager.tactical.api.npc.TacticalPlayerSkin;
-import net.crossager.tactical.api.protocol.packet.PacketData;
 import net.crossager.tactical.api.protocol.packet.PacketType;
-import net.crossager.tactical.api.protocol.packet.PacketWriter;
 import net.crossager.tactical.protocol.ProtocolUtils;
 import net.crossager.tactical.util.PlayerSet;
-import net.crossager.tactical.util.reflect.MinecraftVersion;
 import org.bukkit.Bukkit;
-import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -46,44 +42,18 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
     }
 
     @Override
-    public void playEntityStatus(int status) {
-        PacketData data = PacketType.play().out().entityStatus().createEmptyPacketData();
-        PacketWriter writer = data.writer();
-        writer.writeInt(metaData.entityId());
-        writer.writeByte(status);
-        isDisplayedForPlayer.forEach(data::send);
-    }
-
-    @Override
-    public void playEntityStatus(@NotNull EntityEffect status) {
-        playEntityStatus(status.getData());
-    }
-
-    @Override
     protected TacticalPlayerNPC returnThis() {
         return this;
     }
 
     @Override
-    public void playAnimation(@NotNull TacticalMobAnimation animation) {
-        PacketData data = PacketType.play().out().animation().createEmptyPacketData();
-        PacketWriter writer = data.writer();
-        writer.writeVarInt(metaData.entityId());
-        writer.writeByte(animation.id());
-        isDisplayedForPlayer.forEach(data::send);
+    protected int entityId() {
+        return metaData.entityId();
     }
 
     @Override
-    public void playHurtAnimation() {
-        if (!MinecraftVersion.hasVersion(MinecraftVersion.v1_19_4)) {
-            playEntityStatus(EntityEffect.HURT);
-            return;
-        }
-        PacketData data = PacketType.play().out().hurtAnimation().createEmptyPacketData();
-        PacketWriter writer = data.writer();
-        writer.writeVarInt(metaData.entityId());
-        writer.writeFloat(0); // we do not need to provide an angle since it's not a player
-        isDisplayedForPlayer.forEach(data::send);
+    protected Collection<Player> playersToSendPackets() {
+        return isDisplayedForPlayer;
     }
 
     @Override

@@ -14,7 +14,6 @@ import net.crossager.tactical.util.reflect.DynamicReflection;
 import net.crossager.tactical.util.reflect.InternalRegistry;
 import net.crossager.tactical.util.reflect.MinecraftClasses;
 import org.bukkit.Bukkit;
-import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -23,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -107,20 +107,6 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
     }
 
     @Override
-    public void playEntityStatus(int status) {
-        PacketData data = PacketType.play().out().entityStatus().createEmptyPacketData();
-        PacketWriter writer = data.writer();
-        writer.writeInt(entity.getEntityId());
-        writer.writeByte(status);
-        isDisplayedForPlayer.forEach(data::send);
-    }
-
-    @Override
-    public void playEntityStatus(@NotNull EntityEffect status) {
-        playEntityStatus(status.getData());
-    }
-
-    @Override
     public @NotNull TacticalClientEntity<E> location(Location location) {
         entity.teleport(location);
         return this;
@@ -129,6 +115,16 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
     @Override
     protected TacticalClientEntity<E> returnThis() {
         return this;
+    }
+
+    @Override
+    protected int entityId() {
+        return entity.getEntityId();
+    }
+
+    @Override
+    protected Collection<Player> playersToSendPackets() {
+        return isDisplayedForPlayer;
     }
 
     private void sendMeta(Player player) {

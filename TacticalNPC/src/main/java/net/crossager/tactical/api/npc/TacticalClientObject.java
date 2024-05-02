@@ -1,5 +1,6 @@
 package net.crossager.tactical.api.npc;
 
+import org.bukkit.EntityEffect;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,4 +76,25 @@ public interface TacticalClientObject<T extends TacticalClientObject<T>> {
      */
     @NotNull
     T onInteract(@NotNull Consumer<TacticalClientEntityInteractEvent<T>> onInteract);
+
+    /**
+     * Plays an entity status event for all players in render distance. A full list of the entity statuses can be found at <a href="https://wiki.vg/Entity_statuses">https://wiki.vg/Entity_statuses</a>
+     * @param status the id of the status to be played
+     */
+    void playEntityStatus(int status);
+
+    /**
+     * Plays an entity status event for all players in render distance.
+     * @param status the status to be played
+     */
+    void playEntityStatus(@NotNull EntityEffect status);
+    /**
+     * Plays an animation for this entity
+     * @param animation the animation to play
+     */
+    void playAnimation(@NotNull TacticalMobAnimation animation);
+    /**
+     * Makes this entity flash red as if they were damaged.
+     */
+    void playHurtAnimation();
 }
