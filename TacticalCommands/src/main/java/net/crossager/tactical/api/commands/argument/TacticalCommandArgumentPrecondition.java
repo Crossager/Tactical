@@ -43,7 +43,7 @@ public interface TacticalCommandArgumentPrecondition {
     @NotNull
     static TacticalCommandArgumentPrecondition stringNotShorterThan(int length) {
         return mapping -> {
-            if (mapping.asString().length() > length)
+            if (mapping.asString().length() < length)
                 throwException("Argument %s cannot be shorter than " + length);
         };
     }
@@ -82,7 +82,7 @@ public interface TacticalCommandArgumentPrecondition {
     @NotNull
     static TacticalCommandArgumentPrecondition notHigherThan(long max) {
         return mapping -> {
-            if (mapping.asLong() < max)
+            if (mapping.asLong() > max)
                 throwException("Argument %s cannot be higher than " + max);
         };
     }
