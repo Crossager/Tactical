@@ -1,9 +1,6 @@
 package net.crossager.tactical.commands;
 
-import net.crossager.tactical.api.commands.InvalidArgumentException;
-import net.crossager.tactical.api.commands.TabCompletionStrategy;
-import net.crossager.tactical.api.commands.TacticalCommand;
-import net.crossager.tactical.api.commands.TacticalSubCommand;
+import net.crossager.tactical.api.commands.*;
 import net.crossager.tactical.api.commands.argument.ArgumentPreconditionException;
 import net.crossager.tactical.api.commands.argument.TacticalCommandArgument;
 import net.crossager.tactical.api.util.TacticalUtils;
@@ -54,8 +51,12 @@ public class TacticalCommandHandler extends Command implements TabCompleter, Com
                 return true;
             }
             SimpleTacticalCommandExecutionContext executionContext = new SimpleTacticalCommandExecutionContext(sender, TacticalUtils.mapList(mappings, x -> x), args);
-            command.commandExecutor().execute(executionContext);
-            mappings.forEach(mapping -> mapping.asSubCommand().ifPresent(subCommand -> subCommand.commandExecutor().execute(executionContext)));
+            try {
+                command.commandExecutor().execute(executionContext);
+                mappings.forEach(mapping -> mapping.asSubCommand().ifPresent(subCommand -> subCommand.commandExecutor().execute(executionContext)));
+            } catch (CommandExecutionException e) {
+                sender.sendMessage(e.getMessage());
+            }
             return true;
         } catch (IncorrectUsageException e) {
             return false;
