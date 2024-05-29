@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * A {@link TacticalCommandArgument} represents an argument that can be used with a {@link TacticalBaseCommand}.
@@ -143,6 +144,20 @@ public interface TacticalCommandArgument {
      */
     static TacticalCommandArgument stringValues(@NotNull String name, @NotNull List<String> values) {
         return TacticalCommands.getInstance().getCommandFactory().argumentFactory().stringValues(name, values);
+    }
+
+
+
+    /**
+     * Create a TacticalCommandArgument with given name and list of string values.
+     *
+     * @param name the name of the argument
+     * @param valuesGetter the list of string values for the argument
+     * @param ensureInList whether to validate that the argument is in the list
+     * @return the created TacticalCommandArgument object
+     */
+    static TacticalCommandArgument stringValues(@NotNull String name, @NotNull Supplier<List<String>> valuesGetter, boolean ensureInList) {
+        return TacticalCommands.getInstance().getCommandFactory().argumentFactory().stringValues(name, valuesGetter, ensureInList);
     }
 
     /**

@@ -46,6 +46,17 @@ public interface TacticalCommandArgumentFactory {
     TacticalCommandArgument stringValues(@NotNull String name, @NotNull List<String> values);
 
     /**
+     * Create a TacticalCommandArgument with given name and list of string values.
+     *
+     * @param name the name of the argument
+     * @param valuesGetter the list of string values for the argument
+     * @param ensureInList whether to validate that the argument is in the list
+     * @return the created TacticalCommandArgument object
+     */
+    @NotNull
+    TacticalCommandArgument stringValues(@NotNull String name, @NotNull Supplier<List<String>> valuesGetter, boolean ensureInList);
+
+    /**
      * Create a TacticalCommandArgument with given name for a material input.
      *
      * @param name the name of the argument

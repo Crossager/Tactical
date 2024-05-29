@@ -37,6 +37,11 @@ public class SimpleTacticalCommandArgumentFactory implements TacticalCommandArgu
     }
 
     @Override
+    public @NotNull TacticalCommandArgument stringValues(@NotNull String name, @NotNull Supplier<List<String>> valuesGetter, boolean ensureInList) {
+        return new SimpleLazyStringValuesArgument(name, valuesGetter, ensureInList);
+    }
+
+    @Override
     public @NotNull TacticalCommandArgument material(@NotNull String name) {
         return createValues(name, () -> Arrays.asList(Material.values()), material -> material.name().toLowerCase(), string -> Material.getMaterial(string.toUpperCase()));
     }
