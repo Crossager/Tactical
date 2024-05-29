@@ -104,6 +104,11 @@ public class TacticalUtils {
         return (Class<T>) cl;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T castGeneric(Object o)  {
+        return (T) o;
+    }
+
     private static String addHyphenToUUID(String uuid) {
         return new StringBuilder(uuid)
                 .insert(8, '-')
