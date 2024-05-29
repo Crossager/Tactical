@@ -146,8 +146,6 @@ public interface TacticalCommandArgument {
         return TacticalCommands.getInstance().getCommandFactory().argumentFactory().stringValues(name, values);
     }
 
-
-
     /**
      * Create a TacticalCommandArgument with given name and list of string values.
      *
