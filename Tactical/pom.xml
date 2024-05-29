@@ -6,7 +6,7 @@
 
     <groupId>net.crossager</groupId>
     <artifactId>Tactical</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <packaging>jar</packaging>
 
     <name>Tactical</name>
@@ -141,49 +141,49 @@
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalAPI</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalConfigs</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalCommands</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalProtocol</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalGUI</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalCommons</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalMusic</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.crossager</groupId>
             <artifactId>TacticalNPC</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
