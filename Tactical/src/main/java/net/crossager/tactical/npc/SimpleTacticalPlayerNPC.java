@@ -47,6 +47,7 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
             Bukkit.getScheduler().runTask(plugin, () -> onInteract.accept(event));
         });
 
+        enable();
     }
 
     @Override
