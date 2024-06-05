@@ -1,6 +1,7 @@
 package net.crossager.tactical.api.npc;
 
 import net.crossager.tactical.api.TacticalNPC;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -85,5 +86,15 @@ public interface TacticalPlayerSkin {
      */
     static void fetchByUUID(@NotNull UUID uuid, @NotNull Consumer<TacticalPlayerSkin> callback, @NotNull Consumer<Throwable> onError) {
         TacticalNPC.getInstance().fetchSkinByUUID(uuid, callback, onError);
+    }
+
+    /**
+     * Converts a bukkit player texture into a wrapped TacticalPlayerSkin
+     *
+     * @param player the player to take the skin from
+     */
+    @NotNull
+    static TacticalPlayerSkin fromPlayer(@NotNull Player player) {
+        return TacticalNPC.getInstance().extractPlayerSkin(player);
     }
 }

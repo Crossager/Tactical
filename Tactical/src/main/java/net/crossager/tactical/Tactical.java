@@ -1,5 +1,6 @@
 package net.crossager.tactical;
 
+import com.google.gson.JsonObject;
 import net.crossager.tactical.api.TacticalAPI;
 import net.crossager.tactical.api.TacticalCommands;
 import net.crossager.tactical.api.TacticalRegistrar;
@@ -48,8 +49,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.sound.midi.MidiSystem;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -316,6 +319,13 @@ public class Tactical implements TacticalAPI {
     public void fetchSkinByUUID(@NotNull UUID uuid, @NotNull Consumer<TacticalPlayerSkin> callback, @NotNull Consumer<Throwable> onError) {
         if (plugin == null) throw new IllegalStateException("TacticalNPC is not available without a plugin");
         SimpleTacticalPlayerSkin.fetchSkinByUUID(plugin, uuid, callback, onError);
+    }
+
+    @Override
+    public @NotNull TacticalPlayerSkin extractPlayerSkin(@NotNull Player player) {
+        JsonObject jsonObject = SimpleTacticalPlayerSkin.fromPlayerTextures(player.getPlayerProfile(), false);
+        String encoded = Base64.getEncoder().encodeToString(jsonObject.toString().getBytes(StandardCharsets.UTF_8));
+        return TacticalPlayerSkin.of(encoded, "");
     }
 
     @Override

@@ -7,9 +7,12 @@ import net.crossager.tactical.api.util.TacticalUtils;
 import okhttp3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -77,5 +80,35 @@ public record SimpleTacticalPlayerSkin(String texture, String signature) impleme
                 Bukkit.getScheduler().runTask(plugin, () -> callback.accept(TacticalUtils.lenientUUIDFromString(id)));
             }
         });
+    }
+
+    public static JsonObject fromPlayerTextures(PlayerProfile profile, boolean signatureRequired) {
+        if (!profile.isComplete()) throw new IllegalArgumentException("Profile is not complete");
+        PlayerTextures textures = profile.getTextures();
+        JsonObject propertyData = new JsonObject();
+        JsonObject texturesMap = new JsonObject();
+        if (textures.getSkin() != null) {
+            JsonObject skinTexture = new JsonObject();
+            skinTexture.addProperty("url", textures.getSkin().toExternalForm());
+            if (textures.getSkinModel() != PlayerTextures.SkinModel.CLASSIC) {
+                JsonObject metadata = new JsonObject();
+                skinTexture.add("metadata", metadata);
+                metadata.addProperty("model", textures.getSkinModel().name().toLowerCase(Locale.ROOT));
+            }
+            texturesMap.add("SKIN", skinTexture);
+        }
+
+        if (textures.getCape() != null) {
+            JsonObject capeTexture = new JsonObject();
+            capeTexture.addProperty("url", textures.getCape().toExternalForm());
+            texturesMap.add("CAPE", capeTexture);
+        }
+
+        propertyData.addProperty("timestamp", textures.getTimestamp());
+        propertyData.addProperty("profileId", profile.getUniqueId().toString());
+        propertyData.addProperty("profileName", profile.getName());
+        propertyData.addProperty("signatureRequired", signatureRequired);
+        propertyData.add("textures", texturesMap);
+        return propertyData;
     }
 }
