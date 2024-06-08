@@ -70,6 +70,9 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
     protected void disable() {
         bukkitTask.cancel();
         PacketType.play().in().useEntity().removePacketListener(packetListener);
+        isDisplayedForPlayer.forEach(packetManager::sendDestroyPlayerPacket);
+        isDisplayedForPlayer.forEach(packetManager::sendRemovePlayerInfoPacket);
+        isDisplayedForPlayer.clear();
     }
 
     @Override
