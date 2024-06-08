@@ -36,7 +36,7 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
 
     public static final MethodInvoker<?> CREATE_ENTITY = DynamicReflection.getMethodByReturnTypeAndArgs(CraftBukkitReflection.getCraftRegionAccessorClass(), MinecraftClasses.getEntityClass(), Location.class, Class.class, Boolean.TYPE);
     public static final MethodInvoker<?> GET_BUKKIT_ENTITY = ReflectionUtils.getMethod(MinecraftClasses.getEntityClass(), "getBukkitEntity");
-    public static final MethodInvoker<List<?>> GENERATE_DATAWATCHER_LIST = DynamicReflection.getMethodByReturnTypeAndArgs(MinecraftClasses.getDataWatcherClass(), TacticalUtils.castClassGenerics(List.class));
+    public static final MethodInvoker<List<?>> GENERATE_DATAWATCHER_LIST = DynamicReflection.getMethodByReturnTypeAndArgs(MinecraftClasses.getDataWatcherClass(), TacticalUtils.castClassGenerics(List.class), 1);
     public static final MethodInvoker<List<?>> DATAWATCHER_SERIALIZE = DynamicReflection.getMethodByArgs(MinecraftClasses.getDataWatcherBClass(), MinecraftClasses.getPacketDataSerializerClass());
     public static final FieldAccessor<?> ENTITY_DATAWATCHER = DynamicReflection.getField(MinecraftClasses.getEntityClass(), MinecraftClasses.getDataWatcherClass());
 
