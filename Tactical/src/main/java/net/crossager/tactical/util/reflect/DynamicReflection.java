@@ -58,19 +58,11 @@ public class DynamicReflection {
     }
 
     public static <T> MethodInvoker<T> getMethodByReturnTypeAndArgs(Class<?> source, Class<T> returnType, Class<?>... args) {
-        return getMethodByReturnTypeAndArgs(source, returnType, 0, args);
-    }
-
-    public static <T> MethodInvoker<T> getMethodByReturnTypeAndArgs(Class<?> source, Class<T> returnType, int index, Class<?>... args) {
         for (Method method : source.getDeclaredMethods()) {
             Class<?>[] params = method.getParameterTypes();
             if (method.getReturnType().isAssignableFrom(returnType) && Arrays.equals(params, args)) {
-                if (index == 0) {
-                    method.setAccessible(true);
-                    return ReflectionUtils.fromMethod(method);
-                } else {
-                    index--;
-                }
+                method.setAccessible(true);
+                return ReflectionUtils.fromMethod(method);
             }
         }
         if (source.getSuperclass() == null) return Exceptions.notFound("Method");
