@@ -31,6 +31,7 @@ public class SimpleTacticalHologram extends SimpleTacticalClientEntity<ArmorStan
     @Override
     public @NotNull TacticalHologram text(@NotNull String text) {
         this.text = text;
+        entity().setCustomName(text);
         updateMetaData();
         return this;
     }
