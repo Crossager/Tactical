@@ -10,7 +10,6 @@ public final class TacticalPlugin extends JavaPlugin {
     public void onEnable() {
         tactical = new Tactical(this);
         tactical.init();
-
     }
 
     @Override
