@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -85,28 +86,40 @@ public record SimpleTacticalPlayerSkin(String texture, String signature) impleme
     public static JsonObject fromPlayerTextures(PlayerProfile profile, boolean signatureRequired) {
         if (!profile.isComplete()) throw new IllegalArgumentException("Profile is not complete");
         PlayerTextures textures = profile.getTextures();
+        return buildTextureObject(
+                profile.getUniqueId(),
+                profile.getName(),
+                textures.getSkin() != null ? textures.getSkin().toExternalForm() : null,
+                textures.getSkinModel(),
+                textures.getCape() != null ? textures.getCape().toExternalForm() : null,
+                textures.getTimestamp(),
+                signatureRequired
+        );
+    }
+
+    public static JsonObject buildTextureObject(@NotNull UUID profileId, String profileName, @Nullable String textureUrl, @NotNull PlayerTextures.SkinModel skinModel, @Nullable String capeUrl, long timestamp, boolean signatureRequired) {
         JsonObject propertyData = new JsonObject();
         JsonObject texturesMap = new JsonObject();
-        if (textures.getSkin() != null) {
+        if (textureUrl != null) {
             JsonObject skinTexture = new JsonObject();
-            skinTexture.addProperty("url", textures.getSkin().toExternalForm());
-            if (textures.getSkinModel() != PlayerTextures.SkinModel.CLASSIC) {
+            skinTexture.addProperty("url", textureUrl);
+            if (skinModel != PlayerTextures.SkinModel.CLASSIC) {
                 JsonObject metadata = new JsonObject();
                 skinTexture.add("metadata", metadata);
-                metadata.addProperty("model", textures.getSkinModel().name().toLowerCase(Locale.ROOT));
+                metadata.addProperty("model", skinModel.name().toLowerCase(Locale.ROOT));
             }
             texturesMap.add("SKIN", skinTexture);
         }
 
-        if (textures.getCape() != null) {
+        if (capeUrl != null) {
             JsonObject capeTexture = new JsonObject();
-            capeTexture.addProperty("url", textures.getCape().toExternalForm());
+            capeTexture.addProperty("url", capeUrl);
             texturesMap.add("CAPE", capeTexture);
         }
 
-        propertyData.addProperty("timestamp", textures.getTimestamp());
-        propertyData.addProperty("profileId", profile.getUniqueId().toString());
-        propertyData.addProperty("profileName", profile.getName());
+        propertyData.addProperty("timestamp", timestamp);
+        propertyData.addProperty("profileId", profileId.toString());
+        propertyData.addProperty("profileName", profileName);
         propertyData.addProperty("signatureRequired", signatureRequired);
         propertyData.add("textures", texturesMap);
         return propertyData;

@@ -2,7 +2,9 @@ package net.crossager.tactical.api.npc;
 
 import net.crossager.tactical.api.TacticalNPC;
 import org.bukkit.entity.Player;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -96,5 +98,36 @@ public interface TacticalPlayerSkin {
     @NotNull
     static TacticalPlayerSkin fromPlayer(@NotNull Player player) {
         return TacticalNPC.getInstance().extractPlayerSkin(player);
+    }
+
+    /**
+     * Compiles a {@link TacticalPlayerSkin} instance from the provided data.
+     *
+     * @param profileId  the unique identifier of the profile, must not be null
+     * @param profileName  the name of the profile, must not be null
+     * @param textureUrl  the URL of the texture, can be null
+     * @param skinModel  the skin model, must not be null
+     * @param capeUrl  the URL of the cape, can be null
+     * @return a {@link TacticalPlayerSkin} instance created from the provided data
+     */
+    @NotNull
+    static TacticalPlayerSkin fromData(@NotNull UUID profileId, @NotNull String profileName, @Nullable String textureUrl, @NotNull PlayerTextures.SkinModel skinModel, @Nullable String capeUrl) {
+        return TacticalNPC.getInstance().skinFromData(profileId, profileName, textureUrl, skinModel, capeUrl, null);
+    }
+
+    /**
+     * Compiles a {@link TacticalPlayerSkin} instance from the provided data.
+     *
+     * @param profileId  the unique identifier of the profile, must not be null
+     * @param profileName  the name of the profile, must not be null
+     * @param textureUrl  the URL of the texture, can be null
+     * @param skinModel  the skin model, must not be null
+     * @param capeUrl  the URL of the cape, can be null
+     * @param signature  the signature of the skin, can be null
+     * @return a {@link TacticalPlayerSkin} instance created from the provided data
+     */
+    @NotNull
+    static TacticalPlayerSkin fromData(@NotNull UUID profileId, @NotNull String profileName, @Nullable String textureUrl, @NotNull PlayerTextures.SkinModel skinModel, @Nullable String capeUrl, @Nullable String signature) {
+        return TacticalNPC.getInstance().skinFromData(profileId, profileName, textureUrl, skinModel, capeUrl, signature);
     }
 }

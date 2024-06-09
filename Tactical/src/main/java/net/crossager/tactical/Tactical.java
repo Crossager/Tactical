@@ -44,7 +44,9 @@ import net.crossager.tactical.util.reflect.CraftBukkitReflection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.sound.midi.MidiSystem;
 import java.io.IOException;
@@ -326,6 +328,13 @@ public class Tactical implements TacticalAPI {
         JsonObject jsonObject = SimpleTacticalPlayerSkin.fromPlayerTextures(player.getPlayerProfile(), false);
         String encoded = Base64.getEncoder().encodeToString(jsonObject.toString().getBytes(StandardCharsets.UTF_8));
         return TacticalPlayerSkin.of(encoded, "");
+    }
+
+    @Override
+    public @NotNull TacticalPlayerSkin skinFromData(@NotNull UUID profileId, @NotNull String profileName, @Nullable String textureUrl, PlayerTextures.@NotNull SkinModel skinModel, @Nullable String capeUrl, @Nullable String signature) {
+        JsonObject jsonObject = SimpleTacticalPlayerSkin.buildTextureObject(profileId, profileName, textureUrl, skinModel, capeUrl, System.currentTimeMillis(), signature != null);
+        String encoded = Base64.getEncoder().encodeToString(jsonObject.toString().getBytes(StandardCharsets.UTF_8));
+        return TacticalPlayerSkin.of(encoded, signature == null ? "" : signature);
     }
 
     @Override
