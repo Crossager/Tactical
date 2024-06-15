@@ -30,6 +30,7 @@ public class TacticalCommandHandler extends Command implements TabCompleter, Com
         this.command = command;
         this.description = command.options().description();
         this.usageMessage = command.options().usage();
+        setPermission(command.options().permission());
     }
 
     @Override
