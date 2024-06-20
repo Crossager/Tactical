@@ -47,5 +47,8 @@ public class PlayerMapManager implements Listener {
         for (PlayerMap<?> playerMap : playerMaps) {
             playerMap.remove(event.getPlayer());
         }
+        for (PlayerSet set : playerSets) {
+            set.remove(event.getPlayer());
+        }
     }
 }
