@@ -2,12 +2,17 @@ package net.crossager.tactical.api.gui.inventory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.MaterialData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -19,7 +24,7 @@ public class ItemUtils {
     /**
      * Represents an ItemStack with air material, indicating an empty slot.
      */
-    public static final ItemStack AIR = new ItemStack(Material.AIR);
+    public static final ItemStack AIR = new AirItem();
 
     /**
      * Sets a value in the metadata of an ItemStack.
@@ -110,5 +115,56 @@ public class ItemUtils {
         return modifyCustomMeta(itemStack, itemMeta -> {
             itemMeta.setOwnerProfile(Bukkit.createPlayerProfile(skullOwner));
         }, SkullMeta.class);
+    }
+
+    public static class AirItem extends ItemStack {
+        public AirItem() {
+            super(Material.AIR);
+        }
+
+        @Override
+        public void setType(@NotNull Material type) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setAmount(int amount) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setData(@Nullable MaterialData data) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void addEnchantments(@NotNull Map<Enchantment, Integer> enchantments) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void addEnchantment(@NotNull Enchantment ench, int level) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void addUnsafeEnchantments(@NotNull Map<Enchantment, Integer> enchantments) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void addUnsafeEnchantment(@NotNull Enchantment ench, int level) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public int removeEnchantment(@NotNull Enchantment ench) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean setItemMeta(@Nullable ItemMeta itemMeta) {
+            throw new UnsupportedOperationException();
+        }
     }
 }
