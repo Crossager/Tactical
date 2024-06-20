@@ -34,4 +34,9 @@ public class SimpleTacticalComponentData<T> implements TacticalComponentData<T> 
     public void set(@NotNull OfflinePlayer player, T value) {
         data.put(player, value);
     }
+
+    @Override
+    public void clear() {
+        data.clear();
+    }
 }

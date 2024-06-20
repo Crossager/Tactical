@@ -19,7 +19,7 @@ import java.util.Optional;
 public class SimpleTacticalStorageGUIComponent implements TacticalStorageGUIComponent {
     private final int width;
     private final int height;
-    private TacticalComponentData<ItemStack[][]> componentData = new GlobalComponentData<>(getDefault());
+    private TacticalComponentData<ItemStack[][]> componentData;
     private ItemsUpdateListener onItemsUpdate = (player, items) -> {};
     private ItemPredicate itemPredicate = (player, itemStack) -> true;
 
@@ -27,6 +27,7 @@ public class SimpleTacticalStorageGUIComponent implements TacticalStorageGUIComp
         GUIUtils.checkDimensions(width, height);
         this.width = width;
         this.height = height;
+        componentData = new GlobalComponentData<>(this);
     }
 
     @Override
