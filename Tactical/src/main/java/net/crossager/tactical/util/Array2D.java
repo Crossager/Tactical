@@ -24,6 +24,14 @@ public class Array2D<E> {
         this.defaultvalue = defaultvalue;
     }
 
+    public Array2D(E[][] internalArray, int width, IntFunction<E[]> arrayConstructor, E defaultvalue) {
+        this.internalArray = internalArray;
+        this.height = internalArray.length;
+        this.width = width;
+        this.arrayConstructor = arrayConstructor;
+        this.defaultvalue = defaultvalue;
+    }
+
     public Array2D(int width, int height, IntFunction<E[]> arrayConstructor, IntFunction<E[][]> largeArrayConstructor) {
         this.internalArray = largeArrayConstructor.apply(width);
         this.width = width;
