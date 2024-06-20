@@ -1,6 +1,7 @@
 package net.crossager.tactical.api.gui.inventory.components;
 
 import net.crossager.tactical.api.TacticalGUI;
+import net.crossager.tactical.api.gui.inventory.TacticalComponentPlayerDataListener;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Represents a component of a storage GUI that can hold items.
  */
-public interface TacticalStorageGUIComponent extends TacticalGUIComponent {
+public interface TacticalStorageGUIComponent extends TacticalGUIComponent, TacticalComponentPlayerDataListener<ItemStack[][]> {
 
     /**
      * Sets a listener to be notified when items in this storage component are updated.

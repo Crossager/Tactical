@@ -1,9 +1,10 @@
 package net.crossager.tactical.gui.inventory;
 
 import net.crossager.tactical.api.gui.inventory.ItemMoveAction;
+import net.crossager.tactical.api.gui.inventory.ItemUtils;
+import net.crossager.tactical.api.gui.inventory.TacticalComponentData;
 import net.crossager.tactical.api.gui.inventory.TacticalGUIClickEvent;
 import net.crossager.tactical.api.gui.inventory.components.TacticalStorageGUIComponent;
-import net.crossager.tactical.api.gui.inventory.ItemUtils;
 import net.crossager.tactical.gui.GUIUtils;
 import net.crossager.tactical.util.Array2D;
 import org.bukkit.Material;
@@ -12,12 +13,13 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 public class SimpleTacticalStorageGUIComponent implements TacticalStorageGUIComponent {
     private final int width;
     private final int height;
-    private final Map<Player, Array2D<ItemStack>> playerItems = new HashMap<>();
+    private TacticalComponentData<ItemStack[][]> componentData = new GlobalComponentData<>(getDefault());
     private ItemsUpdateListener onItemsUpdate = (player, items) -> {};
     private ItemPredicate itemPredicate = (player, itemStack) -> true;
 
@@ -176,6 +178,22 @@ public class SimpleTacticalStorageGUIComponent implements TacticalStorageGUIComp
     }
 
     private Array2D<ItemStack> playerItems(Player player) {
-        return playerItems.computeIfAbsent(player, p -> new Array2D<>(width, height, ItemStack[]::new, ItemStack[][]::new, ItemUtils.AIR));
+        return new Array2D<>(componentData.get(player), width, ItemStack[]::new, ItemUtils.AIR);
+    }
+
+    @Override
+    public ItemStack[][] getDefault() {
+        return new ItemStack[height][];
+    }
+
+    @Override
+    public boolean isRegistered() {
+        return !(componentData instanceof GlobalComponentData<ItemStack[][]>);
+    }
+
+    @Override
+    public void register(@NotNull TacticalComponentData<ItemStack[][]> data) {
+        if (isRegistered()) throw new IllegalStateException("Already registered");
+        componentData = data;
     }
 }
