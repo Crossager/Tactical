@@ -1,8 +1,9 @@
 package net.crossager.tactical.gui.inventory;
 
 import net.crossager.tactical.api.gui.inventory.ItemMoveAction;
-import net.crossager.tactical.api.gui.inventory.components.TacticalGUIComponent;
+import net.crossager.tactical.api.gui.inventory.TacticalComponentPlayerDataListener;
 import net.crossager.tactical.api.gui.inventory.TacticalInventoryGUI;
+import net.crossager.tactical.api.gui.inventory.components.TacticalGUIComponent;
 import net.crossager.tactical.gui.GUIUtils;
 import net.crossager.tactical.gui.TacticalGUIManager;
 import net.crossager.tactical.util.PlayerMap;
@@ -30,6 +31,7 @@ public class SimpleAbstractTacticalInventoryGUI extends SimpleTacticalGUIContain
     private boolean canPlayerInteractWithInventory = false;
     private boolean registered = true;
     private final List<AnimationArea> animationAreas = new ArrayList<>();
+    private final List<SimpleTacticalComponentData<?>> componentData = new ArrayList<>();
 
     public SimpleAbstractTacticalInventoryGUI(TacticalGUIManager guiManager, int width, int height, Function<Player, Inventory> inventoryCreator) {
         super(width, height);
@@ -112,6 +114,10 @@ public class SimpleAbstractTacticalInventoryGUI extends SimpleTacticalGUIContain
         if (event.getView().getTopInventory() != inventories.get(player)) return;
         onClose.accept(player);
         playerHasOpen.remove(player);
+        for (SimpleTacticalComponentData<?> data : componentData) {
+            if (data.dataPersistence() == TacticalComponentPlayerDataListener.DataPersistence.RESET_ON_CLOSE)
+                data.set(player, null);
+        }
     }
 
     private void onInventoryDrag(InventoryDragEvent event) {
@@ -224,6 +230,14 @@ public class SimpleAbstractTacticalInventoryGUI extends SimpleTacticalGUIContain
             Bukkit.getScheduler().cancelTask(animationArea.taskId());
             return true;
         });
+        return this;
+    }
+
+    @Override
+    public <T> @NotNull TacticalInventoryGUI registerPlayerDataListener(@NotNull TacticalComponentPlayerDataListener<T> listener, TacticalComponentPlayerDataListener.@NotNull DataPersistence dataPersistence) {
+        SimpleTacticalComponentData<T> data = new SimpleTacticalComponentData<>(listener, dataPersistence);
+        listener.register(data);
+        componentData.add(data);
         return this;
     }
 }

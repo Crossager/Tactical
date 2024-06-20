@@ -151,6 +151,15 @@ public interface TacticalInventoryGUI extends TacticalGUIContainer, TacticalBase
     TacticalInventoryGUI removeAnimationArea(int fromX, int fromY, int toX, int toY);
 
     /**
+     * Registers a player data listener to this gui
+     * @param listener the data listener to register
+     * @param dataPersistence which persistence level the data should have
+     * @return The updated GUI
+     */
+    @NotNull
+    <T> TacticalInventoryGUI registerPlayerDataListener(@NotNull TacticalComponentPlayerDataListener<T> listener, @NotNull TacticalComponentPlayerDataListener.DataPersistence dataPersistence);
+
+    /**
      * Creates a new inventory with the specified number of rows and title.
      *
      * @param rows  The number of rows in the inventory
