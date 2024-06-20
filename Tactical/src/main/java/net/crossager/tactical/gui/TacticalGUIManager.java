@@ -8,9 +8,7 @@ import net.crossager.tactical.api.gui.input.TacticalAnvilInputGUI;
 import net.crossager.tactical.api.gui.TacticalBaseGUI;
 import net.crossager.tactical.api.gui.input.TacticalSignGUI;
 import net.crossager.tactical.api.gui.inventory.*;
-import net.crossager.tactical.api.gui.inventory.components.TacticalGUIContainer;
-import net.crossager.tactical.api.gui.inventory.components.TacticalStaticGUIComponent;
-import net.crossager.tactical.api.gui.inventory.components.TacticalStorageGUIComponent;
+import net.crossager.tactical.api.gui.inventory.components.*;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.gui.animations.SimpleTacticalAnimator;
 import net.crossager.tactical.gui.input.SimpleTacticalAnvilInputGUI;
@@ -140,6 +138,11 @@ public class TacticalGUIManager implements TacticalGUIFactory {
     @Override
     public @NotNull TacticalStaticGUIComponent createStaticComponent(@NotNull TacticalAnimation<ItemStack> animation, @NotNull TacticalAnimator animator) {
         return new SimpleTacticalStaticGUIComponent().animate(animation, animator);
+    }
+
+    @Override
+    public <E extends TacticalGUIComponent> TacticalPageViewerComponent<E> createPageViewer(List<E> items, int width, int height) {
+        return new SimpleTacticalPageViewerComponent<>(items, width, height);
     }
 
     @Override

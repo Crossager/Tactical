@@ -6,9 +6,7 @@ import net.crossager.tactical.api.gui.animations.TacticalAnimator;
 import net.crossager.tactical.api.gui.input.TacticalAnvilInputGUI;
 import net.crossager.tactical.api.gui.input.TacticalSignGUI;
 import net.crossager.tactical.api.gui.inventory.*;
-import net.crossager.tactical.api.gui.inventory.components.TacticalGUIContainer;
-import net.crossager.tactical.api.gui.inventory.components.TacticalStaticGUIComponent;
-import net.crossager.tactical.api.gui.inventory.components.TacticalStorageGUIComponent;
+import net.crossager.tactical.api.gui.inventory.components.*;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,4 +48,6 @@ public interface TacticalGUIFactory {
 
     @NotNull
     TacticalStaticGUIComponent createStaticComponent(@NotNull TacticalAnimation<ItemStack> animation, @NotNull TacticalAnimator animator);
+
+    <E extends TacticalGUIComponent> TacticalPageViewerComponent<E> createPageViewer(List<E> items, int width, int height);
 }
