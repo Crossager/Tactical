@@ -1,6 +1,7 @@
 package net.crossager.tactical.api.gui.inventory.components;
 
 import net.crossager.tactical.api.TacticalGUI;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -22,6 +23,17 @@ public interface TacticalGUIContainer extends TacticalGUIComponent {
     TacticalGUIContainer setComponent(int x, int y, @NotNull TacticalGUIComponent component);
 
     /**
+     * Sets the item at the specified position within the container.
+     *
+     * @param x         The x-coordinate of the item
+     * @param y         The y-coordinate of the item
+     * @param itemStack The item to set
+     * @return The container with the item set
+     */
+    @NotNull
+    TacticalGUIContainer setItem(int x, int y, @NotNull ItemStack itemStack);
+
+    /**
      * Removes the component at the specified position within the container.
      *
      * @param x The x-coordinate of the component to remove
@@ -39,6 +51,15 @@ public interface TacticalGUIContainer extends TacticalGUIComponent {
      */
     @NotNull
     TacticalGUIContainer createBorder(@NotNull TacticalGUIComponent component);
+
+    /**
+     * Creates a border around the container using the specified item.
+     *
+     * @param itemStack The item to use for the border
+     * @return The container with the border created
+     */
+    @NotNull
+    TacticalGUIContainer createBorder(@NotNull ItemStack itemStack);
 
     /**
      * Fills the specified region within the container with the given component.

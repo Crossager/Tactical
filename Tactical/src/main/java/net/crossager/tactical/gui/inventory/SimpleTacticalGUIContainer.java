@@ -4,6 +4,7 @@ import net.crossager.tactical.api.gui.inventory.ItemMoveAction;
 import net.crossager.tactical.api.gui.inventory.TacticalGUIClickEvent;
 import net.crossager.tactical.api.gui.inventory.components.TacticalGUIComponent;
 import net.crossager.tactical.api.gui.inventory.components.TacticalGUIContainer;
+import net.crossager.tactical.api.gui.inventory.components.TacticalItemGUIComponent;
 import net.crossager.tactical.gui.GUIUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -99,6 +100,11 @@ public class SimpleTacticalGUIContainer implements TacticalGUIContainer {
     }
 
     @Override
+    public @NotNull TacticalGUIContainer setItem(int x, int y, @NotNull ItemStack itemStack) {
+        return setComponent(x, y, TacticalItemGUIComponent.of(itemStack));
+    }
+
+    @Override
     public @NotNull TacticalGUIContainer removeComponent(int x, int y) {
         GUIUtils.notOutOfBounds(x, y, this);
         ComponentRepresentation rep = row(x)[y];
@@ -132,6 +138,11 @@ public class SimpleTacticalGUIContainer implements TacticalGUIContainer {
             setComponent(width - 1, y, component);
         }
         return this;
+    }
+
+    @Override
+    public @NotNull TacticalGUIContainer createBorder(@NotNull ItemStack itemStack) {
+        return createBorder(TacticalItemGUIComponent.of(itemStack));
     }
 
     @Override
