@@ -146,6 +146,11 @@ public class TacticalGUIManager implements TacticalGUIFactory {
     }
 
     @Override
+    public @NotNull TacticalItemGUIComponent createItemComponent(@NotNull ItemStack itemStack) {
+        return new SimpleTacticalItemGUIComponent(itemStack);
+    }
+
+    @Override
     public @NotNull TacticalStaticGUIComponent createStaticComponent(@NotNull ItemStack itemStack) {
         return new SimpleTacticalStaticGUIComponent().itemStack(itemStack);
     }

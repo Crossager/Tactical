@@ -50,4 +50,7 @@ public interface TacticalGUIFactory {
     TacticalStaticGUIComponent createStaticComponent(@NotNull TacticalAnimation<ItemStack> animation, @NotNull TacticalAnimator animator);
 
     <E extends TacticalGUIComponent> TacticalPageViewerComponent<E> createPageViewer(List<E> items, int width, int height);
+
+    @NotNull
+    TacticalItemGUIComponent createItemComponent(@NotNull ItemStack itemStack);
 }
