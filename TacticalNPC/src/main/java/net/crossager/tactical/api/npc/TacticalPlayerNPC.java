@@ -5,6 +5,7 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -72,5 +73,10 @@ public interface TacticalPlayerNPC extends TacticalClientObject<TacticalPlayerNP
     @NotNull
     static TacticalPlayerNPC create(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval) {
         return TacticalNPC.getInstance().getNPCFactory().createPlayerNPC(location, profileName, skin, applyInitialMetaData, updateInterval);
+    }
+
+    @NotNull
+    static TacticalPlayerNPC create(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval, @NotNull UUID uuid) {
+        return TacticalNPC.getInstance().getNPCFactory().createPlayerNPC(location, profileName, skin, applyInitialMetaData, updateInterval, uuid);
     }
 }

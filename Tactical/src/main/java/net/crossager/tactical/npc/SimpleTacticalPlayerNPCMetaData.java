@@ -42,10 +42,11 @@ public final class SimpleTacticalPlayerNPCMetaData implements TacticalPlayerNPCM
             Location location,
             int entityId,
             String profileName,
-            TacticalPlayerSkin skin) {
+            TacticalPlayerSkin skin,
+            UUID profileId) {
         this.changedMetaData = changedMetaData;
         this.skin = skin;
-        this.profileId = UUID.randomUUID();
+        this.profileId = profileId;
         this.location = location;
         this.entityId = entityId;
         this.profileName = profileName;

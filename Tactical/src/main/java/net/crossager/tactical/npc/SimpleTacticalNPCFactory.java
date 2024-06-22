@@ -6,6 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class SimpleTacticalNPCFactory implements TacticalNPCFactory {
@@ -58,6 +59,11 @@ public class SimpleTacticalNPCFactory implements TacticalNPCFactory {
 
     @Override
     public @NotNull TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval) {
-        return new SimpleTacticalPlayerNPC(plugin, profileName, location, applyInitialMetaData, skin, updateInterval);
+        return createPlayerNPC(location, profileName, skin, applyInitialMetaData, updateInterval, UUID.randomUUID());
+    }
+
+    @Override
+    public @NotNull TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval, @NotNull UUID uuid) {
+        return new SimpleTacticalPlayerNPC(plugin, profileName, location, applyInitialMetaData, skin, updateInterval, uuid);
     }
 }

@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<TacticalPlayerNPC> implements TacticalPlayerNPC {
@@ -31,7 +32,7 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
     private BukkitTask bukkitTask;
     private final PacketListener packetListener;
 
-    public SimpleTacticalPlayerNPC(JavaPlugin plugin, String profileName, Location location, Consumer<TacticalPlayerNPCMetaData> applyPlayerData, TacticalPlayerSkin skin, long updateInterval) {
+    public SimpleTacticalPlayerNPC(JavaPlugin plugin, String profileName, Location location, Consumer<TacticalPlayerNPCMetaData> applyPlayerData, TacticalPlayerSkin skin, long updateInterval, UUID profileId) {
         this.plugin = plugin;
         this.updateInterval = updateInterval;
         metaData = new SimpleTacticalPlayerNPCMetaData(
@@ -39,7 +40,7 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
                 location,
                 ProtocolUtils.GENERATE_ENTITY_ID.get(),
                 profileName,
-                skin);
+                skin, profileId);
         applyPlayerData.accept(metaData);
         this.packetManager = new TacticalPlayerNPCPacketManager(metaData);
 
