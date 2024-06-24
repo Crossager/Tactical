@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -106,4 +107,9 @@ public interface TacticalClientObject<T extends TacticalClientObject<T>> {
      * @return true if the entity is being rendered
      */
     boolean isEnabled();
+
+    /**
+     * @return a modifiable list containing all the controllers for this entity
+     */
+    List<TacticalClientEntityController<?>> controllers();
 }

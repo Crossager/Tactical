@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public interface TacticalNPCFactory {
     @NotNull
@@ -30,4 +31,6 @@ public interface TacticalNPCFactory {
     TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval);
     @NotNull
     TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval, @NotNull UUID uuid);
+    @NotNull
+    TacticalClientEntityController<Location> lookAtClosest(@NotNull Predicate<Entity> entityFilter, int maxDistance);
 }

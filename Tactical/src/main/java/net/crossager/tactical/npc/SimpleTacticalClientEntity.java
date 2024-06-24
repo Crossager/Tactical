@@ -109,6 +109,7 @@ public class SimpleTacticalClientEntity<E extends Entity> extends SimpleTactical
     @Override
     protected void enable() {
         bukkitTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            runControllers();
             List<PacketData> movementPackets = !lastLocation.equals(entity.getLocation()) ? generateMovementPackets() : List.of();
             if (!lastLocation.equals(entity.getLocation())) lastLocation = entity.getLocation().clone();
             entity.getLocation().getWorld().getPlayers().forEach(player -> {

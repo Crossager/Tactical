@@ -1,5 +1,6 @@
 package net.crossager.tactical.npc;
 
+import net.crossager.tactical.api.npc.TacticalClientEntityController;
 import net.crossager.tactical.api.npc.TacticalClientEntityInteractEvent;
 import net.crossager.tactical.api.npc.TacticalClientObject;
 import net.crossager.tactical.api.npc.TacticalMobAnimation;
@@ -11,7 +12,9 @@ import org.bukkit.EntityEffect;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -23,6 +26,7 @@ public abstract class SimpleTacticalClientObject<T extends TacticalClientObject<
     protected Predicate<Player> showToPlayer = p -> true;
     protected Consumer<TacticalClientEntityInteractEvent<T>> onInteract = e -> {};
     protected boolean enabled = true;
+    protected final List<TacticalClientEntityController<?>> controllers = new ArrayList<>();
 
 
     @Override
@@ -121,6 +125,23 @@ public abstract class SimpleTacticalClientObject<T extends TacticalClientObject<
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    @Override
+    public List<TacticalClientEntityController<?>> controllers() {
+        return controllers;
+    }
+
+    protected void runControllers() {
+        for (TacticalClientEntityController<?> controller : controllers) {
+            runController(controller);
+        }
+    }
+
+    private <C> void runController(TacticalClientEntityController<C> controller) {
+        C data = controller.run(this);
+        if (data == null) return;
+        controller.applyData(data, this);
     }
 
     protected abstract T returnThis();

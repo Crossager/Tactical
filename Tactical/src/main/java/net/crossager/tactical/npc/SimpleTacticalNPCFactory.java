@@ -1,6 +1,7 @@
 package net.crossager.tactical.npc;
 
 import net.crossager.tactical.api.npc.*;
+import net.crossager.tactical.npc.controllers.LookAtClosest;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class SimpleTacticalNPCFactory implements TacticalNPCFactory {
     private static final long DEFAULT_UPDATE_INTERVAL = 2;
@@ -65,5 +67,10 @@ public class SimpleTacticalNPCFactory implements TacticalNPCFactory {
     @Override
     public @NotNull TacticalPlayerNPC createPlayerNPC(@NotNull Location location, @NotNull String profileName, @NotNull TacticalPlayerSkin skin, @NotNull Consumer<TacticalPlayerNPCMetaData> applyInitialMetaData, long updateInterval, @NotNull UUID uuid) {
         return new SimpleTacticalPlayerNPC(plugin, profileName, location, applyInitialMetaData, skin, updateInterval, uuid);
+    }
+
+    @Override
+    public @NotNull TacticalClientEntityController<Location> lookAtClosest(@NotNull Predicate<Entity> entityFilter, int maxDistance) {
+        return new LookAtClosest(entityFilter, maxDistance);
     }
 }

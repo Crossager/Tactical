@@ -98,6 +98,7 @@ public class SimpleTacticalPlayerNPC extends SimpleTacticalClientObject<Tactical
     }
 
     private void onTick() {
+        runControllers();
         changedMetaData.forEach(changed -> {
             switch (changed) {
                 case LOCATION -> packetManager.updateMovementPacket();
