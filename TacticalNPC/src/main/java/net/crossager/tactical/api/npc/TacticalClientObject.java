@@ -112,4 +112,29 @@ public interface TacticalClientObject<T extends TacticalClientObject<T>> {
      * @return a modifiable list containing all the controllers for this entity
      */
     List<TacticalClientEntityController<?>> controllers();
+
+    /**
+     * Retrieves the data associated with the specified tag.
+     *
+     * @param <E> the type of the data associated with the tag
+     * @param tag the tag whose data is to be retrieved, must not be null
+     * @return the data associated with the specified tag, or null if no data is associated with the tag
+     */
+    <E> E getTagData(@NotNull TacticalClientEntityTag tag);
+
+    /**
+     * Sets the data for the specified tag.
+     *
+     * @param <E> the type of the data to be set for the tag
+     * @param tag the tag for which the data is to be set, must not be null
+     * @param data the data to set for the specified tag, must not be null
+     */
+    <E> void setTagData(@NotNull TacticalClientEntityTag tag, @NotNull E data);
+
+    /**
+     * Removes the data associated with the specified tag.
+     *
+     * @param tag the tag whose data is to be removed, must not be null
+     */
+    void removeTagData(@NotNull TacticalClientEntityTag tag);
 }

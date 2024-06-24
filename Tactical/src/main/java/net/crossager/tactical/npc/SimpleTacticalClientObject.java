@@ -1,9 +1,7 @@
 package net.crossager.tactical.npc;
 
-import net.crossager.tactical.api.npc.TacticalClientEntityController;
-import net.crossager.tactical.api.npc.TacticalClientEntityInteractEvent;
-import net.crossager.tactical.api.npc.TacticalClientObject;
-import net.crossager.tactical.api.npc.TacticalMobAnimation;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.crossager.tactical.api.npc.*;
 import net.crossager.tactical.api.protocol.packet.PacketData;
 import net.crossager.tactical.api.protocol.packet.PacketType;
 import net.crossager.tactical.api.protocol.packet.PacketWriter;
@@ -27,7 +25,7 @@ public abstract class SimpleTacticalClientObject<T extends TacticalClientObject<
     protected Consumer<TacticalClientEntityInteractEvent<T>> onInteract = e -> {};
     protected boolean enabled = true;
     protected final List<TacticalClientEntityController<?>> controllers = new ArrayList<>();
-
+    protected final Int2ObjectOpenHashMap<?> tagData = new Int2ObjectOpenHashMap<>();
 
     @Override
     public double renderDistance() {
@@ -142,6 +140,22 @@ public abstract class SimpleTacticalClientObject<T extends TacticalClientObject<
         C data = controller.run(this);
         if (data == null) return;
         controller.applyData(data, this);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <E> E getTagData(@NotNull TacticalClientEntityTag tag) {
+        return (E) tagData.get(tag.hashCode());
+    }
+
+    @Override
+    public <E> void setTagData(@NotNull TacticalClientEntityTag tag, @NotNull E data) {
+        tagData.remove(tag.hashCode());
+    }
+
+    @Override
+    public void removeTagData(@NotNull TacticalClientEntityTag tag) {
+        tagData.remove(tag.hashCode());
     }
 
     protected abstract T returnThis();
