@@ -29,11 +29,16 @@ public class TacticalMusicManager {
     private final JavaPlugin plugin;
     private final Gson gson = new GsonBuilder().registerTypeAdapterFactory(new BaseAdapterFactory(TacticalNoteSequence.class, new TacticalNoteSequenceAdapter(this))).create();
 
+    public TacticalMusicManager() {
+        this(null);
+    }
+
     public TacticalMusicManager(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
     public BukkitTask createTask(Runnable callback, long ticksFromNow, long tickSpacing) {
+        if (plugin == null) throw new IllegalStateException("This feature of TacticalMusic is not available without a registered plugin");
         return plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, callback, ticksFromNow, tickSpacing);
     }
 

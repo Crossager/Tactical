@@ -95,7 +95,7 @@ public class Tactical implements TacticalAPI {
         this.protocolManager = null;
         this.guiManager = null;
         this.playerMapManager = null;
-        this.musicManager = null;
+        this.musicManager = new TacticalMusicManager();
         this.npcFactory = null;
     }
 
