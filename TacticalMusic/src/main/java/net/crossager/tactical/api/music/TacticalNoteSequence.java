@@ -33,16 +33,16 @@ public interface TacticalNoteSequence {
     TacticalMusicPlayer playForAll(@NotNull Location locationToPlay, @NotNull SoundCategory soundCategory);
 
     /**
-     * Retrieves the length of each tick in milliseconds.
+     * Retrieves the length of this sequence in minecraft ticks
      *
-     * @return The length of each tick in milliseconds.
+     * @return The length of this sequence in minecraft ticks
      */
     int tickLength();
 
     /**
-     * Retrieves the spacing between ticks in milliseconds.
+     * Retrieves the spacing between each note frame in ticks
      *
-     * @return The spacing between ticks in milliseconds.
+     * @return The spacing between each note frame in ticks
      */
     int tickSpacing();
 
