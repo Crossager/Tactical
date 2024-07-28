@@ -89,8 +89,8 @@ public class TacticalMusicManager {
                 } else if (event.getMessage() instanceof MetaMessage message) {
                     if (message.getType() == 3)
                         currentSound = new String(message.getData());
-                } else {
-                    throw new RuntimeException(event.getMessage().toString());
+                } else if (!(event.getMessage() instanceof SysexMessage)) { // Sysex messages can be ignored
+                    throw new RuntimeException("Unknown midi message: " + event.getMessage());
                 }
             }
             if (options.moveOctaves() && !options.moveKeys() && lowestOctave != 0 && trackNotes.size() > 0 && !trackNotes.get(0).isDrum()) {
