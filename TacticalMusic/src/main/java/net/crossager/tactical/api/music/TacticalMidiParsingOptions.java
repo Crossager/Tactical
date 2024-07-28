@@ -96,7 +96,7 @@ public interface TacticalMidiParsingOptions {
      * @return The Sound associated with the MIDI instrument.
      */
     @NotNull
-    Sound soundForInstrument(@NotNull String midiInstrument);
+    String soundForInstrument(@NotNull String midiInstrument);
 
     /**
      * Associates the specified Sound with the given MIDI instrument.
@@ -116,6 +116,33 @@ public interface TacticalMidiParsingOptions {
      */
     @NotNull
     TacticalMidiParsingOptions defaultSound(@NotNull Sound sound);
+
+    /**
+     * Associates the specified Sound with the given MIDI instrument.
+     *
+     * @param midiInstrument The MIDI instrument to associate with the Sound.
+     * @param sound          The Sound to associate with the MIDI instrument.
+     * @return The TacticalMidiParsingOptions instance for method chaining.
+     */
+    @NotNull
+    TacticalMidiParsingOptions soundForInstrument(@NotNull String midiInstrument, @NotNull String sound);
+
+    /**
+     * Sets the default Sound for unspecified MIDI instruments.
+     *
+     * @param sound The default Sound to set.
+     * @return The TacticalMidiParsingOptions instance for method chaining.
+     */
+    @NotNull
+    TacticalMidiParsingOptions defaultSound(@NotNull String sound);
+
+    /**
+     * Removes the default Sound for unspecified MIDI instruments.
+     *
+     * @return The TacticalMidiParsingOptions instance for method chaining.
+     */
+    @NotNull
+    TacticalMidiParsingOptions removeDefaultSound();
 
     /**
      * Retrieves the drum kit associated with the specified MIDI instrument.

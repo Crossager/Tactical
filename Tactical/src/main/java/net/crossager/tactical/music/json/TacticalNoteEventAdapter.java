@@ -5,19 +5,16 @@ import com.google.gson.stream.JsonWriter;
 import net.crossager.tactical.api.music.TacticalNoteEvent;
 import net.crossager.tactical.music.SimpleTacticalNoteEvent;
 import net.crossager.tactical.util.ObjectReadingTypeAdapter;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 
 public class TacticalNoteEventAdapter extends ObjectReadingTypeAdapter<TacticalNoteEvent> {
     public static final TacticalNoteEventAdapter INSTANCE = new TacticalNoteEventAdapter();
 
     public TacticalNoteEventAdapter() {
         super(SimpleTacticalNoteEvent.class, Map.of(
-                "sound", in -> Registry.SOUNDS.get(Objects.requireNonNull(NamespacedKey.fromString(in.nextString()))),
+                "sound", JsonReader::nextString,
                 "isDrum", JsonReader::nextBoolean,
                 "volume", in -> (float) in.nextDouble(),
                 "key", JsonReader::nextInt
@@ -29,7 +26,7 @@ public class TacticalNoteEventAdapter extends ObjectReadingTypeAdapter<TacticalN
         out.beginObject();
 
         out.name("sound");
-        out.value(value.sound().getKey().toString());
+        out.value(value.sound());
         out.name("isDrum");
         out.value(value.isDrum());
         out.name("volume");

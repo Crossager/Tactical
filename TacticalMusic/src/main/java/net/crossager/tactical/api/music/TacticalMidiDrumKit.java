@@ -32,6 +32,28 @@ public interface TacticalMidiDrumKit {
     TacticalMidiDrumKit soundForKey(int mappedKey, @NotNull Sound sound, @NotNull TacticalMusicKey key, int octave);
 
     /**
+     * Associates the specified Sound with the given mapped key.
+     *
+     * @param mappedKey The mapped key to associate with the Sound.
+     * @param sound     The Sound to associate with the mapped key.
+     * @return This TacticalMidiDrumKit instance for method chaining.
+     */
+    @NotNull
+    TacticalMidiDrumKit soundForKey(int mappedKey, @NotNull String sound);
+
+    /**
+     * Associates the specified Sound with the given mapped key, musical key, and octave.
+     *
+     * @param mappedKey The mapped key to associate with the Sound.
+     * @param sound     The Sound to associate with the mapped key.
+     * @param key       The musical key to associate with the Sound.
+     * @param octave    The octave to associate with the Sound.
+     * @return This TacticalMidiDrumKit instance for method chaining.
+     */
+    @NotNull
+    TacticalMidiDrumKit soundForKey(int mappedKey, @NotNull String sound, @NotNull TacticalMusicKey key, int octave);
+
+    /**
      * Retrieves the TacticalDrumSound associated with the specified key.
      *
      * @param key The key for which to retrieve the TacticalDrumSound.
@@ -50,6 +72,17 @@ public interface TacticalMidiDrumKit {
      */
     @NotNull
     TacticalMidiDrumKit defaultSound(@NotNull Sound sound, @NotNull TacticalMusicKey key, int octave);
+
+    /**
+     * Sets the default Sound, musical key, and octave for unspecified keys.
+     *
+     * @param sound  The default Sound to set.
+     * @param key    The default musical key to set.
+     * @param octave The default octave to set.
+     * @return This TacticalMidiDrumKit instance for method chaining.
+     */
+    @NotNull
+    TacticalMidiDrumKit defaultSound(@NotNull String sound, @NotNull TacticalMusicKey key, int octave);
 
     /**
      * Creates a new instance of TacticalMidiDrumKit.
@@ -81,7 +114,7 @@ public interface TacticalMidiDrumKit {
          * @return The associated Sound.
          */
         @NotNull
-        Sound sound();
+        String sound();
 
         /**
          * Retrieves the musical key associated with this drum sound.

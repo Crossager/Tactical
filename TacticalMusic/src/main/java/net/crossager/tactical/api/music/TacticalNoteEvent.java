@@ -14,7 +14,7 @@ public interface TacticalNoteEvent {
      * @return The sound of the note event.
      */
     @NotNull
-    Sound sound();
+    String sound();
 
     /**
      * Checks if the note event represents a drum sound.
@@ -31,6 +31,15 @@ public interface TacticalNoteEvent {
      */
     @NotNull
     TacticalNoteEvent sound(@NotNull Sound sound);
+
+    /**
+     * Sets the sound for the note event.
+     *
+     * @param sound The new sound for the note event.
+     * @return This TacticalNoteEvent instance for method chaining.
+     */
+    @NotNull
+    TacticalNoteEvent sound(@NotNull String sound);
 
     /**
      * Retrieves the volume of the note event.

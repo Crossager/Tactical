@@ -6,14 +6,14 @@ import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 
 public final class SimpleTacticalNoteEvent implements TacticalNoteEvent {
-    private Sound sound;
+    private String sound;
     private float volume;
     private TacticalMusicKey tacticalMusicKey;
     private int octave;
     private int key;
     private final boolean isDrum;
 
-    public SimpleTacticalNoteEvent(@NotNull Sound sound, float volume, TacticalMusicKey tacticalMusicKey, int octave, boolean isDrum) {
+    public SimpleTacticalNoteEvent(@NotNull String sound, float volume, TacticalMusicKey tacticalMusicKey, int octave, boolean isDrum) {
         this.sound = sound;
         this.volume = volume;
         this.tacticalMusicKey = tacticalMusicKey;
@@ -21,14 +21,14 @@ public final class SimpleTacticalNoteEvent implements TacticalNoteEvent {
         this.isDrum = isDrum;
     }
 
-    public SimpleTacticalNoteEvent(@NotNull Sound sound, float volume, int key) {
+    public SimpleTacticalNoteEvent(@NotNull String sound, float volume, int key) {
         this.sound = sound;
         this.volume = volume;
         this.isDrum = false;
         rawKey(key);
     }
 
-    public SimpleTacticalNoteEvent(@NotNull Sound sound, float volume, int key, boolean isDrum) {
+    public SimpleTacticalNoteEvent(@NotNull String sound, float volume, int key, boolean isDrum) {
         this.sound = sound;
         this.volume = volume;
         this.isDrum = isDrum;
@@ -37,6 +37,12 @@ public final class SimpleTacticalNoteEvent implements TacticalNoteEvent {
 
     @Override
     public @NotNull TacticalNoteEvent sound(@NotNull Sound sound) {
+        this.sound = sound.getKey().toString();
+        return this;
+    }
+
+    @Override
+    public @NotNull TacticalNoteEvent sound(@NotNull String sound) {
         this.sound = sound;
         return this;
     }
@@ -85,7 +91,7 @@ public final class SimpleTacticalNoteEvent implements TacticalNoteEvent {
     }
 
     @Override
-    public @NotNull Sound sound() {
+    public @NotNull String sound() {
         return sound;
     }
 

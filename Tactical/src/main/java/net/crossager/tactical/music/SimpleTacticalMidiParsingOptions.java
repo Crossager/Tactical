@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class SimpleTacticalMidiParsingOptions implements TacticalMidiParsingOptions {
-    private final Map<String, Sound> sounds = new HashMap<>();
-    private Sound defaultSound;
+    private final Map<String, String> sounds = new HashMap<>();
+    private String defaultSound;
     private final Map<String, TacticalMidiDrumKit> drumKits = new HashMap<>();
     private boolean moveOctaves = false;
     private boolean moveKeys = false;
@@ -77,21 +77,39 @@ public class SimpleTacticalMidiParsingOptions implements TacticalMidiParsingOpti
     }
 
     @Override
-    public @NotNull Sound soundForInstrument(@NotNull String midiInstrument) {
-        Sound sound = sounds.getOrDefault(midiInstrument, defaultSound);
+    public @NotNull String soundForInstrument(@NotNull String midiInstrument) {
+        String sound = sounds.getOrDefault(midiInstrument, defaultSound);
         if (sound == null) throw new NoSuchElementException("No sound bound for instrument '" + midiInstrument + "'");
         return sound;
     }
 
     @Override
     public @NotNull TacticalMidiParsingOptions soundForInstrument(@NotNull String midiInstrument, @NotNull Sound sound) {
-        sounds.put(midiInstrument, sound);
+        sounds.put(midiInstrument, sound.getKey().toString());
         return this;
     }
 
     @Override
     public @NotNull TacticalMidiParsingOptions defaultSound(@NotNull Sound sound) {
+        this.defaultSound = sound.getKey().toString();
+        return this;
+    }
+
+    @Override
+    public @NotNull TacticalMidiParsingOptions soundForInstrument(@NotNull String midiInstrument, @NotNull String sound) {
+        sounds.put(midiInstrument, sound);
+        return this;
+    }
+
+    @Override
+    public @NotNull TacticalMidiParsingOptions defaultSound(@NotNull String sound) {
         this.defaultSound = sound;
+        return this;
+    }
+
+    @Override
+    public @NotNull TacticalMidiParsingOptions removeDefaultSound() {
+        this.defaultSound = null;
         return this;
     }
 
@@ -110,7 +128,7 @@ public class SimpleTacticalMidiParsingOptions implements TacticalMidiParsingOpti
 
     @Override
     public @NotNull TacticalNoteEvent createEvent(@NotNull String midiInstrument, int key, float volume) {
-        Sound availableSound = sounds.get(midiInstrument);
+        String availableSound = sounds.get(midiInstrument);
         if (availableSound != null)
             return new SimpleTacticalNoteEvent(availableSound, volume, key);
 

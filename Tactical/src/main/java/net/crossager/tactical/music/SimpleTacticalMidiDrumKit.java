@@ -22,6 +22,12 @@ public class SimpleTacticalMidiDrumKit implements TacticalMidiDrumKit {
 
     @Override
     public @NotNull TacticalMidiDrumKit defaultSound(@NotNull Sound sound, @NotNull TacticalMusicKey key, int octave) {
+        this.defaultSound = new SimpleTacticalDrumSound(sound.getKey().toString(), key, octave);
+        return this;
+    }
+
+    @Override
+    public @NotNull TacticalMidiDrumKit defaultSound(@NotNull String sound, @NotNull TacticalMusicKey key, int octave) {
         this.defaultSound = new SimpleTacticalDrumSound(sound, key, octave);
         return this;
     }
@@ -33,11 +39,22 @@ public class SimpleTacticalMidiDrumKit implements TacticalMidiDrumKit {
 
     @Override
     public @NotNull TacticalMidiDrumKit soundForKey(int mappedKey, @NotNull Sound sound, @NotNull TacticalMusicKey key, int octave) {
+        sounds.put(mappedKey, new SimpleTacticalDrumSound(sound.getKey().toString(), key, octave));
+        return this;
+    }
+
+    @Override
+    public @NotNull TacticalMidiDrumKit soundForKey(int mappedKey, @NotNull String sound) {
+        return soundForKey(mappedKey, sound, TacticalMusicKey.C, 0);
+    }
+
+    @Override
+    public @NotNull TacticalMidiDrumKit soundForKey(int mappedKey, @NotNull String sound, @NotNull TacticalMusicKey key, int octave) {
         sounds.put(mappedKey, new SimpleTacticalDrumSound(sound, key, octave));
         return this;
     }
 
-    record SimpleTacticalDrumSound(@NotNull Sound sound, @NotNull TacticalMusicKey key, int octave) implements TacticalDrumSound {
+    record SimpleTacticalDrumSound(@NotNull String sound, @NotNull TacticalMusicKey key, int octave) implements TacticalDrumSound {
 
     }
 
