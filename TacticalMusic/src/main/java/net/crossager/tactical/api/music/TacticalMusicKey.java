@@ -7,18 +7,18 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum TacticalMusicKey {
 
-    C("C"),
-    C_SHARP("C#"),
-    D("D"),
-    D_SHARP("D#"),
-    E("E"),
-    F("F"),
     F_SHARP("F#"),
     G("G"),
     G_SHARP("G#"),
     A("A"),
     A_SHARP("A#"),
-    B("B");
+    B("B"),
+    C("C"),
+    C_SHARP("C#"),
+    D("D"),
+    D_SHARP("D#"),
+    E("E"),
+    F("F");
 
     private final String display;
 
@@ -72,4 +72,6 @@ public enum TacticalMusicKey {
     public static TacticalMusicKey fromKey(int key) {
         return VALUES[key];
     }
+
+    public static final TacticalMusicKey BASE = fromKey(0);
 }

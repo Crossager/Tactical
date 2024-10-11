@@ -34,7 +34,7 @@ public class SimpleTacticalMidiDrumKit implements TacticalMidiDrumKit {
 
     @Override
     public @NotNull TacticalMidiDrumKit soundForKey(int mappedKey, @NotNull Sound sound) {
-        return soundForKey(mappedKey, sound, TacticalMusicKey.C, 0);
+        return soundForKey(mappedKey, sound, TacticalMusicKey.BASE, 0);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SimpleTacticalMidiDrumKit implements TacticalMidiDrumKit {
 
     @Override
     public @NotNull TacticalMidiDrumKit soundForKey(int mappedKey, @NotNull String sound) {
-        return soundForKey(mappedKey, sound, TacticalMusicKey.C, 0);
+        return soundForKey(mappedKey, sound, TacticalMusicKey.BASE, 0);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SimpleTacticalMidiDrumKit implements TacticalMidiDrumKit {
     public static SimpleTacticalMidiDrumKit createDefault() {
         SimpleTacticalMidiDrumKit drumKit = new SimpleTacticalMidiDrumKit();
 
-        drumKit.defaultSound(Sound.BLOCK_NOTE_BLOCK_BASEDRUM, TacticalMusicKey.C, 0);
+        drumKit.defaultSound(Sound.BLOCK_NOTE_BLOCK_BASEDRUM, TacticalMusicKey.BASE, 0);
 
         drumKit.soundForKey(5, Sound.ENTITY_ITEM_FRAME_ROTATE_ITEM);
         drumKit.soundForKey(9, Sound.BLOCK_CALCITE_STEP);

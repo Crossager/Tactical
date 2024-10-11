@@ -141,7 +141,7 @@ public class SimpleTacticalMidiParsingOptions implements TacticalMidiParsingOpti
 
         TacticalMidiDrumKit.TacticalDrumSound drumSound = drumKit.soundForKey(key);
 
-        return new SimpleTacticalNoteEvent(drumSound.sound(), volume, TacticalMusicKey.C, 1, true);
+        return new SimpleTacticalNoteEvent(drumSound.sound(), volume, TacticalMusicKey.BASE, 1, true);
     }
 
     public static SimpleTacticalMidiParsingOptions createDefault() {
