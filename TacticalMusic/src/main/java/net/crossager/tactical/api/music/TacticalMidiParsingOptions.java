@@ -26,36 +26,36 @@ public interface TacticalMidiParsingOptions {
     TacticalMidiParsingOptions maxPitch(float maxPitch);
 
     /**
-     * Checks if octaves should be moved when parsing notes.
+     * Shifts the octaves down as much as possible to fit in the minecraft range
      *
      * @return True if octaves should be moved, false otherwise.
      */
-    boolean moveOctaves();
+    boolean shiftOctaves();
 
     /**
-     * Sets whether octaves should be moved when parsing notes.
+     * Sets whether 'shift octaves' is enabled
      *
      * @param moveOctaves True to move octaves, false otherwise.
      * @return The TacticalMidiParsingOptions instance for method chaining.
      */
     @NotNull
-    TacticalMidiParsingOptions moveOctaves(boolean moveOctaves);
+    TacticalMidiParsingOptions shiftOctaves(boolean moveOctaves);
 
     /**
-     * Checks if keys should be moved when parsing notes.
+     * Shifts the octaves down as much as possible to fit in the minecraft range
      *
      * @return True if keys should be moved, false otherwise.
      */
-    boolean moveKeys();
+    boolean shiftKeys();
 
     /**
-     * Sets whether keys should be moved when parsing notes.
+     * Sets whether 'shift octaves' is enabled
      *
      * @param moveKeys True to move keys, false otherwise.
      * @return The TacticalMidiParsingOptions instance for method chaining.
      */
     @NotNull
-    TacticalMidiParsingOptions moveKeys(boolean moveKeys);
+    TacticalMidiParsingOptions shiftKeys(boolean moveKeys);
 
     /**
      * Checks if unknown instruments should be skipped when parsing notes.

@@ -63,7 +63,7 @@ public class TacticalMusicManager {
 
         Track[] tracks = sequence.getTracks();
         Map<TacticalNoteEvent, Integer> unsortedNotes = new HashMap<>();
-        int lowestKey = Integer.MAX_VALUE;
+        TacticalMusicKey lowestKey = TacticalMusicKey.BASE;
         Set<String> unknownInstruments = new HashSet<>();
         for (Track track : tracks) {
             List<TacticalNoteEvent> trackNotes = new ArrayList<>();
@@ -79,9 +79,9 @@ public class TacticalMusicManager {
                     try {
                         TacticalNoteEvent tacticalNoteEvent = options.createEvent(currentSound, key, message.getData2() / 127F);
                         if (!tacticalNoteEvent.isDrum() && tacticalNoteEvent.octave() < lowestOctave) lowestOctave = tacticalNoteEvent.octave();
-                        if (!tacticalNoteEvent.isDrum() && key < lowestKey) lowestKey = key;
+                        if (!tacticalNoteEvent.isDrum() && tacticalNoteEvent.key().ordinal() < lowestKey.ordinal()) lowestKey = tacticalNoteEvent.key();
                         unsortedNotes.put(tacticalNoteEvent, (int) Math.round(event.getTick() * secondsPerTick * TPS));
-                        if (options.moveOctaves()) trackNotes.add(tacticalNoteEvent);
+                        if (options.shiftOctaves()) trackNotes.add(tacticalNoteEvent);
                     } catch (NoSuchElementException e) {
                         if (!options.skipUnknownInstruments()) throw e;
                         unknownInstruments.add(currentSound);
@@ -93,15 +93,15 @@ public class TacticalMusicManager {
                     throw new RuntimeException("Unknown midi message: " + event.getMessage());
                 }
             }
-            if (options.moveOctaves() && !options.moveKeys() && lowestOctave != 0 && trackNotes.size() > 0 && !trackNotes.get(0).isDrum()) {
+            if (options.shiftOctaves() && !options.shiftKeys() && lowestOctave != 0 && trackNotes.size() > 0 && !trackNotes.get(0).isDrum()) {
                 int moveOctaves = lowestOctave;
                 trackNotes.forEach(event -> {
                     event.octave(event.octave() - moveOctaves);
                 });
             }
         }
-        if (options.moveKeys() && lowestKey != 0) {
-            int moveKeys = lowestKey;
+        if (options.shiftKeys() && lowestKey != TacticalMusicKey.BASE) {
+            int moveKeys = lowestKey.ordinal();
             unsortedNotes.forEach((event, i) -> {
                 if (!event.isDrum())
                     event.rawKey(event.rawKey() - moveKeys);

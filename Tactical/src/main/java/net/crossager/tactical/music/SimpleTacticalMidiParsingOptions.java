@@ -33,23 +33,23 @@ public class SimpleTacticalMidiParsingOptions implements TacticalMidiParsingOpti
     }
 
     @Override
-    public boolean moveOctaves() {
+    public boolean shiftOctaves() {
         return moveOctaves;
     }
 
     @Override
-    public @NotNull TacticalMidiParsingOptions moveOctaves(boolean moveOctaves) {
+    public @NotNull TacticalMidiParsingOptions shiftOctaves(boolean moveOctaves) {
         this.moveOctaves = moveOctaves;
         return this;
     }
 
     @Override
-    public boolean moveKeys() {
+    public boolean shiftKeys() {
         return moveKeys;
     }
 
     @Override
-    public @NotNull TacticalMidiParsingOptions moveKeys(boolean moveKeys) {
+    public @NotNull TacticalMidiParsingOptions shiftKeys(boolean moveKeys) {
         this.moveKeys = moveKeys;
         return this;
     }
@@ -146,7 +146,8 @@ public class SimpleTacticalMidiParsingOptions implements TacticalMidiParsingOpti
 
     public static SimpleTacticalMidiParsingOptions createDefault() {
         SimpleTacticalMidiParsingOptions options = new SimpleTacticalMidiParsingOptions();
-        options.moveOctaves(true);
+        options.shiftOctaves(true);
+        options.shiftKeys(true);
         options.defaultSound(Sound.BLOCK_NOTE_BLOCK_HARP);
 
         options.soundForInstrument("MIDI", Sound.BLOCK_NOTE_BLOCK_HARP);
