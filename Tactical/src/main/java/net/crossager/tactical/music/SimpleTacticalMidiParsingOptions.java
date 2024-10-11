@@ -1,9 +1,6 @@
 package net.crossager.tactical.music;
 
-import net.crossager.tactical.api.music.TacticalMusicKey;
-import net.crossager.tactical.api.music.TacticalMidiDrumKit;
-import net.crossager.tactical.api.music.TacticalMidiParsingOptions;
-import net.crossager.tactical.api.music.TacticalNoteEvent;
+import net.crossager.tactical.api.music.*;
 import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +15,7 @@ public class SimpleTacticalMidiParsingOptions implements TacticalMidiParsingOpti
     private boolean moveOctaves = false;
     private boolean moveKeys = false;
     private boolean warnings = true;
+    private TacticalHighPitchHandler highPitchHandler = TacticalHighPitchHandler.SKIP;
     private boolean skipUnknownInstruments = true;
     private float maxPitch = 2;
 
@@ -73,6 +71,17 @@ public class SimpleTacticalMidiParsingOptions implements TacticalMidiParsingOpti
     @Override
     public @NotNull TacticalMidiParsingOptions warnings(boolean warnings) {
         this.warnings = warnings;
+        return this;
+    }
+
+    @Override
+    public TacticalHighPitchHandler highPitchHandler() {
+        return highPitchHandler;
+    }
+
+    @Override
+    public TacticalMidiParsingOptions highPitchHandler(@NotNull TacticalHighPitchHandler highPitchHandler) {
+        this.highPitchHandler = highPitchHandler;
         return this;
     }
 

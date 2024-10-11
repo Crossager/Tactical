@@ -63,7 +63,7 @@ public class TacticalMusicManager {
 
         Track[] tracks = sequence.getTracks();
         Map<TacticalNoteEvent, Integer> unsortedNotes = new HashMap<>();
-        TacticalMusicKey lowestKey = TacticalMusicKey.BASE;
+        TacticalMusicKey lowestKey = TacticalMusicKey.F;
         Set<String> unknownInstruments = new HashSet<>();
         for (Track track : tracks) {
             List<TacticalNoteEvent> trackNotes = new ArrayList<>();
@@ -93,7 +93,7 @@ public class TacticalMusicManager {
                     throw new RuntimeException("Unknown midi message: " + event.getMessage());
                 }
             }
-            if (options.shiftOctaves() && !options.shiftKeys() && lowestOctave != 0 && trackNotes.size() > 0 && !trackNotes.get(0).isDrum()) {
+            if (options.shiftOctaves() && lowestOctave != 0 && trackNotes.size() > 0 && !trackNotes.get(0).isDrum()) {
                 int moveOctaves = lowestOctave;
                 trackNotes.forEach(event -> {
                     event.octave(event.octave() - moveOctaves);
@@ -116,8 +116,9 @@ public class TacticalMusicManager {
         AtomicInteger highPitchNotes = new AtomicInteger();
         unsortedNotes.forEach(((note, tick) -> {
             if (note.key().minecraftPitch(note.octave()) > options.maxPitch()) {
-                highPitchNotes.incrementAndGet();
-                return;
+                Optional<TacticalNoteEvent> newEvent = options.highPitchHandler().handleEvent(note, options);
+                if (newEvent.isEmpty()) return;
+                note = newEvent.get();
             }
             noteFrames.get(tick / tickSpacing).tacticalNoteEvents().add(note);
         }));

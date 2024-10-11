@@ -90,6 +90,19 @@ public interface TacticalMidiParsingOptions {
     TacticalMidiParsingOptions warnings(boolean warnings);
 
     /**
+     * The handler to use when notes are too high-pitched
+     * @return the high pitch handler
+     */
+    TacticalHighPitchHandler highPitchHandler();
+
+    /**
+     * Sets the high pitch handler for these options.
+     * @param highPitchHandler the handler to use.
+     * @return The TacticalMidiParsingOptions instance for method chaining.
+     */
+    TacticalMidiParsingOptions highPitchHandler(@NotNull TacticalHighPitchHandler highPitchHandler);
+
+    /**
      * Retrieves the Sound associated with the specified MIDI instrument.
      *
      * @param midiInstrument The MIDI instrument for which to retrieve the Sound.
